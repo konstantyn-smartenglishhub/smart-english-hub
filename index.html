@@ -15,6 +15,17 @@
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        .blank-marker {
+            display: inline-block;
+            background-color: #4f46e5;
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 0 8px;
+            font-weight: 700;
+            font-size: 0.85em;
+            line-height: 1.5;
+            margin: 0 3px;
+        }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
@@ -25,7 +36,7 @@
 
     <script>
     (function() {
-        const { useState, useEffect, createElement: h, forwardRef } = window.React;
+        const { useState, useEffect, createElement: h } = window.React;
 
         // =========================================================================
         // 1. НАЛАШТУВАННЯ GOOGLE ТАБЛИЦІ ТА КЛАСІВ
@@ -34,7 +45,7 @@
         const CLASS_LIST = ["6-А", "6-Б", "9-А", "9-Б", "10-А", "10-Б", "GUEST"];
 
         // =========================================================================
-        // 2. НАЛАШТУВАННЯ МЕНЮ ТА РОЗДІЛІВ (ЛЕГКО ДОДАВАТИ НОВІ СТОРІНКИ)
+        // 2. НАЛАШТУВАННЯ МЕНЮ ТА РОЗДІЛІВ
         // =========================================================================
         const UNIT_LIST = Array.from({ length: 12 }, (_, i) => `Unit ${i + 1}`);
 
@@ -80,7 +91,7 @@
         ];
 
         // =========================================================================
-        // 3. БАЗА ТЕСТІВ ТА МАТЕРІАЛІВ (СЮДИ ДОДАЄМО ВСІ ТЕСТИ)
+        // 3. БАЗА ТЕСТІВ ТА МАТЕРІАЛІВ
         // =========================================================================
         const TESTS_DATABASE = {
             "Full Blast 5": [
@@ -124,7 +135,80 @@
                 { id: 9, title: "Unit 3", description: "Interactive online test for Unit 3.", link: "https://sites.google.com/view/fullblast9unit3/full-page-embed" }
             ],
             "Karpiuk 10": [
-                { id: 6, title: "Choose the Career", description: "Interactive online test on professions, skills, and career choices.", link: "https://sites.google.com/lub1.ukr.education/choose-the-career/full-page-embed" }
+                {
+                    id: 6,
+                    title: "Choose the Career (22 Questions)",
+                    description: "Context-based test on professions, education, and tenses (22 Questions). Max score: 11.",
+                    maxGrade: 11,
+                    sections: [
+                        {
+                            sectionTitle: "Part 1: The Beirut Interview (Grammar)",
+                            sectionInstructions: "Read the interview and choose the correct verb forms for the blanks [1] - [8].",
+                            contextHtml: `
+                                <strong>Interviewer:</strong> So, how long <span class="blank-marker">1</span> here?<br>
+                                <strong>Mary:</strong> For about 6 months now.<br>
+                                <strong>Interviewer:</strong> Why did you choose Beirut?<br>
+                                <strong>Mary:</strong> Because my husband John and I <span class="blank-marker">2</span> Arab culture and the language. John's an English teacher and he <span class="blank-marker">3</span> a job here in a language school.<br>
+                                <strong>Interviewer:</strong> Why did you want to take a year off?<br>
+                                <strong>Mary:</strong> Basically I <span class="blank-marker">4</span> a break from teaching. I love teaching children but I <span class="blank-marker">5</span> a change. Also I <span class="blank-marker">6</span> since I was little but I have never really had the chance to study drawing. So this <span class="blank-marker">7</span> like the perfect opportunity to have a change and learn to draw properly.<br>
+                                <strong>Interviewer:</strong> What have you been doing here since you arrived?<br>
+                                <strong>Mary:</strong> Well, I found a fantastic art teacher, called Fatima, and I <span class="blank-marker">8</span> classes with her since October.
+                            `,
+                            questions: [
+                                { num: 1, question: "Blank [1] (you / live)", options: ["did you live", "have you been living", "are you living", "do you live"], correct: 1 },
+                                { num: 2, question: "Blank [2] (always / love)", options: ["always loved", "are always loving", "have always loved", "always love"], correct: 2 },
+                                { num: 3, question: "Blank [3] (get)", options: ["got", "has got", "gets", "was getting"], correct: 0 },
+                                { num: 4, question: "Blank [4] (want)", options: ["have wanted", "was wanting", "want", "wanted"], correct: 3 },
+                                { num: 5, question: "Blank [5] (need)", options: ["am needing", "needed", "have needed", "need"], correct: 1 },
+                                { num: 6, question: "Blank [6] (draw and paint)", options: ["drew and painted", "have been drawing and painting", "draw and paint", "am drawing and painting"], correct: 1 },
+                                { num: 7, question: "Blank [7] (seem)", options: ["has seemed", "seems", "is seeming", "seemed"], correct: 3 },
+                                { num: 8, question: "Blank [8] (have)", options: ["have had", "had", "am having", "was having"], correct: 0 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 2: Work & Education (Vocabulary)",
+                            sectionInstructions: "Read the text about professions and choose the correct vocabulary words for the blanks [9] - [18].",
+                            contextHtml: `
+                                My cousin Liza is an interpreter. She gets a good <span class="blank-marker">9</span>. Liza speaks English and French <span class="blank-marker">10</span>. She studied at the university and travelled a lot. It helped her to improve her language skills, learn more about culture and traditions. Liza has an <span class="blank-marker">11</span> of working as an interpreter for seven years.<br><br>
+                                My older brother Denis is a manager. His job is <span class="blank-marker">12</span>. Although it is sometimes difficult to get in touch with him during the day, his <span class="blank-marker">13</span> is very interesting. First he <span class="blank-marker">14</span> from a university where he got a Master's degree in economics. Denis' work <span class="blank-marker">15</span> a lot of teamwork. I know he is quite successful. I'm proud of him.<br><br>
+                                As for me, I am a secretary at a textile factory. We receive many letters of <span class="blank-marker">16</span>, because our factory <span class="blank-marker">17</span> good work conditions. Next year I am going to get a Bachelor's degree in psychology and to <span class="blank-marker">18</span> for a position of a personnel manager.
+                            `,
+                            questions: [
+                                { num: 9, question: "Blank [9]", options: ["staff", "salary", "application", "profession"], correct: 1 },
+                                { num: 10, question: "Blank [10]", options: ["fluently", "requires", "well-paid", "offers"], correct: 0 },
+                                { num: 11, question: "Blank [11]", options: ["application", "profession", "experience", "staff"], correct: 2 },
+                                { num: 12, question: "Blank [12]", options: ["well-paid", "graduated", "applied", "required"], correct: 0 },
+                                { num: 13, question: "Blank [13]", options: ["staff", "profession", "salary", "experience"], correct: 1 },
+                                { num: 14, question: "Blank [14]", options: ["offered", "required", "graduated", "applied"], correct: 2 },
+                                { num: 15, question: "Blank [15]", options: ["graduates", "applies", "offers", "requires"], correct: 3 },
+                                { num: 16, question: "Blank [16]", options: ["salary", "application", "experience", "staff"], correct: 1 },
+                                { num: 17, question: "Blank [17]", options: ["offers", "graduates", "requires", "applies"], correct: 0 },
+                                { num: 18, question: "Blank [18]", options: ["require", "offer", "apply", "staff"], correct: 2 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 3: Past Simple vs Present Perfect Dialogues",
+                            sectionInstructions: "Read the short dialogues and choose the correct verb forms for the blanks [19] - [22].",
+                            contextHtml: `
+                                <strong>Dialogue 1</strong><br>
+                                <strong>A:</strong> How long <span class="blank-marker">19</span> at university?<br>
+                                <strong>B:</strong> I <span class="blank-marker">20</span> two years ago. I'm in my third year now.<br><br>
+                                <strong>Dialogue 2</strong><br>
+                                <strong>A:</strong> Do you live with your parents?<br>
+                                <strong>B:</strong> I lived with them for the first two years but I moved into a student hostel last September and I <span class="blank-marker">21</span> there since then.<br><br>
+                                <strong>Dialogue 3</strong><br>
+                                <strong>A:</strong> <span class="blank-marker">22</span> a job yet?<br>
+                                <strong>B:</strong> Yes, he has just started work in a hotel.
+                            `,
+                            questions: [
+                                { num: 19, question: "Blank [19] (you / be)", options: ["were you", "did you be", "are you", "have you been"], correct: 3 },
+                                { num: 20, question: "Blank [20] (start)", options: ["started", "have started", "start", "was starting"], correct: 0 },
+                                { num: 21, question: "Blank [21] (live)", options: ["am living", "lived", "have lived", "live"], correct: 2 },
+                                { num: 22, question: "Blank [22] (your brother / find)", options: ["Did your brother find", "Has your brother found", "Does your brother find", "Was your brother finding"], correct: 1 }
+                            ]
+                        }
+                    ]
+                }
             ],
             "Oxford Exam Trainer B2": [
                 { id: 3, unit: "All", title: "All Exam Preparation Materials (Google Drive)", description: "General folder with practice tests and materials for Oxford Exam Trainer B2.", link: "https://drive.google.com/drive/folders/1l4h0OvuMoXlUcPUQHRJNEaXZJ8GA-hc2?usp=sharing" }
@@ -138,8 +222,15 @@
         };
 
         // =========================================================================
-        // 4. ДОПОМІЖНІ ФУНКЦІЇ (ЛОГУВАННЯ, КОПІЮВАННЯ, НАВІГАЦІЯ)
+        // 4. ДОПОМІЖНІ ФУНКЦІЇ
         // =========================================================================
+        function isBuiltInQuiz(test) {
+            return Boolean(
+                (test.questions && test.questions.length > 0) ||
+                (test.sections && test.sections.length > 0)
+            );
+        }
+
         function logToGoogleSheet(studentClass, studentName, action, score) {
             if (!GOOGLE_SCRIPT_URL) return;
             const payload = JSON.stringify({
@@ -253,7 +344,6 @@
                     h("path", { key: 2, d: "M20 3v4" }), h("path", { key: 3, d: "M22 5h-4" })
                 ],
                 play: [h("polygon", { key: 1, points: "6 3 20 12 6 21 6 3" })],
-                plus: [h("path", { key: 1, d: "M5 12h14" }), h("path", { key: 2, d: "M12 5v14" })],
                 share: [
                     h("circle", { key: 1, cx: "18", cy: "5", r: "3" }),
                     h("circle", { key: 2, cx: "6", cy: "12", r: "3" }),
@@ -294,7 +384,7 @@
         }
 
         // =========================================================================
-        // 6. КОМПОНЕНТИ ІНТЕРФЕЙСУ
+        // 6. ВБУДОВАНИЙ ПЛЕЄР ТЕСТІВ (ПІДТРИМУЄ ЗВИЧАЙНІ ТА КОНТЕКСТНІ ТЕСТИ)
         // =========================================================================
         function EmbeddedQuizModal({ test, category, onClose }) {
             const getSavedStudent = () => {
@@ -313,8 +403,22 @@
             const [answers, setAnswers] = useState({});
             const [submitted, setSubmitted] = useState(false);
 
-            const questions = test.questions || [];
-            const total = questions.length;
+            // Нормалізуємо структуру тесту у масив секцій (щоб однаково працювали і звичайні, і контекстні тести)
+            const normalizedSections = test.sections && test.sections.length > 0
+                ? test.sections
+                : [{ sectionTitle: null, sectionInstructions: null, contextHtml: null, questions: test.questions || [] }];
+
+            let globalIndex = 0;
+            const sectionsWithKeys = normalizedSections.map(sec => ({
+                ...sec,
+                questions: sec.questions.map(q => {
+                    const key = globalIndex++;
+                    return { ...q, _key: key, _displayNum: q.num || (key + 1) };
+                })
+            }));
+
+            const allFlatQuestions = sectionsWithKeys.reduce((acc, s) => acc.concat(s.questions), []);
+            const total = allFlatQuestions.length;
             const maxGrade = test.maxGrade || 11;
             const shareUrl = buildShareUrl(category, test.unit, test.id);
 
@@ -338,7 +442,7 @@
 
             const handleSubmit = () => {
                 let correctCount = 0;
-                questions.forEach((q, idx) => { if (answers[idx] === q.correct) correctCount++; });
+                allFlatQuestions.forEach(q => { if (answers[q._key] === q.correct) correctCount++; });
                 const finalGrade = calculateGrade(correctCount);
                 setSubmitted(true);
                 if (student) {
@@ -355,7 +459,7 @@
             let score = 0;
             let grade = 0;
             if (submitted) {
-                questions.forEach((q, idx) => { if (answers[idx] === q.correct) score++; });
+                allFlatQuestions.forEach(q => { if (answers[q._key] === q.correct) score++; });
                 grade = calculateGrade(score);
             }
 
@@ -402,9 +506,10 @@
                 );
             }
 
-            return h("div", { className: "fixed inset-0 bg-slate-900/70 z-[100] flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto" },
-                h("div", { className: "bg-white rounded-3xl w-full max-w-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" },
-                    h("div", { className: "bg-gradient-to-r from-indigo-600 to-purple-600 p-6 flex justify-between items-center text-white shrink-0" },
+            return h("div", { className: "fixed inset-0 bg-slate-900/70 z-[100] flex items-center justify-center p-2 sm:p-4 backdrop-blur-sm overflow-y-auto" },
+                h("div", { className: "bg-white rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]" },
+                    // Шапка тесту
+                    h("div", { className: "bg-gradient-to-r from-indigo-600 to-purple-600 p-5 sm:p-6 flex justify-between items-center text-white shrink-0" },
                         h("div", null,
                             h("div", { className: "flex flex-wrap items-center gap-2" },
                                 h("span", { className: "text-xs font-bold text-amber-300 flex items-center gap-1" }, h(SvgIcon, { name: "sparkles", size: 14 }), "Smart English Hub"),
@@ -428,7 +533,9 @@
                             h("button", { onClick: onClose, className: "hover:bg-white/20 p-2 rounded-full transition" }, h(SvgIcon, { name: "x", size: 24 }))
                         )
                     ),
-                    h("div", { className: "p-6 overflow-y-auto space-y-6 flex-1" },
+
+                    // Тіло тесту
+                    h("div", { className: "p-5 sm:p-6 overflow-y-auto space-y-8 flex-1" },
                         submitted && h("div", { className: "p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4" },
                             h("div", { className: "flex items-center gap-3" },
                                 h("div", { className: "w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0" }, h(SvgIcon, { name: "check", size: 28 })),
@@ -442,33 +549,48 @@
                                 h("div", { className: "text-3xl font-extrabold text-emerald-700" }, `${grade} / ${maxGrade}`)
                             )
                         ),
-                        questions.map((q, qIdx) => h("div", { key: qIdx, className: "p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3" },
-                            h("p", { className: "font-bold text-slate-800 text-base" }, `${qIdx + 1}. ${q.question}`),
-                            h("div", { className: "grid sm:grid-cols-2 gap-2.5" },
-                                q.options.map((opt, optIdx) => {
-                                    const isSelected = answers[qIdx] === optIdx;
-                                    const isCorrect = q.correct === optIdx;
-                                    let btnStyle = "bg-white border-slate-200 text-slate-700 hover:border-indigo-400";
-                                    if (submitted) {
-                                        if (isCorrect) btnStyle = "bg-emerald-50 border-emerald-500 text-emerald-800 font-semibold";
-                                        else if (isSelected && !isCorrect) btnStyle = "bg-rose-50 border-rose-500 text-rose-800";
-                                        else btnStyle = "bg-white border-slate-200 text-slate-400 opacity-70";
-                                    } else if (isSelected) {
-                                        btnStyle = "bg-indigo-50 border-indigo-600 text-indigo-800 font-semibold ring-2 ring-indigo-500/20";
-                                    }
-                                    return h("button", {
-                                        key: optIdx,
-                                        type: "button",
-                                        onClick: () => { if (!submitted) setAnswers(prev => ({ ...prev, [qIdx]: optIdx })); },
-                                        className: `p-3 rounded-xl border text-left text-sm transition flex items-center gap-2.5 ${btnStyle}`
-                                    },
-                                        h("span", { className: "w-6 h-6 rounded-full border flex items-center justify-center text-xs shrink-0 font-bold" }, String.fromCharCode(65 + optIdx)),
-                                        h("span", null, opt)
-                                    );
-                                })
+
+                        sectionsWithKeys.map((sec, sIdx) => h("div", { key: sIdx, className: "space-y-4" },
+                            sec.sectionTitle && h("div", { className: "border-b border-indigo-100 pb-2" },
+                                h("h4", { className: "text-lg sm:text-xl font-bold text-indigo-950" }, sec.sectionTitle),
+                                sec.sectionInstructions && h("p", { className: "text-sm text-slate-500 mt-0.5" }, sec.sectionInstructions)
+                            ),
+                            sec.contextHtml && h("div", {
+                                className: "p-5 rounded-2xl bg-indigo-50/60 border border-indigo-100 text-slate-800 text-sm sm:text-base leading-relaxed shadow-inner",
+                                dangerouslySetInnerHTML: { __html: sec.contextHtml }
+                            }),
+                            h("div", { className: "space-y-4" },
+                                sec.questions.map(q => h("div", { key: q._key, className: "p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3" },
+                                    h("p", { className: "font-bold text-slate-800 text-base" }, `${q._displayNum}. ${q.question}`),
+                                    h("div", { className: "grid sm:grid-cols-2 gap-2.5" },
+                                        q.options.map((opt, optIdx) => {
+                                            const isSelected = answers[q._key] === optIdx;
+                                            const isCorrect = q.correct === optIdx;
+                                            let btnStyle = "bg-white border-slate-200 text-slate-700 hover:border-indigo-400";
+                                            if (submitted) {
+                                                if (isCorrect) btnStyle = "bg-emerald-50 border-emerald-500 text-emerald-800 font-semibold";
+                                                else if (isSelected && !isCorrect) btnStyle = "bg-rose-50 border-rose-500 text-rose-800";
+                                                else btnStyle = "bg-white border-slate-200 text-slate-400 opacity-70";
+                                            } else if (isSelected) {
+                                                btnStyle = "bg-indigo-50 border-indigo-600 text-indigo-800 font-semibold ring-2 ring-indigo-500/20";
+                                            }
+                                            return h("button", {
+                                                key: optIdx,
+                                                type: "button",
+                                                onClick: () => { if (!submitted) setAnswers(prev => ({ ...prev, [q._key]: optIdx })); },
+                                                className: `p-3 rounded-xl border text-left text-sm transition flex items-center gap-2.5 ${btnStyle}`
+                                            },
+                                                h("span", { className: "w-6 h-6 rounded-full border flex items-center justify-center text-xs shrink-0 font-bold" }, String.fromCharCode(65 + optIdx)),
+                                                h("span", null, opt)
+                                            );
+                                        })
+                                    )
+                                ))
                             )
                         ))
                     ),
+
+                    // Футер тесту
                     h("div", { className: "p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center shrink-0" },
                         h("span", { className: "text-sm text-slate-500" }, `Відповідей: ${Object.keys(answers).length} з ${total}`),
                         !submitted
@@ -612,7 +734,6 @@
             };
 
             return h("div", { className: "max-w-5xl mx-auto space-y-6" },
-                // Заголовок розділу + кнопка Copy Link
                 h("div", { className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-5" },
                     h("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4" },
                         h("div", null,
@@ -633,7 +754,6 @@
                         }, h(SvgIcon, { name: "share", size: 18 }), copiedPage ? "Посилання скопійовано!" : "Copy Page Link")
                     ),
 
-                    // Панель вибору Unit 1 - Unit 12 (для Exam Preparation)
                     hasUnits && h("div", { className: "pt-2 border-t border-slate-100" },
                         h("div", { className: "text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5" }, "Units Navigation (Unit 1 — Unit 12):"),
                         h("div", { className: "flex flex-wrap gap-2" },
@@ -654,7 +774,6 @@
                     )
                 ),
 
-                // Сітка тестів та матеріалів
                 filteredTests.length === 0
                     ? h("div", { className: "text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200 space-y-2" },
                         h("p", { className: "text-slate-600 font-semibold" },
@@ -666,7 +785,7 @@
                     )
                     : h("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6" },
                         filteredTests.map(test => {
-                            const isBuiltIn = test.questions && test.questions.length > 0;
+                            const builtIn = isBuiltInQuiz(test);
                             return h("div", { key: test.id, className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition flex flex-col justify-between" },
                                 h("div", { className: "space-y-2.5 mb-6" },
                                     h("div", { className: "flex items-start justify-between gap-2" },
@@ -690,11 +809,11 @@
                                     type: "button",
                                     onClick: () => onOpenTest(test),
                                     className: `w-full py-2.5 px-4 font-semibold rounded-xl transition flex items-center justify-center gap-2 shadow-sm cursor-pointer ${
-                                        isBuiltIn
+                                        builtIn
                                             ? "bg-indigo-600 hover:bg-indigo-700 text-white"
                                             : "bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white"
                                     }`
-                                }, h(SvgIcon, { name: "play", size: 16 }), isBuiltIn ? "Start Test" : "Open")
+                                }, h(SvgIcon, { name: "play", size: 16 }), builtIn ? "Start Test" : "Open")
                             );
                         })
                     )
@@ -773,7 +892,6 @@
                     onClick: () => setIsMobileMenuOpen(false)
                 }),
 
-                // Бокове меню
                 h("aside", {
                     className: `fixed md:static inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out flex flex-col ${
                         isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
@@ -816,7 +934,6 @@
                     )
                 ),
 
-                // Основна область
                 h("main", { className: "flex-1 flex flex-col h-full overflow-hidden relative" },
                     h("header", { className: "md:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200" },
                         h("div", { className: "flex items-center" },
@@ -838,9 +955,8 @@
                     )
                 ),
 
-                // Модальне вікно тесту або зовнішнього посилання
                 activeTest && (
-                    activeTest.questions && activeTest.questions.length > 0
+                    isBuiltInQuiz(activeTest)
                         ? h(EmbeddedQuizModal, { test: activeTest, category: activeTab, onClose: closeTest })
                         : h(ExternalTestModal, { test: activeTest, category: activeTab, onClose: closeTest })
                 )
