@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart English Hub — Interactive Learning</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script>
+    (function() {
+        const { useState, useEffect, createElement: h, forwardRef } = window.React;
+
+        // =========================================================================
+        // 1. НАЛАШТУВАННЯ GOOGLE ТАБЛИЦІ ТА КЛАСІВ
+        // =========================================================================
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx135u5XoDKAX5-V746aUSE_HtTmse9bT5ky618RctWZ_MwdpTPkgKkATZBfJd5Ag/exec";
+        const CLASS_LIST = ["6-А", "6-Б", "9-А", "9-Б", "10-А", "10-Б", "GUEST"];
+
+        // =========================================================================
+        // 2. НАЛАШТУВАННЯ МЕНЮ ТА РОЗДІЛІВ (ЛЕГКО ДОДАВАТИ НОВІ СТОРІНКИ)
+        // =========================================================================
+        const UNIT_LIST = Array.from({ length: 12 }, (_, i) => `Unit ${i + 1}`);
+
+        const MENU_GROUPS = [
+            {
+                title: "Main",
+                items: [{ id: "Home", label: "Home", icon: "house" }]
+            },
+            {
+                title: "📘 Full Blast",
+                items: [
+                    { id: "Full Blast 3", label: "Full Blast 3" },
+                    { id: "Full Blast 4", label: "Full Blast 4" },
+                    { id: "Full Blast 5", label: "Full Blast 5" },
+                    { id: "Full Blast 6", label: "Full Blast 6" },
+                    { id: "Full Blast 7", label: "Full Blast 7" },
+                    { id: "Full Blast 8", label: "Full Blast 8" },
+                    { id: "Full Blast 9", label: "Full Blast 9" },
+                    { id: "Full Blast 10", label: "Full Blast 10" },
+                    { id: "Full Blast 11", label: "Full Blast 11" }
+                ]
+            },
+            {
+                title: "📙 Karpiuk",
+                items: [
+                    { id: "Karpiuk 10", label: "Karpiuk 10" },
+                    { id: "Karpiuk 11", label: "Karpiuk 11" }
+                ]
+            },
+            {
+                title: "🎓 Exam Preparation",
+                items: [
+                    { id: "Oxford Exam Trainer B2", label: "Oxford Exam Trainer B2", hasUnits: true },
+                    { id: "Get 200(2)", label: "Get 200(2)", hasUnits: true }
+                ]
+            },
+            {
+                title: "🎧 Skills",
+                items: [
+                    { id: "Listening Practice", label: "Listening Practice", icon: "headphones" }
+                ]
+            }
+        ];
+
+        // =========================================================================
+        // 3. БАЗА ТЕСТІВ ТА МАТЕРІАЛІВ (СЮДИ ДОДАЄМО ВСІ ТЕСТИ)
+        // =========================================================================
+        const TESTS_DATABASE = {
+            "Full Blast 5": [
+                { id: 1, title: "Module 1: Vocabulary", description: "Words for Module 1. Greetings, countries, nationalities.", link: "#" },
+                { id: 2, title: "Module 1: Grammar", description: "Verb to be, Have got, Present Simple.", link: "#" }
+            ],
+            "Full Blast 6": [
+                {
+                    id: 10,
+                    title: "Module 3 Test (22 Questions)",
+                    description: "22 Multiple Choice Questions (Vocabulary, Communication & Grammar). Max score: 11.",
+                    maxGrade: 11,
+                    questions: [
+                        { question: "Which part of the body is between your foot and your leg?", options: ["wrist", "ankle", "neck", "knee"], correct: 1 },
+                        { question: "Which part of the body connects your hand to your arm?", options: ["ankle", "back", "wrist", "knee"], correct: 2 },
+                        { question: "Walk on the __________, please! It's dangerous to walk in the street.", options: ["bush", "pavement", "ladder", "wheel"], correct: 1 },
+                        { question: "Oh, look! There's a cat behind that __________.", options: ["prize", "pavement", "bush", "neck"], correct: 2 },
+                        { question: "The __________ for the winner of this competition is a trip to Chile.", options: ["prize", "adventure", "noise", "voice"], correct: 0 },
+                        { question: "Donald was on the bumper car ride when he crashed and hurt his __________.", options: ["flat", "prize", "neck", "bush"], correct: 2 },
+                        { question: "I was __________ to see Alison at the concert.", options: ["probably", "surprised", "worried", "angry"], correct: 1 },
+                        { question: "My dad got a __________ tyre so he was late for work.", options: ["flat", "lucky", "broken", "heavy"], correct: 0 },
+                        { question: "I __________ on some water, fell down and hurt my knee.", options: ["sprained", "slipped", "chased", "crashed"], correct: 1 },
+                        { question: "Look at those __________ in the snow!", options: ["shadows", "adventures", "footprints", "wheels"], correct: 2 },
+                        { question: "Tony was riding his bike when he __________ into a tree.", options: ["chased", "slipped", "sprained", "crashed"], correct: 3 },
+                        { question: "That woman needs help! Someone call for an __________!", options: ["adventure", "ambulance", "accident", "elevator"], correct: 1 },
+                        { question: "Get me the __________. I want to climb up to that window.", options: ["wheel", "pavement", "ladder", "bush"], correct: 2 },
+                        { question: "Tell Gary to stop that __________. I can't hear the TV.", options: ["voice", "noise", "joke", "monster"], correct: 1 },
+                        { question: "She had an accident, but __________ she didn't get hurt.", options: ["immediately", "probably", "luckily", "suddenly"], correct: 2 },
+                        { question: "Choose the best response: — Why can't you get into your flat?", options: ["I missed the bus.", "I lost my keys.", "Never mind. I don't want any.", "I don't think so."], correct: 1 },
+                        { question: "Choose the best response: — There's no ketchup. Sorry.", options: ["Never mind. I don't want any.", "Believe it or not, I was stuck in a lift.", "I think someone's playing a joke on you.", "I missed the bus."], correct: 0 },
+                        { question: "A cat __________ me everywhere I went this morning.", options: ["followed", "was following", "were following", "is following"], correct: 1 },
+                        { question: "__________ you __________ TV at nine o'clock yesterday evening?", options: ["Did / watch", "Was / watching", "Were / watching", "Are / watching"], correct: 2 },
+                        { question: "While Ted __________ for his mobile phone, he __________ his keys.", options: ["looked / was finding", "was looking / found", "was looking / was finding", "looked / found"], correct: 1 },
+                        { question: "Shhhh! I think there's __________ in the kitchen.", options: ["anyone", "everyone", "someone", "no one"], correct: 2 },
+                        { question: "The police don't know what happened because __________ saw the accident.", options: ["nobody", "anybody", "nothing", "everyone"], correct: 0 }
+                    ]
+                }
+            ],
+            "Full Blast 9": [
+                { id: 5, title: "Unit 2", description: "22 Multiple Choice Questions (Vocabulary, Communication & Grammar).", link: "https://sites.google.com/lub1.ukr.education/interactive22-questionmcquiz/full-page-embed" },
+                { id: 9, title: "Unit 3", description: "Interactive online test for Unit 3.", link: "https://sites.google.com/view/fullblast9unit3/full-page-embed" }
+            ],
+            "Karpiuk 10": [
+                { id: 6, title: "Choose the Career", description: "Interactive online test on professions, skills, and career choices.", link: "https://sites.google.com/lub1.ukr.education/choose-the-career/full-page-embed" }
+            ],
+            "Oxford Exam Trainer B2": [
+                { id: 3, unit: "All", title: "All Exam Preparation Materials (Google Drive)", description: "General folder with practice tests and materials for Oxford Exam Trainer B2.", link: "https://drive.google.com/drive/folders/1l4h0OvuMoXlUcPUQHRJNEaXZJ8GA-hc2?usp=sharing" }
+            ],
+            "Get 200(2)": [
+                { id: 7, unit: "All", title: "All Practice Materials & Worksheets (Google Drive)", description: "General folder with Word documents and practice tasks for Get 200 (Book 2).", link: "https://drive.google.com/drive/folders/1ah3A5jWdOc2AjvegAvTW3lYHms6JDs9E?usp=sharing" }
+            ],
+            "Listening Practice": [
+                { id: 8, title: "Listening Practice Materials", description: "Google Drive folder with audio files, tasks, and worksheets for listening comprehension.", link: "https://drive.google.com/drive/folders/1tvlO2Sn3fD2aD7lGWg-psbZVLnpI2nDN?usp=sharing" }
+            ]
+        };
+
+        // =========================================================================
+        // 4. ДОПОМІЖНІ ФУНКЦІЇ (ЛОГУВАННЯ, КОПІЮВАННЯ, НАВІГАЦІЯ)
+        // =========================================================================
+        function logToGoogleSheet(studentClass, studentName, action, score) {
+            if (!GOOGLE_SCRIPT_URL) return;
+            const payload = JSON.stringify({
+                studentClass: studentClass,
+                studentName: studentName,
+                action: action,
+                score: score || "—"
+            });
+            try {
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    keepalive: true,
+                    headers: { "Content-Type": "text/plain" },
+                    body: payload
+                }).catch(() => {
+                    if (navigator.sendBeacon) navigator.sendBeacon(GOOGLE_SCRIPT_URL, payload);
+                });
+            } catch (e) {
+                if (navigator.sendBeacon) {
+                    try { navigator.sendBeacon(GOOGLE_SCRIPT_URL, payload); } catch (err) {}
+                }
+            }
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(() => {});
+            }
+            try {
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.style.position = "fixed";
+                ta.style.opacity = "0";
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand("copy");
+                document.body.removeChild(ta);
+            } catch (e) {}
+        }
+
+        function buildShareUrl(category, unit, testId) {
+            const base = window.location.origin + window.location.pathname;
+            if (testId) return `${base}#test-${testId}`;
+            if (unit && unit !== "All") return `${base}#${encodeURIComponent(category)}/${encodeURIComponent(unit)}`;
+            return `${base}#${encodeURIComponent(category)}`;
+        }
+
+        const ALL_ITEMS = MENU_GROUPS.reduce((acc, g) => acc.concat(g.items), []);
+
+        function findCategoryConfig(catName) {
+            return ALL_ITEMS.find(item => item.id.toLowerCase() === (catName || "").toLowerCase()) || null;
+        }
+
+        function findTestById(testsMap, targetId) {
+            for (const cat of Object.keys(testsMap)) {
+                const found = (testsMap[cat] || []).find(t => String(t.id) === String(targetId));
+                if (found) return { category: cat, test: found };
+            }
+            return null;
+        }
+
+        function parseHashRoute(testsMap) {
+            const rawHash = decodeURIComponent((window.location.hash || "").replace(/^#/, "")).trim();
+            if (!rawHash) return { tab: "Home", unit: "All", test: null };
+
+            if (rawHash.toLowerCase().startsWith("test-")) {
+                const id = rawHash.slice(5);
+                const match = findTestById(testsMap, id);
+                if (match) {
+                    return {
+                        tab: match.category,
+                        unit: match.test.unit || "All",
+                        test: match.test
+                    };
+                }
+            }
+
+            const parts = rawHash.split("/");
+            const catConfig = findCategoryConfig(parts[0]);
+            if (catConfig) {
+                let unit = "All";
+                if (catConfig.hasUnits && parts[1]) {
+                    const matchedUnit = UNIT_LIST.find(u => u.toLowerCase() === parts[1].toLowerCase());
+                    if (matchedUnit) unit = matchedUnit;
+                }
+                return { tab: catConfig.id, unit: unit, test: null };
+            }
+
+            return { tab: "Home", unit: "All", test: null };
+        }
+
+        // =========================================================================
+        // 5. ВЕКТОРНІ ІКОНКИ
+        // =========================================================================
+        function SvgIcon({ name, size = 20, className = "" }) {
+            const paths = {
+                house: [
+                    h("path", { key: 1, d: "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" }),
+                    h("path", { key: 2, d: "M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" })
+                ],
+                book: [
+                    h("path", { key: 1, d: "M12 7v14" }),
+                    h("path", { key: 2, d: "M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" })
+                ],
+                headphones: [
+                    h("path", { key: 1, d: "M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3" })
+                ],
+                sparkles: [
+                    h("path", { key: 1, d: "M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" }),
+                    h("path", { key: 2, d: "M20 3v4" }), h("path", { key: 3, d: "M22 5h-4" })
+                ],
+                play: [h("polygon", { key: 1, points: "6 3 20 12 6 21 6 3" })],
+                plus: [h("path", { key: 1, d: "M5 12h14" }), h("path", { key: 2, d: "M12 5v14" })],
+                share: [
+                    h("circle", { key: 1, cx: "18", cy: "5", r: "3" }),
+                    h("circle", { key: 2, cx: "6", cy: "12", r: "3" }),
+                    h("circle", { key: 3, cx: "18", cy: "19", r: "3" }),
+                    h("line", { key: 4, x1: "8.59", x2: "15.42", y1: "13.51", y2: "17.49" }),
+                    h("line", { key: 5, x1: "15.41", x2: "8.59", y1: "6.51", y2: "10.49" })
+                ],
+                x: [h("path", { key: 1, d: "M18 6 6 18" }), h("path", { key: 2, d: "m6 6 12 12" })],
+                menu: [h("path", { key: 1, d: "M4 12h16" }), h("path", { key: 2, d: "M4 18h16" }), h("path", { key: 3, d: "M4 6h16" })],
+                check: [h("path", { key: 1, d: "M22 11.08V12a10 10 0 1 1-5.93-9.14" }), h("path", { key: 2, d: "m9 11 3 3L22 4" })],
+                external: [
+                    h("path", { key: 1, d: "M15 3h6v6" }),
+                    h("path", { key: 2, d: "M10 14 21 3" }),
+                    h("path", { key: 3, d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" })
+                ],
+                grad: [
+                    h("path", { key: 1, d: "M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" }),
+                    h("path", { key: 2, d: "M22 10v6" }),
+                    h("path", { key: 3, d: "M6 12.5V16a6 3 0 0 0 12 0v-3.5" })
+                ],
+                bookText: [
+                    h("path", { key: 1, d: "M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" }),
+                    h("path", { key: 2, d: "M8 11h8" }), h("path", { key: 3, d: "M8 7h6" })
+                ]
+            };
+            return h("svg", {
+                xmlns: "http://www.w3.org/2000/svg",
+                width: size,
+                height: size,
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "currentColor",
+                strokeWidth: 2,
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                className: className
+            }, paths[name] || paths.book);
+        }
+
+        // =========================================================================
+        // 6. КОМПОНЕНТИ ІНТЕРФЕЙСУ
+        // =========================================================================
+        function EmbeddedQuizModal({ test, category, onClose }) {
+            const getSavedStudent = () => {
+                try {
+                    const saved = localStorage.getItem("english_hub_student");
+                    if (saved) return JSON.parse(saved);
+                } catch (e) {}
+                return null;
+            };
+
+            const [student, setStudent] = useState(getSavedStudent);
+            const [loginClass, setLoginClass] = useState(CLASS_LIST[0]);
+            const [loginName, setLoginName] = useState("");
+            const [isEditingStudent, setIsEditingStudent] = useState(!getSavedStudent());
+            const [copied, setCopied] = useState(false);
+            const [answers, setAnswers] = useState({});
+            const [submitted, setSubmitted] = useState(false);
+
+            const questions = test.questions || [];
+            const total = questions.length;
+            const maxGrade = test.maxGrade || 11;
+            const shareUrl = buildShareUrl(category, test.unit, test.id);
+
+            const handleCopyTestLink = () => {
+                copyToClipboard(shareUrl);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 3000);
+            };
+
+            const calculateGrade = (correctCount) => total === 0 ? 0 : Math.round((correctCount / total) * maxGrade);
+
+            const handleStartQuizWithStudent = (e) => {
+                e.preventDefault();
+                const trimmedName = loginName.trim();
+                if (!trimmedName) return;
+                const studentObj = { studentClass: loginClass, studentName: trimmedName };
+                try { localStorage.setItem("english_hub_student", JSON.stringify(studentObj)); } catch (err) {}
+                setStudent(studentObj);
+                setIsEditingStudent(false);
+            };
+
+            const handleSubmit = () => {
+                let correctCount = 0;
+                questions.forEach((q, idx) => { if (answers[idx] === q.correct) correctCount++; });
+                const finalGrade = calculateGrade(correctCount);
+                setSubmitted(true);
+                if (student) {
+                    const unitPrefix = test.unit && test.unit !== "All" ? ` (${test.unit})` : "";
+                    logToGoogleSheet(
+                        student.studentClass,
+                        student.studentName,
+                        `${category}${unitPrefix}: ${test.title}`,
+                        `${finalGrade} / ${maxGrade} (${correctCount}/${total})`
+                    );
+                }
+            };
+
+            let score = 0;
+            let grade = 0;
+            if (submitted) {
+                questions.forEach((q, idx) => { if (answers[idx] === q.correct) score++; });
+                grade = calculateGrade(score);
+            }
+
+            if (isEditingStudent || !student) {
+                return h("div", { className: "fixed inset-0 bg-slate-900/75 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" },
+                    h("div", { className: "bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden" },
+                        h("div", { className: "bg-gradient-to-r from-indigo-600 to-purple-600 p-6 flex justify-between items-center text-white" },
+                            h("div", null,
+                                h("div", { className: "flex items-center gap-1.5 text-xs text-indigo-100 font-bold mb-1" },
+                                    h(SvgIcon, { name: "sparkles", size: 14, className: "text-amber-300" }),
+                                    h("span", null, `Smart English Hub • ${category}${test.unit && test.unit !== "All" ? " • " + test.unit : ""}`)
+                                ),
+                                h("h3", { className: "text-xl font-bold" }, test.title)
+                            ),
+                            h("button", { onClick: onClose, className: "hover:bg-white/20 p-2 rounded-full transition" }, h(SvgIcon, { name: "x", size: 22 }))
+                        ),
+                        h("form", { onSubmit: handleStartQuizWithStudent, className: "p-6 space-y-4" },
+                            h("p", { className: "text-sm text-slate-600" }, "Вкажіть ваш клас (або GUEST для гостей) та прізвище з ім'ям, щоб результат зберігся:"),
+                            h("div", null,
+                                h("label", { className: "block text-sm font-bold text-slate-700 mb-1" }, "Ваш клас / статус *"),
+                                h("select", {
+                                    value: loginClass,
+                                    onChange: (e) => setLoginClass(e.target.value),
+                                    className: "w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                }, CLASS_LIST.map(cls => h("option", { key: cls, value: cls }, cls)))
+                            ),
+                            h("div", null,
+                                h("label", { className: "block text-sm font-bold text-slate-700 mb-1" }, "Прізвище та Ім'я *"),
+                                h("input", {
+                                    type: "text",
+                                    required: true,
+                                    placeholder: "Наприклад: Іваненко Іван",
+                                    value: loginName,
+                                    onChange: (e) => setLoginName(e.target.value),
+                                    className: "w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                })
+                            ),
+                            h("div", { className: "pt-2 flex gap-3" },
+                                h("button", { type: "button", onClick: onClose, className: "flex-1 py-3 px-4 rounded-xl font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition" }, "Скасувати"),
+                                h("button", { type: "submit", className: "flex-1 py-3 px-4 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md transition" }, "Почати тест")
+                            )
+                        )
+                    )
+                );
+            }
+
+            return h("div", { className: "fixed inset-0 bg-slate-900/70 z-[100] flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto" },
+                h("div", { className: "bg-white rounded-3xl w-full max-w-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" },
+                    h("div", { className: "bg-gradient-to-r from-indigo-600 to-purple-600 p-6 flex justify-between items-center text-white shrink-0" },
+                        h("div", null,
+                            h("div", { className: "flex flex-wrap items-center gap-2" },
+                                h("span", { className: "text-xs font-bold text-amber-300 flex items-center gap-1" }, h(SvgIcon, { name: "sparkles", size: 14 }), "Smart English Hub"),
+                                h("span", { className: "text-xs uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, category),
+                                test.unit && test.unit !== "All" && h("span", { className: "text-xs bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, test.unit),
+                                h("span", { className: "text-xs bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full font-bold" }, `${student.studentName} (${student.studentClass})`),
+                                !submitted && h("button", {
+                                    type: "button",
+                                    onClick: () => { setLoginClass(student.studentClass); setLoginName(student.studentName); setIsEditingStudent(true); },
+                                    className: "text-xs underline text-indigo-100 hover:text-white ml-1"
+                                }, "Змінити")
+                            ),
+                            h("h3", { className: "text-xl md:text-2xl font-bold mt-1.5" }, test.title)
+                        ),
+                        h("div", { className: "flex items-center gap-2" },
+                            h("button", {
+                                type: "button",
+                                onClick: handleCopyTestLink,
+                                className: "px-3 py-1.5 bg-white/15 hover:bg-white/25 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                            }, h(SvgIcon, { name: "share", size: 14 }), copied ? "Скопійовано!" : "Copy Link"),
+                            h("button", { onClick: onClose, className: "hover:bg-white/20 p-2 rounded-full transition" }, h(SvgIcon, { name: "x", size: 24 }))
+                        )
+                    ),
+                    h("div", { className: "p-6 overflow-y-auto space-y-6 flex-1" },
+                        submitted && h("div", { className: "p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4" },
+                            h("div", { className: "flex items-center gap-3" },
+                                h("div", { className: "w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0" }, h(SvgIcon, { name: "check", size: 28 })),
+                                h("div", null,
+                                    h("h4", { className: "text-lg font-bold text-slate-800" }, "Тест завершено! Результат збережено."),
+                                    h("p", { className: "text-sm text-slate-600" }, `Правильних відповідей: ${score} із ${total}. Перевірте помилки нижче.`)
+                                )
+                            ),
+                            h("div", { className: "text-center bg-white px-5 py-2.5 rounded-xl shadow-sm border border-emerald-100 shrink-0" },
+                                h("div", { className: "text-xs uppercase font-bold text-slate-400" }, "Оцінка"),
+                                h("div", { className: "text-3xl font-extrabold text-emerald-700" }, `${grade} / ${maxGrade}`)
+                            )
+                        ),
+                        questions.map((q, qIdx) => h("div", { key: qIdx, className: "p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3" },
+                            h("p", { className: "font-bold text-slate-800 text-base" }, `${qIdx + 1}. ${q.question}`),
+                            h("div", { className: "grid sm:grid-cols-2 gap-2.5" },
+                                q.options.map((opt, optIdx) => {
+                                    const isSelected = answers[qIdx] === optIdx;
+                                    const isCorrect = q.correct === optIdx;
+                                    let btnStyle = "bg-white border-slate-200 text-slate-700 hover:border-indigo-400";
+                                    if (submitted) {
+                                        if (isCorrect) btnStyle = "bg-emerald-50 border-emerald-500 text-emerald-800 font-semibold";
+                                        else if (isSelected && !isCorrect) btnStyle = "bg-rose-50 border-rose-500 text-rose-800";
+                                        else btnStyle = "bg-white border-slate-200 text-slate-400 opacity-70";
+                                    } else if (isSelected) {
+                                        btnStyle = "bg-indigo-50 border-indigo-600 text-indigo-800 font-semibold ring-2 ring-indigo-500/20";
+                                    }
+                                    return h("button", {
+                                        key: optIdx,
+                                        type: "button",
+                                        onClick: () => { if (!submitted) setAnswers(prev => ({ ...prev, [qIdx]: optIdx })); },
+                                        className: `p-3 rounded-xl border text-left text-sm transition flex items-center gap-2.5 ${btnStyle}`
+                                    },
+                                        h("span", { className: "w-6 h-6 rounded-full border flex items-center justify-center text-xs shrink-0 font-bold" }, String.fromCharCode(65 + optIdx)),
+                                        h("span", null, opt)
+                                    );
+                                })
+                            )
+                        ))
+                    ),
+                    h("div", { className: "p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center shrink-0" },
+                        h("span", { className: "text-sm text-slate-500" }, `Відповідей: ${Object.keys(answers).length} з ${total}`),
+                        !submitted
+                            ? h("button", {
+                                onClick: handleSubmit,
+                                disabled: Object.keys(answers).length < total,
+                                className: "px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-bold rounded-xl shadow-md transition"
+                            }, "Перевірити та зберегти")
+                            : h("button", {
+                                onClick: onClose,
+                                className: "px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition"
+                            }, "Закрити")
+                    )
+                )
+            );
+        }
+
+        function ExternalTestModal({ test, category, onClose }) {
+            const [copied, setCopied] = useState(false);
+            const shareUrl = buildShareUrl(category, test.unit, test.id);
+
+            const handleCopy = () => {
+                copyToClipboard(shareUrl);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 3000);
+            };
+
+            return h("div", { className: "fixed inset-0 bg-slate-900/75 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" },
+                h("div", { className: "bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden border border-slate-100" },
+                    h("div", { className: "bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 p-6 flex justify-between items-center text-white" },
+                        h("div", { className: "flex items-center gap-3" },
+                            h("div", { className: "w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-amber-300 shrink-0" },
+                                h(SvgIcon, { name: "sparkles", size: 22 })
+                            ),
+                            h("div", null,
+                                h("div", { className: "text-xs text-indigo-100 font-bold" }, `Smart English Hub • ${category}${test.unit && test.unit !== "All" ? " • " + test.unit : ""}`),
+                                h("h3", { className: "text-xl font-bold leading-snug" }, test.title)
+                            )
+                        ),
+                        h("button", { type: "button", onClick: onClose, className: "p-2 hover:bg-white/20 rounded-full transition" }, h(SvgIcon, { name: "x", size: 22 }))
+                    ),
+                    h("div", { className: "p-6 space-y-5" },
+                        h("p", { className: "text-slate-600 text-sm leading-relaxed" }, test.description),
+                        h("div", { className: "p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-2" },
+                            h("div", { className: "flex items-center justify-between" },
+                                h("span", { className: "text-xs font-bold text-slate-500 uppercase" }, "Пряме посилання на цей матеріал:"),
+                                h("button", {
+                                    type: "button",
+                                    onClick: handleCopy,
+                                    className: "text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                                }, h(SvgIcon, { name: "share", size: 14 }), copied ? "Скопійовано!" : "Копіювати")
+                            ),
+                            h("input", {
+                                type: "text",
+                                readOnly: true,
+                                value: shareUrl,
+                                onClick: (e) => { e.target.select(); copyToClipboard(shareUrl); setCopied(true); },
+                                className: "w-full text-xs bg-white px-3 py-2 rounded-xl border border-slate-200 text-slate-700 font-mono"
+                            })
+                        ),
+                        h("div", { className: "flex flex-col sm:flex-row gap-3 pt-1" },
+                            h("button", {
+                                type: "button",
+                                onClick: onClose,
+                                className: "py-3 px-4 rounded-xl font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition sm:w-1/3"
+                            }, "Назад"),
+                            h("a", {
+                                href: test.link,
+                                target: "_blank",
+                                rel: "noopener noreferrer",
+                                className: "py-3 px-5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md transition flex items-center justify-center gap-2 sm:w-2/3"
+                            }, h(SvgIcon, { name: "external", size: 18 }), "Відкрити матеріал")
+                        )
+                    )
+                )
+            );
+        }
+
+        function HomeView({ setActiveTab }) {
+            return h("div", { className: "max-w-5xl mx-auto space-y-8" },
+                h("div", { className: "rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 p-8 md:p-12 text-white shadow-xl relative overflow-hidden" },
+                    h("div", { className: "relative z-10 max-w-4xl space-y-4" },
+                        h("span", { className: "inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-sm font-medium" }, "✨ Interactive Learning"),
+                        h("h1", { className: "text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight" }, "Master English with Smart English Hub"),
+                        h("p", { className: "text-indigo-100 text-lg md:text-xl leading-relaxed max-w-2xl" }, "Choose your grade or textbook in the menu on the left and start practicing!"),
+                        h("div", { className: "pt-4 flex flex-wrap gap-3" },
+                            h("button", {
+                                onClick: () => setActiveTab("Full Blast 6"),
+                                className: "px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 flex items-center gap-2"
+                            }, h(SvgIcon, { name: "play", size: 20 }), "Start Learning"),
+                            h("button", {
+                                onClick: () => setActiveTab("Oxford Exam Trainer B2"),
+                                className: "px-6 py-3.5 bg-white/15 hover:bg-white/25 text-white font-bold rounded-xl backdrop-blur-md transition flex items-center gap-2"
+                            }, h(SvgIcon, { name: "grad", size: 20 }), "Exam Preparation (NMT)")
+                        )
+                    )
+                ),
+                h("div", { className: "grid md:grid-cols-3 gap-6" },
+                    h("div", { className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center space-y-3" },
+                        h("div", { className: "w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mx-auto" }, h(SvgIcon, { name: "bookText", size: 24 })),
+                        h("h3", { className: "font-bold text-lg text-slate-800" }, "Up-to-date Tests"),
+                        h("p", { className: "text-slate-500 text-sm" }, "All tasks match your school curriculum and textbooks.")
+                    ),
+                    h("div", { className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center space-y-3" },
+                        h("div", { className: "w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mx-auto" }, h(SvgIcon, { name: "play", size: 24 })),
+                        h("h3", { className: "font-bold text-lg text-slate-800" }, "Instant Results"),
+                        h("p", { className: "text-slate-500 text-sm" }, "See your score and mistakes right after completing a test.")
+                    ),
+                    h("div", { className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center space-y-3" },
+                        h("div", { className: "w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mx-auto" }, h(SvgIcon, { name: "grad", size: 24 })),
+                        h("h3", { className: "font-bold text-lg text-slate-800" }, "Exam Preparation"),
+                        h("p", { className: "text-slate-500 text-sm" }, "Dedicated Unit 1–12 sections for NMT, ZNO, and international exams.")
+                    )
+                )
+            );
+        }
+
+        function CategoryView({ categoryConfig, activeUnit, onSelectUnit, tests, onOpenTest }) {
+            const [copiedPage, setCopiedPage] = useState(false);
+            const [copiedTestId, setCopiedTestId] = useState(null);
+
+            const category = categoryConfig.id;
+            const hasUnits = Boolean(categoryConfig.hasUnits);
+
+            const filteredTests = hasUnits && activeUnit !== "All"
+                ? tests.filter(t => t.unit === activeUnit)
+                : tests;
+
+            const handleCopyPageLink = () => {
+                const url = buildShareUrl(category, hasUnits ? activeUnit : null, null);
+                copyToClipboard(url);
+                setCopiedPage(true);
+                setTimeout(() => setCopiedPage(false), 3000);
+            };
+
+            const handleCopyTestLink = (test) => {
+                const url = buildShareUrl(category, test.unit, test.id);
+                copyToClipboard(url);
+                setCopiedTestId(test.id);
+                setTimeout(() => setCopiedTestId(null), 3000);
+            };
+
+            return h("div", { className: "max-w-5xl mx-auto space-y-6" },
+                // Заголовок розділу + кнопка Copy Link
+                h("div", { className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-5" },
+                    h("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4" },
+                        h("div", null,
+                            h("div", { className: "flex items-center gap-2.5 flex-wrap" },
+                                h("h1", { className: "text-2xl md:text-3xl font-bold text-slate-800" }, category),
+                                hasUnits && activeUnit !== "All" && h("span", { className: "px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold" }, activeUnit)
+                            ),
+                            h("p", { className: "text-slate-500 text-sm mt-1" },
+                                hasUnits
+                                    ? "Select a Unit below or browse all exam preparation tasks"
+                                    : "Select a test or resource below to start practicing"
+                            )
+                        ),
+                        h("button", {
+                            type: "button",
+                            onClick: handleCopyPageLink,
+                            className: "px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold rounded-xl transition flex items-center gap-2 self-start sm:self-auto cursor-pointer"
+                        }, h(SvgIcon, { name: "share", size: 18 }), copiedPage ? "Посилання скопійовано!" : "Copy Page Link")
+                    ),
+
+                    // Панель вибору Unit 1 - Unit 12 (для Exam Preparation)
+                    hasUnits && h("div", { className: "pt-2 border-t border-slate-100" },
+                        h("div", { className: "text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5" }, "Units Navigation (Unit 1 — Unit 12):"),
+                        h("div", { className: "flex flex-wrap gap-2" },
+                            ["All", ...UNIT_LIST].map(unitName => {
+                                const isSelected = activeUnit === unitName;
+                                return h("button", {
+                                    key: unitName,
+                                    type: "button",
+                                    onClick: () => onSelectUnit(unitName),
+                                    className: `px-3.5 py-1.5 rounded-xl text-sm font-semibold transition cursor-pointer ${
+                                        isSelected
+                                            ? "bg-indigo-600 text-white shadow-sm"
+                                            : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900"
+                                    }`
+                                }, unitName === "All" ? "All Units" : unitName);
+                            })
+                        )
+                    )
+                ),
+
+                // Сітка тестів та матеріалів
+                filteredTests.length === 0
+                    ? h("div", { className: "text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200 space-y-2" },
+                        h("p", { className: "text-slate-600 font-semibold" },
+                            hasUnits && activeUnit !== "All"
+                                ? `${category} — ${activeUnit}: матеріали та тести готуються`
+                                : "У цьому розділі поки немає доданих тестів."
+                        ),
+                        h("p", { className: "text-slate-400 text-sm" }, "Нові завдання з'являться тут найближчим часом.")
+                    )
+                    : h("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6" },
+                        filteredTests.map(test => {
+                            const isBuiltIn = test.questions && test.questions.length > 0;
+                            return h("div", { key: test.id, className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition flex flex-col justify-between" },
+                                h("div", { className: "space-y-2.5 mb-6" },
+                                    h("div", { className: "flex items-start justify-between gap-2" },
+                                        h("div", null,
+                                            test.unit && test.unit !== "All" && h("span", { className: "inline-block text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md mb-1.5" }, test.unit),
+                                            h("h3", { className: "font-bold text-lg text-slate-800 leading-snug" }, test.title)
+                                        ),
+                                        h("button", {
+                                            type: "button",
+                                            title: "Скопіювати пряме посилання на цей тест",
+                                            onClick: () => handleCopyTestLink(test),
+                                            className: "p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 text-slate-500 hover:text-indigo-600 transition shrink-0 flex items-center gap-1 text-xs font-semibold cursor-pointer"
+                                        },
+                                            h(SvgIcon, { name: "share", size: 15 }),
+                                            copiedTestId === test.id ? "OK!" : ""
+                                        )
+                                    ),
+                                    h("p", { className: "text-slate-500 text-sm leading-relaxed" }, test.description)
+                                ),
+                                h("button", {
+                                    type: "button",
+                                    onClick: () => onOpenTest(test),
+                                    className: `w-full py-2.5 px-4 font-semibold rounded-xl transition flex items-center justify-center gap-2 shadow-sm cursor-pointer ${
+                                        isBuiltIn
+                                            ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+                                            : "bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white"
+                                    }`
+                                }, h(SvgIcon, { name: "play", size: 16 }), isBuiltIn ? "Start Test" : "Open")
+                            );
+                        })
+                    )
+            );
+        }
+
+        // =========================================================================
+        // 7. ГОЛОВНИЙ ДОДАТОК
+        // =========================================================================
+        function App() {
+            const initialRoute = parseHashRoute(TESTS_DATABASE);
+            const [activeTab, setActiveTab] = useState(initialRoute.tab);
+            const [activeUnit, setActiveUnit] = useState(initialRoute.unit);
+            const [activeTest, setActiveTest] = useState(initialRoute.test);
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+            useEffect(() => {
+                const onHashChange = () => {
+                    const route = parseHashRoute(TESTS_DATABASE);
+                    setActiveTab(route.tab);
+                    setActiveUnit(route.unit);
+                    setActiveTest(route.test);
+                };
+                window.addEventListener("hashchange", onHashChange);
+                return () => window.removeEventListener("hashchange", onHashChange);
+            }, []);
+
+            useEffect(() => {
+                try {
+                    if (!sessionStorage.getItem("english_hub_guest_logged")) {
+                        let visitorInfo = "Відвідувач сайту";
+                        const saved = localStorage.getItem("english_hub_student");
+                        if (saved) {
+                            const parsed = JSON.parse(saved);
+                            if (parsed && parsed.studentName) visitorInfo = `${parsed.studentName} (${parsed.studentClass})`;
+                        }
+                        logToGoogleSheet("GUEST", visitorInfo, `Вхід (${activeTab})`, "—");
+                        sessionStorage.setItem("english_hub_guest_logged", "true");
+                    }
+                } catch (e) {}
+            }, []);
+
+            const selectTab = (tabId) => {
+                setActiveTab(tabId);
+                setActiveUnit("All");
+                setActiveTest(null);
+                setIsMobileMenuOpen(false);
+                window.location.hash = tabId === "Home" ? "" : encodeURIComponent(tabId);
+            };
+
+            const selectUnit = (unitName) => {
+                setActiveUnit(unitName);
+                setActiveTest(null);
+                window.location.hash = unitName === "All"
+                    ? encodeURIComponent(activeTab)
+                    : `${encodeURIComponent(activeTab)}/${encodeURIComponent(unitName)}`;
+            };
+
+            const openTest = (test) => {
+                setActiveTest(test);
+                window.location.hash = `test-${test.id}`;
+            };
+
+            const closeTest = () => {
+                setActiveTest(null);
+                window.location.hash = activeUnit !== "All"
+                    ? `${encodeURIComponent(activeTab)}/${encodeURIComponent(activeUnit)}`
+                    : encodeURIComponent(activeTab);
+            };
+
+            const currentCategoryConfig = findCategoryConfig(activeTab);
+
+            return h("div", { className: "flex h-screen bg-slate-50 overflow-hidden" },
+                isMobileMenuOpen && h("div", {
+                    className: "fixed inset-0 bg-black/50 z-40 md:hidden",
+                    onClick: () => setIsMobileMenuOpen(false)
+                }),
+
+                // Бокове меню
+                h("aside", {
+                    className: `fixed md:static inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out flex flex-col ${
+                        isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+                    }`
+                },
+                    h("div", {
+                        onClick: () => selectTab("Home"),
+                        className: "p-6 border-b border-slate-100 flex items-center justify-between cursor-pointer"
+                    },
+                        h("div", { className: "flex items-center gap-3" },
+                            h("div", { className: "w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg" },
+                                h(SvgIcon, { name: "sparkles", size: 22 })
+                            ),
+                            h("h1", { className: "text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600" }, "Smart English Hub")
+                        ),
+                        h("button", { className: "md:hidden text-slate-500", onClick: (e) => { e.stopPropagation(); setIsMobileMenuOpen(false); } },
+                            h(SvgIcon, { name: "x", size: 24 })
+                        )
+                    ),
+                    h("div", { className: "flex-1 overflow-y-auto p-4 custom-scrollbar" },
+                        MENU_GROUPS.map((group, idx) => h("div", { key: idx, className: "mb-6" },
+                            h("h2", { className: "text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-3" }, group.title),
+                            h("ul", { className: "space-y-1" },
+                                group.items.map(item => {
+                                    const isActive = activeTab === item.id;
+                                    return h("li", { key: item.id },
+                                        h("button", {
+                                            onClick: () => selectTab(item.id),
+                                            className: `w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 text-sm font-medium ${
+                                                isActive ? "bg-indigo-50 text-indigo-700 shadow-sm" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                                            }`
+                                        },
+                                            h(SvgIcon, { name: item.icon || "book", size: 18, className: isActive ? "text-indigo-600" : "text-slate-400" }),
+                                            item.label
+                                        )
+                                    );
+                                })
+                            )
+                        ))
+                    )
+                ),
+
+                // Основна область
+                h("main", { className: "flex-1 flex flex-col h-full overflow-hidden relative" },
+                    h("header", { className: "md:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200" },
+                        h("div", { className: "flex items-center" },
+                            h("button", { onClick: () => setIsMobileMenuOpen(true), className: "p-2 -ml-2 text-slate-600" }, h(SvgIcon, { name: "menu", size: 24 })),
+                            h("span", { className: "font-bold text-slate-800 ml-2" }, activeTab)
+                        ),
+                        h("span", { onClick: () => selectTab("Home"), className: "text-xs font-bold text-indigo-600 cursor-pointer" }, "Smart English Hub")
+                    ),
+                    h("div", { className: "flex-1 overflow-y-auto p-6 md:p-10" },
+                        activeTab === "Home" || !currentCategoryConfig
+                            ? h(HomeView, { setActiveTab: selectTab })
+                            : h(CategoryView, {
+                                categoryConfig: currentCategoryConfig,
+                                activeUnit: activeUnit,
+                                onSelectUnit: selectUnit,
+                                tests: TESTS_DATABASE[activeTab] || [],
+                                onOpenTest: openTest
+                            })
+                    )
+                ),
+
+                // Модальне вікно тесту або зовнішнього посилання
+                activeTest && (
+                    activeTest.questions && activeTest.questions.length > 0
+                        ? h(EmbeddedQuizModal, { test: activeTest, category: activeTab, onClose: closeTest })
+                        : h(ExternalTestModal, { test: activeTest, category: activeTab, onClose: closeTest })
+                )
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(h(App));
+    })();
+    </script>
+</body>
+</html>
