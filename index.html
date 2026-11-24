@@ -48,7 +48,6 @@
         // =========================================================================
         // 2. НАЛАШТУВАННЯ МЕНЮ ТА РОЗДІЛІВ
         // =========================================================================
-        const UNIT_LIST = Array.from({ length: 12 }, (_, i) => `Unit ${i + 1}`);
         const LISTENING_LEVELS = ["All", "A1", "A2", "B1", "B2", "NMT / Exam"];
 
         const MENU_GROUPS = [
@@ -80,8 +79,8 @@
             {
                 title: "🎓 Exam Preparation",
                 items: [
-                    { id: "Oxford Exam Trainer B2", label: "Oxford Exam Trainer B2", hasUnits: true },
-                    { id: "Get 200(2)", label: "Get 200(2)", hasUnits: true }
+                    { id: "Oxford Exam Trainer B2", label: "Oxford Exam Trainer B2" },
+                    { id: "Get 200(2)", label: "Get 200(2)" }
                 ]
             },
             {
@@ -181,7 +180,7 @@
         }
 
         // =========================================================================
-        // 4. БАЗА ТЕСТІВ ТА МАТЕРІАЛІВ (ОНОВЛЕНІ ПОСИЛАННЯ НА НОВИЙ GOOGLE ДИСК)
+        // 4. БАЗА ТЕСТІВ ТА МАТЕРІАЛІВ
         // =========================================================================
         const TESTS_DATABASE = {
             "Full Blast 5": [],
@@ -191,8 +190,7 @@
             "Oxford Exam Trainer B2": [
                 {
                     id: 3,
-                    unit: "All",
-                    title: "All Exam Preparation Materials (Unit 1 — Unit 12)",
+                    title: "All Units & Exam Preparation Materials (Google Drive)",
                     description: "Complete Google Drive folder with all Unit 1–12 folders, practice tests, and exam preparation materials for Oxford Exam Trainer B2.",
                     link: "https://drive.google.com/drive/folders/1ZZUAZgyDhoW9yz5D6foTTnNhtz9zI98G?usp=drive_link"
                 }
@@ -200,8 +198,7 @@
             "Get 200(2)": [
                 {
                     id: 7,
-                    unit: "All",
-                    title: "All Practice Materials & Worksheets (Unit 1 — Unit 12)",
+                    title: "All Units & Practice Worksheets (Google Drive)",
                     description: "Complete Google Drive folder with all Unit 1–12 folders, Word documents, and practice tasks for Get 200 (Book 2).",
                     link: "https://drive.google.com/drive/folders/1imagPKioPQ7K1QEvnfPnrEfO-6M4F3yl?usp=drive_link"
                 }
@@ -315,7 +312,7 @@
                 if (match) {
                     return {
                         tab: match.category,
-                        subFilter: match.test.unit || match.test.level || "All",
+                        subFilter: match.test.level || "All",
                         test: match.test
                     };
                 }
@@ -325,10 +322,7 @@
             const catConfig = findCategoryConfig(parts[0]);
             if (catConfig) {
                 let subFilter = "All";
-                if (catConfig.hasUnits && parts[1]) {
-                    const matchedUnit = UNIT_LIST.find(u => u.toLowerCase() === parts[1].toLowerCase());
-                    if (matchedUnit) subFilter = matchedUnit;
-                } else if (catConfig.hasLevels && parts[1]) {
+                if (catConfig.hasLevels && parts[1]) {
                     const matchedLevel = LISTENING_LEVELS.find(l => l.toLowerCase() === parts[1].toLowerCase());
                     if (matchedLevel) subFilter = matchedLevel;
                 }
@@ -469,7 +463,7 @@
             const total = allFlatQuestions.length;
             const maxGrade = test.maxGrade || 11;
             const isCefr = Boolean(test.isCefrTest);
-            const shareUrl = buildShareUrl(category, test.unit || test.level, test.id);
+            const shareUrl = buildShareUrl(category, test.level, test.id);
 
             const handleCopyTestLink = () => {
                 copyToClipboard(shareUrl);
@@ -505,11 +499,10 @@
                         );
                     } else {
                         const finalGrade = calculateGrade(correctCount);
-                        const unitPrefix = test.unit && test.unit !== "All" ? ` (${test.unit})` : "";
                         logToGoogleSheet(
                             student.studentClass,
                             student.studentName,
-                            `${category}${unitPrefix}: ${test.title}`,
+                            `${category}: ${test.title}`,
                             `${finalGrade} / ${maxGrade} (${correctCount}/${total})`
                         );
                     }
@@ -580,7 +573,6 @@
                                 h("div", { className: "flex flex-wrap items-center gap-2" },
                                     h("span", { className: "text-xs font-bold text-amber-300" }, "Smart English Hub"),
                                     !isCefr && h("span", { className: "text-xs uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, category),
-                                    test.unit && test.unit !== "All" && h("span", { className: "text-xs bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, test.unit),
                                     h("span", { className: "text-xs bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full font-bold" }, `${student.studentName} (${student.studentClass})`),
                                     !submitted && h("button", {
                                         type: "button",
@@ -698,7 +690,7 @@
 
         function ExternalTestModal({ test, category, onClose }) {
             const [copied, setCopied] = useState(false);
-            const shareUrl = buildShareUrl(category, test.unit || test.level, test.id);
+            const shareUrl = buildShareUrl(category, test.level, test.id);
 
             const handleCopy = () => {
                 copyToClipboard(shareUrl);
@@ -712,7 +704,7 @@
                         h("div", { className: "flex items-center gap-3" },
                             h(BrandLogoMark, { size: 40 }),
                             h("div", null,
-                                h("div", { className: "text-xs text-indigo-100 font-bold" }, `Smart English Hub • ${category}${test.unit && test.unit !== "All" ? " • " + test.unit : ""}`),
+                                h("div", { className: "text-xs text-indigo-100 font-bold" }, `Smart English Hub • ${category}`),
                                 h("h3", { className: "text-xl font-bold leading-snug" }, test.title)
                             )
                         ),
@@ -790,7 +782,7 @@
                     h("div", { className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center space-y-3" },
                         h("div", { className: "w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mx-auto" }, h(SvgIcon, { name: "grad", size: 24 })),
                         h("h3", { className: "font-bold text-lg text-slate-800" }, "Exam Preparation"),
-                        h("p", { className: "text-slate-500 text-sm" }, "Dedicated Unit 1–12 folders and resources for NMT, ZNO, and international exams.")
+                        h("p", { className: "text-slate-500 text-sm" }, "Dedicated folders and resources for NMT, ZNO, and international exams.")
                     )
                 )
             );
@@ -806,11 +798,9 @@
             }, [categoryConfig.id]);
 
             const category = categoryConfig.id;
-            const hasUnits = Boolean(categoryConfig.hasUnits);
             const hasLevels = Boolean(categoryConfig.hasLevels);
 
             const filteredTests = tests.filter(t => {
-                if (hasUnits && activeSubFilter !== "All" && t.unit !== activeSubFilter) return false;
                 if (hasLevels && activeSubFilter !== "All" && t.level !== activeSubFilter && t.level !== "All") return false;
                 if (searchQuery.trim()) {
                     const q = searchQuery.toLowerCase();
@@ -822,14 +812,14 @@
             });
 
             const handleCopyPageLink = () => {
-                const url = buildShareUrl(category, (hasUnits || hasLevels) ? activeSubFilter : null, null);
+                const url = buildShareUrl(category, hasLevels ? activeSubFilter : null, null);
                 copyToClipboard(url);
                 setCopiedPage(true);
                 setTimeout(() => setCopiedPage(false), 3000);
             };
 
             const handleCopyTestLink = (test) => {
-                const url = buildShareUrl(category, test.unit || test.level, test.id);
+                const url = buildShareUrl(category, test.level, test.id);
                 copyToClipboard(url);
                 setCopiedTestId(test.id);
                 setTimeout(() => setCopiedTestId(null), 3000);
@@ -841,14 +831,12 @@
                         h("div", null,
                             h("div", { className: "flex items-center gap-2.5 flex-wrap" },
                                 h("h1", { className: "text-2xl md:text-3xl font-bold text-slate-800" }, categoryConfig.label || category),
-                                (hasUnits || hasLevels) && activeSubFilter !== "All" && h("span", { className: "px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold" }, activeSubFilter)
+                                hasLevels && activeSubFilter !== "All" && h("span", { className: "px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold" }, activeSubFilter)
                             ),
                             h("p", { className: "text-slate-500 text-sm mt-1" },
-                                hasUnits
-                                    ? "Open the Google Drive archive (contains all Unit 1 — Unit 12 folders) or select an interactive test below"
-                                    : hasLevels
-                                        ? "Open the Google Drive listening archive or filter interactive tracks by CEFR level"
-                                        : "Select a test or resource folder below"
+                                hasLevels
+                                    ? "Open the Google Drive listening archive or filter interactive tracks by CEFR level"
+                                    : "Select a test or resource folder below"
                             )
                         ),
                         h("button", {
@@ -856,26 +844,6 @@
                             onClick: handleCopyPageLink,
                             className: "px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold rounded-xl transition flex items-center gap-2 self-start sm:self-auto cursor-pointer"
                         }, h(SvgIcon, { name: "share", size: 18 }), copiedPage ? "Посилання скопійовано!" : "Copy Page Link")
-                    ),
-
-                    // Панель Unit 1 - Unit 12 для Exam Preparation
-                    hasUnits && h("div", { className: "pt-2 border-t border-slate-100" },
-                        h("div", { className: "text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5" }, "Units Navigation (Unit 1 — Unit 12):"),
-                        h("div", { className: "flex flex-wrap gap-2" },
-                            ["All", ...UNIT_LIST].map(unitName => {
-                                const isSelected = activeSubFilter === unitName;
-                                return h("button", {
-                                    key: unitName,
-                                    type: "button",
-                                    onClick: () => onSelectSubFilter(unitName),
-                                    className: `px-3.5 py-1.5 rounded-xl text-sm font-semibold transition cursor-pointer ${
-                                        isSelected
-                                            ? "bg-indigo-600 text-white shadow-sm"
-                                            : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900"
-                                    }`
-                                }, unitName === "All" ? "All Units" : unitName);
-                            })
-                        )
                     ),
 
                     // Панель фільтрів CEFR + пошук для Listening Practice
@@ -912,21 +880,13 @@
 
                 filteredTests.length === 0
                     ? h("div", { className: "text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200 space-y-2" },
-                        h("p", { className: "text-slate-600 font-semibold" },
-                            hasUnits && activeSubFilter !== "All"
-                                ? `${category} — ${activeSubFilter}: інтерактивний онлайн-тест готується (усі файли юніта доступні у вкладці All Units)`
-                                : "У цьому розділі поки немає доданих тестів або матеріалів."
-                        ),
-                        hasUnits && activeSubFilter !== "All" && h("button", {
-                            type: "button",
-                            onClick: () => onSelectSubFilter("All"),
-                            className: "mt-2 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold rounded-xl text-sm transition cursor-pointer"
-                        }, "Перейти до All Units (Google Drive)")
+                        h("p", { className: "text-slate-600 font-semibold" }, "У цьому розділі поки немає доданих тестів або матеріалів."),
+                        h("p", { className: "text-slate-400 text-sm" }, "Нові завдання з'являться тут за єдиним стандартом найближчим часом.")
                     )
                     : h("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6" },
                         filteredTests.map(test => {
                             const builtIn = isBuiltInQuiz(test);
-                            const badgeText = (test.unit && test.unit !== "All") ? test.unit : (test.level && test.level !== "All" ? test.level : null);
+                            const badgeText = (test.level && test.level !== "All") ? test.level : null;
                             return h("div", { key: test.id, className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition flex flex-col justify-between" },
                                 h("div", { className: "space-y-2.5 mb-6" },
                                     h("div", { className: "flex items-start justify-between gap-2" },
