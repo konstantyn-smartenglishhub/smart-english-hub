@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart English Hub — Interactive Learning</title>
-    <!-- Єдиний фавікон (Варіант 2: Відкрита книга із золотою іскрою) -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234f46e5'/%3E%3Cstop offset='100%25' stop-color='%239333ea'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M32 25v23M14 44a2 2 0 0 1-2-2V23a2 2 0 0 1 2-2h9a9 9 0 0 1 9 9 9 9 0 0 1 9-9h9a2 2 0 0 1 2 2v19a2 2 0 0 1-2 2h-11a7 7 0 0 0-7 6 7 7 0 0 0-7-6H14z' fill='none' stroke='%23ffffff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M32 9l2.2 5.3L39.5 16.5l-5.3 2.2L32 24l-2.2-5.3-5.3-2.2 5.3-2.2L32 9z' fill='%23fbbf24'/%3E%3C/svg%3E">
     <style>
         body {
@@ -37,7 +36,7 @@
 
     <script>
     (function() {
-        const { useState, useEffect, createElement: h } = window.React;
+        const { useState, useEffect, useMemo, createElement: h } = window.React;
 
         // =========================================================================
         // 1. НАЛАШТУВАННЯ GOOGLE ТАБЛИЦІ ТА КЛАСІВ
@@ -101,35 +100,30 @@
             title: "CEFR English Level Placement Test (A1 — C1)",
             description: "25 progressive Grammar & Vocabulary questions to determine your current English level according to CEFR standards.",
             questions: [
-                // --- A1 (1-5) ---
                 { level: "A1", question: "Hello! My name is Olena and I ________ from Ukraine.", options: ["is", "am", "are", "be"], correct: 1 },
                 { level: "A1", question: "Look at those people over there. ________ are my new neighbours.", options: ["This", "They", "Them", "Their"], correct: 1 },
                 { level: "A1", question: "My brother ________ to school by bus every morning.", options: ["go", "going", "goes", "is go"], correct: 2 },
                 { level: "A1", question: "Excuse me, what ________ is it? — It's half past three.", options: ["hour", "clock", "watch", "time"], correct: 3 },
                 { level: "A1", question: "There aren't ________ apples left in the fridge.", options: ["some", "any", "a", "much"], correct: 1 },
 
-                // --- A2 (6-10) ---
                 { level: "A2", question: "We ________ a really interesting film at the cinema last night.", options: ["saw", "see", "have seen", "were see"], correct: 0 },
                 { level: "A2", question: "This suitcase is much ________ than the blue one.", options: ["heavy", "more heavy", "heavier", "the heaviest"], correct: 2 },
                 { level: "A2", question: "I'm looking ________ my keys. Have you seen them anywhere?", options: ["at", "after", "for", "up"], correct: 2 },
                 { level: "A2", question: "While I ________ dinner, the phone suddenly rang.", options: ["cooked", "was cooking", "am cooking", "have cooked"], correct: 1 },
                 { level: "A2", question: "You ________ wear a seatbelt in the car — it's the law.", options: ["must", "can", "might", "could"], correct: 0 },
 
-                // --- B1 (11-15) ---
                 { level: "B1", question: "I ________ in this city since 2019, and I really love it here.", options: ["live", "lived", "have lived", "am living"], correct: 2 },
                 { level: "B1", question: "If it ________ tomorrow, we will cancel the picnic in the park.", options: ["will rain", "rains", "rained", "is raining"], correct: 1 },
                 { level: "B1", question: "The new bridge ________ by a famous architect next year.", options: ["will build", "is building", "will be built", "built"], correct: 2 },
                 { level: "B1", question: "She decided to ________ up yoga to reduce stress after work.", options: ["make", "take", "put", "get"], correct: 1 },
                 { level: "B1", question: "That's the woman ________ son won the national science competition.", options: ["who", "which", "whose", "whom"], correct: 2 },
 
-                // --- B2 (16-20) ---
                 { level: "B2", question: "If I ________ about the traffic jam earlier, I would have taken the train.", options: ["knew", "have known", "had known", "would know"], correct: 2 },
                 { level: "B2", question: "By the time we arrived at the theatre, the play ________.", options: ["already started", "had already started", "has already started", "was already starting"], correct: 1 },
                 { level: "B2", question: "Despite ________ very tired, he stayed up late to finish the report.", options: ["he was", "of being", "being", "to be"], correct: 2 },
                 { level: "B2", question: "I'd rather you ________ anyone about our plans just yet.", options: ["don't tell", "didn't tell", "not to tell", "haven't told"], correct: 1 },
                 { level: "B2", question: "The company is struggling to ________ with the rapid changes in technology.", options: ["keep up", "bring about", "turn down", "set off"], correct: 0 },
 
-                // --- C1 (21-25) ---
                 { level: "C1", question: "Not only ________ the deadline, but she also exceeded all expectations.", options: ["she met", "did she meet", "she did meet", "met she"], correct: 1 },
                 { level: "C1", question: "It is high time the government ________ decisive action on climate change.", options: ["takes", "will take", "took", "has taken"], correct: 2 },
                 { level: "C1", question: "The witness gave a ________ account of the incident, leaving no room for doubt.", options: ["lucid", "vague", "negligent", "dubious"], correct: 0 },
@@ -142,7 +136,6 @@
             if (score <= 6) {
                 return {
                     cefr: "A1 (Beginner)",
-                    badgeColor: "bg-sky-100 text-sky-800 border-sky-200",
                     summary: "Ви володієте базовими фразами, простими часами (Present Simple) та повсякденною лексикою.",
                     recommendation: "Рекомендовані розділи: Full Blast 5 — Full Blast 6"
                 };
@@ -150,7 +143,6 @@
             if (score <= 12) {
                 return {
                     cefr: "A2 (Elementary)",
-                    badgeColor: "bg-teal-100 text-teal-800 border-teal-200",
                     summary: "Ви впевнено спілкуєтеся на знайомі теми, знаєте Past Simple, ступені порівняння та базові фразові дієслова.",
                     recommendation: "Рекомендовані розділи: Full Blast 7 — Full Blast 8"
                 };
@@ -158,7 +150,6 @@
             if (score <= 18) {
                 return {
                     cefr: "B1 (Intermediate)",
-                    badgeColor: "bg-indigo-100 text-indigo-800 border-indigo-200",
                     summary: "Хороший середній рівень! Ви орієнтуєтеся у Present Perfect, пасивному стані та умовних реченнях 1-го типу.",
                     recommendation: "Рекомендовані розділи: Full Blast 9 — Full Blast 11, Karpiuk 10"
                 };
@@ -166,14 +157,12 @@
             if (score <= 22) {
                 return {
                     cefr: "B2 (Upper-Intermediate)",
-                    badgeColor: "bg-purple-100 text-purple-800 border-purple-200",
                     summary: "Високий рівень володіння граматикою та лексикою, достатній для успішного складання НМТ та міжнародних іспитів.",
                     recommendation: "Рекомендовані розділи: Oxford Exam Trainer B2, Get 200(2)"
                 };
             }
             return {
                 cefr: "C1 (Advanced)",
-                badgeColor: "bg-amber-100 text-amber-900 border-amber-300",
                 summary: "Вільне володіння складною граматикою (інверсія, умовні конструкції) та академічною лексикою.",
                 recommendation: "Рекомендовані розділи: Oxford Exam Trainer B2, Get 200(2) (поглиблений рівень)"
             };
@@ -185,7 +174,69 @@
         const TESTS_DATABASE = {
             "Full Blast 5": [],
             "Full Blast 6": [],
-            "Full Blast 9": [],
+            "Full Blast 9": [
+                {
+                    id: 101,
+                    isStandard22: true,
+                    title: "Full Blast 9 — Unit 1: Teen Life (Standard Demo)",
+                    description: "22 questions (Vocabulary, Reading True/False, Grammar, Use of English & Guided Writing) • Max grade: 11 points.",
+                    sections: [
+                        {
+                            sectionTitle: "Part 1. Vocabulary (Multiple Choice)",
+                            sectionInstructions: "Choose the correct word (A, B, C, or D) to complete each sentence. (6 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "My best friend is very ________; she always shares her notes and helps me with homework.", options: ["selfish", "generous", "stubborn", "bossy"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "You shouldn't ________ everything you read on social media without checking the facts.", options: ["trust", "argue", "complain", "refuse"], correct: 0 },
+                                { type: "mc", weight: 0.4, question: "Mark is really ________ on photography and spends every weekend taking pictures in the city.", options: ["fond", "interested", "keen", "crazy"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "I couldn't ________ with the noise from the street, so I closed the window.", options: ["put up", "get along", "hang out", "turn down"], correct: 0 },
+                                { type: "mc", weight: 0.4, question: "Don't be so ________! Wait your turn in the queue like everyone else.", options: ["reliable", "impatient", "cheerful", "outgoing"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "We decided to ________ in touch via email after the summer camp ended.", options: ["make", "hold", "keep", "take"], correct: 2 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 2. Reading Comprehension (True / False)",
+                            sectionInstructions: "Read the short text below and decide whether statements 7–11 are True or False. (5 × 0.4 pts)",
+                            contextHtml: "<p class='font-bold text-indigo-950 mb-2'>Digital Detox Challenge</p><p>Last month, fifteen students from Oakwood High School agreed to spend seven days without smartphones or social media. During the first two days, most participants admitted feeling anxious and kept reaching for their pockets out of habit. However, by day four, nearly everyone noticed positive changes: they slept better, finished their homework twice as fast, and spent more time talking face-to-face during breaks. At the end of the week, twelve out of fifteen students decided to limit their screen time to two hours a day.</p>",
+                            questions: [
+                                { type: "tf", weight: 0.4, question: "Fifty students from Oakwood High School took part in the challenge.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "At the beginning of the week, some students felt nervous without their phones.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "By the fourth day, students needed more time to complete their homework.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Students communicated more in person during school breaks.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "All fifteen participants stopped using smartphones completely after the experiment.", options: ["True", "False"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 3. Grammar (Multiple Choice)",
+                            sectionInstructions: "Choose the correct grammatical form (A, B, C, or D). (5 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "Look at those dark clouds! It ________ rain any minute now.", options: ["will", "is going to", "rains", "is raining"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "My cousin ________ in London for three years, and she loves it there.", options: ["lives", "lived", "has lived", "is living"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "This is the skatepark ________ we usually meet after classes.", options: ["which", "who", "whose", "where"], correct: 3 },
+                                { type: "mc", weight: 0.4, question: "Sarah ________ to the gym twice a week to stay fit.", options: ["go", "goes", "is going", "has gone"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "I'm sorry, I can't talk right now because I ________ for my English test.", options: ["study", "studied", "am studying", "have studied"], correct: 2 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 4. Use of English (Word Formation & Grammar Type-in)",
+                            sectionInstructions: "Complete each gap with the correct form of the word in brackets. Type ONLY 1–2 words without a full stop. (4 × 0.77 pts)",
+                            questions: [
+                                { type: "text", weight: 0.77, hint: "Word formation: noun → adjective", question: "My brother is very ________ (CREATE) and loves designing video games.", acceptedAnswers: ["creative"] },
+                                { type: "text", weight: 0.77, hint: "Verb tense: Past Continuous", question: "While we ________ (WALK) home yesterday evening, we saw a shooting star.", acceptedAnswers: ["were walking"] },
+                                { type: "text", weight: 0.77, hint: "Word formation: verb → noun", question: "True ________ (FRIEND) is based on honesty and mutual respect.", acceptedAnswers: ["friendship"] },
+                                { type: "text", weight: 0.77, hint: "Comparative degree", question: "Today's math test was much ________ (EASY) than the one we had last Friday.", acceptedAnswers: ["easier"] }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 5. Guided Writing (Sentence Transformation)",
+                            sectionInstructions: "Complete the second sentence so that it has a similar meaning to the first sentence, using the word given in BOLD. Type ONLY the missing words (2–4 words). (2 × 0.77 pts)",
+                            questions: [
+                                { type: "writing", weight: 0.77, hint: "Use the word: KEEN (max 3 words)", question: "Original: Alex really likes playing table tennis.\nRewrite: Alex is very ________________________ table tennis.", acceptedAnswers: ["keen on playing", "keen on"] },
+                                { type: "writing", weight: 0.77, hint: "Use the word: SINCE (max 3 words)", question: "Original: We moved to Kharkiv in 2020 and still live here.\nRewrite: We ________________________ in Kharkiv since 2020.", acceptedAnswers: ["have lived", "have been living", "'ve lived", "'ve been living"] }
+                            ]
+                        }
+                    ]
+                }
+            ],
             "Karpiuk 10": [],
             "Oxford Exam Trainer B2": [
                 {
@@ -223,7 +274,7 @@
         };
 
         // =========================================================================
-        // 5. ДОПОМІЖНІ ФУНКЦІЇ
+        // 5. ДОПОМІЖНІ ФУНКЦІЇ (ПЕРЕВІРКА, ПЕРЕМІШУВАННЯ, EXCEL / GOOGLE SHEETS)
         // =========================================================================
         function isBuiltInQuiz(test) {
             return Boolean(
@@ -232,13 +283,47 @@
             );
         }
 
-        function logToGoogleSheet(studentClass, studentName, action, score) {
+        function normalizeTextAnswer(str) {
+            return String(str || "")
+                .toLowerCase()
+                .replace(/[’‘`]/g, "'")
+                .replace(/[.!?,;:]+$/g, "")
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function isTextAnswerCorrect(userInput, acceptedAnswers) {
+            const normUser = normalizeTextAnswer(userInput);
+            if (!normUser) return false;
+            const list = Array.isArray(acceptedAnswers) ? acceptedAnswers : [acceptedAnswers];
+            return list.some(ans => normalizeTextAnswer(ans) === normUser);
+        }
+
+        function shuffleOptionsForQuestion(q) {
+            if (!q.options || q.options.length <= 2 || q.type === "tf" || q.noShuffle) {
+                return {
+                    ...q,
+                    _displayOptions: (q.options || []).map((opt, idx) => ({ text: opt, origIdx: idx }))
+                };
+            }
+            const indexed = q.options.map((opt, idx) => ({ text: opt, origIdx: idx }));
+            for (let i = indexed.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tmp = indexed[i];
+                indexed[i] = indexed[j];
+                indexed[j] = tmp;
+            }
+            return { ...q, _displayOptions: indexed };
+        }
+
+        function logToGoogleSheet(studentClass, studentName, action, score, details) {
             if (!GOOGLE_SCRIPT_URL) return;
             const payload = JSON.stringify({
                 studentClass: studentClass,
                 studentName: studentName,
                 action: action,
-                score: score || "—"
+                score: score !== undefined && score !== null ? score : "—",
+                details: details || "—"
             });
             try {
                 fetch(GOOGLE_SCRIPT_URL, {
@@ -333,7 +418,7 @@
         }
 
         // =========================================================================
-        // 6. ВЕКТОРНІ ІКОНКИ + ФІРМОВИЙ ЗНАК (ВАРІАНТ 2)
+        // 6. ВЕКТОРНІ ІКОНКИ + ФІРМОВИЙ ЗНАК
         // =========================================================================
         function BrandLogoMark({ size = 40 }) {
             return h("svg", {
@@ -410,6 +495,10 @@
                 award: [
                     h("circle", { key: 1, cx: "12", cy: "8", r: "6" }),
                     h("path", { key: 2, d: "M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" })
+                ],
+                edit: [
+                    h("path", { key: 1, d: "M12 20h9" }),
+                    h("path", { key: 2, d: "M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" })
                 ]
             };
             return h("svg", {
@@ -427,7 +516,7 @@
         }
 
         // =========================================================================
-        // 7. ВБУДОВАНИЙ ПЛЕЄР ТЕСТІВ (ВКЛЮЧНО З CEFR PLACEMENT TEST)
+        // 7. ВБУДОВАНИЙ ПЛЕЄР ТЕСТІВ ЗА ЄДИНИМ СТАНДАРТОМ (MC, T/F, TYPE-IN, WRITING)
         // =========================================================================
         function EmbeddedQuizModal({ test, category, onClose }) {
             const getSavedStudent = () => {
@@ -439,31 +528,79 @@
             };
 
             const [student, setStudent] = useState(getSavedStudent);
-            const [loginClass, setLoginClass] = useState(CLASS_LIST[0]);
-            const [loginName, setLoginName] = useState("");
-            const [isEditingStudent, setIsEditingStudent] = useState(!getSavedStudent());
+            const [loginClass, setLoginClass] = useState(() => {
+                const s = getSavedStudent();
+                return s && CLASS_LIST.includes(s.studentClass) ? s.studentClass : CLASS_LIST[0];
+            });
+            const [loginName, setLoginName] = useState(() => {
+                const s = getSavedStudent();
+                return s ? s.studentName : "";
+            });
+            // Обов'язкове підтвердження класу та прізвища при вході в кожен тест
+            const [isConfirmedLogin, setIsConfirmedLogin] = useState(false);
             const [copied, setCopied] = useState(false);
             const [answers, setAnswers] = useState({});
             const [submitted, setSubmitted] = useState(false);
 
-            const normalizedSections = test.sections && test.sections.length > 0
-                ? test.sections
-                : [{ sectionTitle: null, sectionInstructions: null, contextHtml: null, questions: test.questions || [] }];
+            // Підготовка секцій та перемішування варіантів відповідей один раз при відкритті тесту
+            const sectionsWithKeys = useMemo(() => {
+                const normalizedSections = test.sections && test.sections.length > 0
+                    ? test.sections
+                    : [{ sectionTitle: null, sectionInstructions: null, contextHtml: null, questions: test.questions || [] }];
 
-            let globalIndex = 0;
-            const sectionsWithKeys = normalizedSections.map(sec => ({
-                ...sec,
-                questions: sec.questions.map(q => {
-                    const key = globalIndex++;
-                    return { ...q, _key: key, _displayNum: q.num || (key + 1) };
-                })
-            }));
+                let globalIndex = 0;
+                return normalizedSections.map(sec => ({
+                    ...sec,
+                    questions: sec.questions.map(q => {
+                        const key = globalIndex++;
+                        const qType = q.type || (q.acceptedAnswers ? "text" : "mc");
+                        const shuffled = shuffleOptionsForQuestion({ ...q, type: qType });
+                        return {
+                            ...shuffled,
+                            _key: key,
+                            _displayNum: q.num || (key + 1)
+                        };
+                    })
+                }));
+            }, [test]);
 
-            const allFlatQuestions = sectionsWithKeys.reduce((acc, s) => acc.concat(s.questions), []);
+            const allFlatQuestions = useMemo(
+                () => sectionsWithKeys.reduce((acc, s) => acc.concat(s.questions), []),
+                [sectionsWithKeys]
+            );
+
             const total = allFlatQuestions.length;
             const maxGrade = test.maxGrade || 11;
             const isCefr = Boolean(test.isCefrTest);
             const shareUrl = buildShareUrl(category, test.level, test.id);
+
+            const answeredCount = allFlatQuestions.filter(q => {
+                const val = answers[q._key];
+                if (q.type === "text" || q.type === "writing") {
+                    return typeof val === "string" && val.trim().length > 0;
+                }
+                return val !== undefined && val !== null;
+            }).length;
+
+            // Захист від випадкового оновлення / закриття вкладки під час проходження тесту
+            useEffect(() => {
+                const handleBeforeUnload = (e) => {
+                    if (isConfirmedLogin && !submitted && answeredCount > 0) {
+                        e.preventDefault();
+                        e.returnValue = "";
+                    }
+                };
+                window.addEventListener("beforeunload", handleBeforeUnload);
+                return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+            }, [isConfirmedLogin, submitted, answeredCount]);
+
+            const handleAttemptClose = () => {
+                if (isConfirmedLogin && !submitted && answeredCount > 0) {
+                    const ok = window.confirm("Ви ще не здали тест. Якщо закрити вікно зараз, ваші відповіді не збережуться. Вийти?");
+                    if (!ok) return;
+                }
+                onClose();
+            };
 
             const handleCopyTestLink = () => {
                 copyToClipboard(shareUrl);
@@ -471,7 +608,44 @@
                 setTimeout(() => setCopied(false), 3000);
             };
 
-            const calculateGrade = (correctCount) => total === 0 ? 0 : Math.round((correctCount / total) * maxGrade);
+            const evaluateQuestion = (q, userAns) => {
+                if (q.type === "text" || q.type === "writing") {
+                    return isTextAnswerCorrect(userAns, q.acceptedAnswers);
+                }
+                return userAns === q.correct;
+            };
+
+            const computeResults = () => {
+                let correctCount = 0;
+                let weightedSum = 0;
+                let totalWeight = 0;
+                let hasCustomWeights = false;
+
+                allFlatQuestions.forEach(q => {
+                    const w = typeof q.weight === "number" ? q.weight : 1;
+                    if (typeof q.weight === "number") hasCustomWeights = true;
+                    totalWeight += w;
+                    if (evaluateQuestion(q, answers[q._key])) {
+                        correctCount++;
+                        weightedSum += w;
+                    }
+                });
+
+                let finalGrade = 0;
+                if (hasCustomWeights) {
+                    // Варіант Б: 16 * 0.4 + 6 * 0.77 = 11.02 -> обмежуємо максимумом 11 та округлюємо до цілого
+                    const capped = Math.min(maxGrade, weightedSum);
+                    finalGrade = Math.round(capped);
+                } else {
+                    finalGrade = totalWeight === 0 ? 0 : Math.round((weightedSum / totalWeight) * maxGrade);
+                }
+
+                return {
+                    correctCount,
+                    rawPoints: Math.min(maxGrade, Number(weightedSum.toFixed(2))),
+                    finalGrade
+                };
+            };
 
             const handleStartQuizWithStudent = (e) => {
                 e.preventDefault();
@@ -480,48 +654,41 @@
                 const studentObj = { studentClass: loginClass, studentName: trimmedName };
                 try { localStorage.setItem("english_hub_student", JSON.stringify(studentObj)); } catch (err) {}
                 setStudent(studentObj);
-                setIsEditingStudent(false);
+                setIsConfirmedLogin(true);
             };
 
             const handleSubmit = () => {
-                let correctCount = 0;
-                allFlatQuestions.forEach(q => { if (answers[q._key] === q.correct) correctCount++; });
+                const res = computeResults();
                 setSubmitted(true);
 
                 if (student) {
                     if (isCefr) {
-                        const cefrResult = evaluateCefrScore(correctCount);
+                        const cefrResult = evaluateCefrScore(res.correctCount);
                         logToGoogleSheet(
                             student.studentClass,
                             student.studentName,
                             "CEFR Level Placement Test",
-                            `${cefrResult.cefr} (${correctCount}/${total})`
+                            cefrResult.cefr,
+                            `Правильних: ${res.correctCount}/${total}`
                         );
                     } else {
-                        const finalGrade = calculateGrade(correctCount);
                         logToGoogleSheet(
                             student.studentClass,
                             student.studentName,
-                            `${category}: ${test.title}`,
-                            `${finalGrade} / ${maxGrade} (${correctCount}/${total})`
+                            test.title,
+                            res.finalGrade,
+                            `Правильних: ${res.correctCount}/${total} (сирий бал: ${res.rawPoints}/${maxGrade})`
                         );
                     }
                 }
             };
 
-            let score = 0;
-            let grade = 0;
-            let cefrEval = null;
-            if (submitted) {
-                allFlatQuestions.forEach(q => { if (answers[q._key] === q.correct) score++; });
-                if (isCefr) {
-                    cefrEval = evaluateCefrScore(score);
-                } else {
-                    grade = calculateGrade(score);
-                }
-            }
+            const resultData = submitted ? computeResults() : null;
+            const cefrEval = submitted && isCefr && resultData ? evaluateCefrScore(resultData.correctCount) : null;
+            const progressPercent = total > 0 ? Math.round((answeredCount / total) * 100) : 0;
 
-            if (isEditingStudent || !student) {
+            // Екран обов'язкової реєстрації перед початком тесту
+            if (!isConfirmedLogin || !student) {
                 return h("div", { className: "fixed inset-0 bg-slate-900/75 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" },
                     h("div", { className: "bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden" },
                         h("div", { className: "bg-gradient-to-r from-indigo-600 to-purple-600 p-6 flex justify-between items-center text-white" },
@@ -535,9 +702,9 @@
                             h("button", { onClick: onClose, className: "hover:bg-white/20 p-2 rounded-full transition" }, h(SvgIcon, { name: "x", size: 22 }))
                         ),
                         h("form", { onSubmit: handleStartQuizWithStudent, className: "p-6 space-y-4" },
-                            h("p", { className: "text-sm text-slate-600" }, "Вкажіть ваш клас (або GUEST для гостей) та прізвище з ім'ям, щоб результат зберігся:"),
+                            h("p", { className: "text-sm text-slate-600" }, "Для входу в тест оберіть свій клас (або GUEST для гостей) та введіть прізвище й ім'я:"),
                             h("div", null,
-                                h("label", { className: "block text-sm font-bold text-slate-700 mb-1" }, "Ваш клас / статус *"),
+                                h("label", { className: "block text-sm font-bold text-slate-700 mb-1" }, "Клас / статус *"),
                                 h("select", {
                                     value: loginClass,
                                     onChange: (e) => setLoginClass(e.target.value),
@@ -557,7 +724,11 @@
                             ),
                             h("div", { className: "pt-2 flex gap-3" },
                                 h("button", { type: "button", onClick: onClose, className: "flex-1 py-3 px-4 rounded-xl font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition" }, "Скасувати"),
-                                h("button", { type: "submit", className: "flex-1 py-3 px-4 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md transition" }, "Почати тест")
+                                h("button", {
+                                    type: "submit",
+                                    disabled: !loginName.trim(),
+                                    className: "flex-1 py-3 px-4 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 shadow-md transition"
+                                }, "Почати тест")
                             )
                         )
                     )
@@ -566,6 +737,7 @@
 
             return h("div", { className: "fixed inset-0 bg-slate-900/70 z-[100] flex items-center justify-center p-2 sm:p-4 backdrop-blur-sm overflow-y-auto" },
                 h("div", { className: "bg-white rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]" },
+                    // Шапка тесту
                     h("div", { className: "bg-gradient-to-r from-indigo-600 to-purple-600 p-5 sm:p-6 flex justify-between items-center text-white shrink-0" },
                         h("div", { className: "flex items-center gap-3" },
                             h("div", { className: "hidden sm:block" }, h(BrandLogoMark, { size: 42 })),
@@ -573,10 +745,10 @@
                                 h("div", { className: "flex flex-wrap items-center gap-2" },
                                     h("span", { className: "text-xs font-bold text-amber-300" }, "Smart English Hub"),
                                     !isCefr && h("span", { className: "text-xs uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, category),
-                                    h("span", { className: "text-xs bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full font-bold" }, `${student.studentName} (${student.studentClass})`),
+                                    h("span", { className: "text-xs bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full font-bold" }, `${student.studentName} • Клас: ${student.studentClass}`),
                                     !submitted && h("button", {
                                         type: "button",
-                                        onClick: () => { setLoginClass(student.studentClass); setLoginName(student.studentName); setIsEditingStudent(true); },
+                                        onClick: () => setIsConfirmedLogin(false),
                                         className: "text-xs underline text-indigo-100 hover:text-white ml-1"
                                     }, "Змінити")
                                 ),
@@ -589,45 +761,66 @@
                                 onClick: handleCopyTestLink,
                                 className: "px-3 py-1.5 bg-white/15 hover:bg-white/25 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
                             }, h(SvgIcon, { name: "share", size: 14 }), copied ? "Скопійовано!" : "Copy Link"),
-                            h("button", { onClick: onClose, className: "hover:bg-white/20 p-2 rounded-full transition" }, h(SvgIcon, { name: "x", size: 24 }))
+                            h("button", { onClick: handleAttemptClose, className: "hover:bg-white/20 p-2 rounded-full transition" }, h(SvgIcon, { name: "x", size: 24 }))
                         )
                     ),
 
+                    // Смужка прогресу виконання (поки тест не здано)
+                    !submitted && h("div", { className: "bg-indigo-50/80 px-6 py-2.5 border-b border-indigo-100 flex items-center justify-between gap-4 shrink-0" },
+                        h("div", { className: "flex-1 bg-slate-200 h-2 rounded-full overflow-hidden" },
+                            h("div", {
+                                className: "bg-indigo-600 h-full transition-all duration-300",
+                                style: { width: `${progressPercent}%` }
+                            })
+                        ),
+                        h("span", { className: "text-xs font-bold text-indigo-900 shrink-0" }, `Виконано: ${answeredCount} з ${total} (${progressPercent}%)`)
+                    ),
+
+                    // Тіло тесту
                     h("div", { className: "p-5 sm:p-6 overflow-y-auto space-y-8 flex-1" },
-                        // Результат для CEFR Placement Test
-                        submitted && isCefr && cefrEval && h("div", { className: "p-6 rounded-2xl bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50 border-2 border-indigo-200 space-y-4" },
+                        // Картка результату CEFR
+                        submitted && isCefr && cefrEval && resultData && h("div", { className: "p-6 rounded-2xl bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50 border-2 border-indigo-200 space-y-4" },
                             h("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4" },
                                 h("div", { className: "flex items-center gap-3.5" },
                                     h("div", { className: "w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md" }, h(SvgIcon, { name: "award", size: 30 })),
                                     h("div", null,
-                                        h("div", { className: "text-xs font-bold uppercase tracking-wider text-indigo-600" }, "Ваш визначений рівень CEFR"),
-                                        h("h4", { className: "text-2xl sm:text-3xl font-extrabold text-slate-900" }, cefrEval.cefr)
+                                        h("div", { className: "text-xs font-bold uppercase tracking-wider text-indigo-600" }, `${student.studentName} (${student.studentClass}) • ${test.title}`),
+                                        h("h4", { className: "text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5" }, cefrEval.cefr)
                                     )
                                 ),
                                 h("div", { className: "bg-white px-5 py-3 rounded-xl border border-indigo-100 text-center shrink-0 shadow-sm" },
                                     h("div", { className: "text-xs font-bold uppercase text-slate-400" }, "Результат"),
-                                    h("div", { className: "text-2xl font-extrabold text-indigo-700" }, `${score} / ${total}`)
+                                    h("div", { className: "text-2xl font-extrabold text-indigo-700" }, `${resultData.correctCount} / ${total}`)
                                 )
                             ),
                             h("p", { className: "text-slate-700 text-sm sm:text-base leading-relaxed" }, cefrEval.summary),
                             h("div", { className: "p-3.5 rounded-xl bg-white border border-indigo-100 text-sm font-bold text-indigo-800" }, "📌 " + cefrEval.recommendation)
                         ),
 
-                        // Результат для звичайного шкільного тесту
-                        submitted && !isCefr && h("div", { className: "p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4" },
-                            h("div", { className: "flex items-center gap-3" },
-                                h("div", { className: "w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0" }, h(SvgIcon, { name: "check", size: 28 })),
-                                h("div", null,
-                                    h("h4", { className: "text-lg font-bold text-slate-800" }, "Тест завершено! Результат збережено."),
-                                    h("p", { className: "text-sm text-slate-600" }, `Правильних відповідей: ${score} із ${total}. Перевірте помилки нижче.`)
+                        // Картка результату шкільного/екзаменаційного тесту (з назвою тесту, ПІБ, класом і балом)
+                        submitted && !isCefr && resultData && h("div", { className: "p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 space-y-4" },
+                            h("div", { className: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" },
+                                h("div", { className: "flex items-start gap-3.5" },
+                                    h("div", { className: "w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm" }, h(SvgIcon, { name: "check", size: 28 })),
+                                    h("div", { className: "space-y-1" },
+                                        h("div", { className: "text-xs font-bold uppercase tracking-wider text-emerald-700" }, "Тест успішно здано • Результат записано в журнал"),
+                                        h("h4", { className: "text-lg sm:text-xl font-extrabold text-slate-900" }, test.title),
+                                        h("div", { className: "flex flex-wrap items-center gap-2 pt-0.5" },
+                                            h("span", { className: "px-3 py-1 rounded-lg bg-white border border-emerald-200 text-sm font-bold text-slate-800" }, `Учень: ${student.studentName}`),
+                                            h("span", { className: "px-3 py-1 rounded-lg bg-white border border-emerald-200 text-sm font-bold text-indigo-700" }, `Клас: ${student.studentClass}`)
+                                        ),
+                                        h("p", { className: "text-sm text-slate-600 pt-1" }, `Правильних відповідей: ${resultData.correctCount} із ${total} (набрано ${resultData.rawPoints} з ${maxGrade} балів).`)
+                                    )
+                                ),
+                                h("div", { className: "text-center bg-white px-6 py-3.5 rounded-2xl shadow-sm border border-emerald-200 shrink-0 self-stretch sm:self-auto flex flex-col justify-center" },
+                                    h("div", { className: "text-xs uppercase font-bold text-slate-400" }, "Отриманий бал"),
+                                    h("div", { className: "text-4xl font-extrabold text-emerald-700" }, `${resultData.finalGrade}`),
+                                    h("div", { className: "text-xs font-semibold text-slate-400" }, `із ${maxGrade} можливих`)
                                 )
-                            ),
-                            h("div", { className: "text-center bg-white px-5 py-2.5 rounded-xl shadow-sm border border-emerald-100 shrink-0" },
-                                h("div", { className: "text-xs uppercase font-bold text-slate-400" }, "Оцінка"),
-                                h("div", { className: "text-3xl font-extrabold text-emerald-700" }, `${grade} / ${maxGrade}`)
                             )
                         ),
 
+                        // Секції та питання
                         sectionsWithKeys.map((sec, sIdx) => h("div", { key: sIdx, className: "space-y-4" },
                             sec.sectionTitle && h("div", { className: "border-b border-indigo-100 pb-2" },
                                 h("h4", { className: "text-lg sm:text-xl font-bold text-indigo-950" }, sec.sectionTitle),
@@ -638,47 +831,98 @@
                                 dangerouslySetInnerHTML: { __html: sec.contextHtml }
                             }),
                             h("div", { className: "space-y-4" },
-                                sec.questions.map(q => h("div", { key: q._key, className: "p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3" },
-                                    h("div", { className: "flex items-start justify-between gap-2" },
-                                        h("p", { className: "font-bold text-slate-800 text-base" }, `${q._displayNum}. ${q.question}`),
-                                        submitted && q.level && h("span", { className: "text-xs font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700 shrink-0" }, q.level)
-                                    ),
-                                    h("div", { className: "grid sm:grid-cols-2 gap-2.5" },
-                                        q.options.map((opt, optIdx) => {
-                                            const isSelected = answers[q._key] === optIdx;
-                                            const isCorrect = q.correct === optIdx;
-                                            let btnStyle = "bg-white border-slate-200 text-slate-700 hover:border-indigo-400";
-                                            if (submitted) {
-                                                if (isCorrect) btnStyle = "bg-emerald-50 border-emerald-500 text-emerald-800 font-semibold";
-                                                else if (isSelected && !isCorrect) btnStyle = "bg-rose-50 border-rose-500 text-rose-800";
-                                                else btnStyle = "bg-white border-slate-200 text-slate-400 opacity-70";
-                                            } else if (isSelected) {
-                                                btnStyle = "bg-indigo-50 border-indigo-600 text-indigo-800 font-semibold ring-2 ring-indigo-500/20";
-                                            }
-                                            return h("button", {
-                                                key: optIdx,
-                                                type: "button",
-                                                onClick: () => { if (!submitted) setAnswers(prev => ({ ...prev, [q._key]: optIdx })); },
-                                                className: `p-3 rounded-xl border text-left text-sm transition flex items-center gap-2.5 ${btnStyle}`
-                                            },
-                                                h("span", { className: "w-6 h-6 rounded-full border flex items-center justify-center text-xs shrink-0 font-bold" }, String.fromCharCode(65 + optIdx)),
-                                                h("span", null, opt)
-                                            );
-                                        })
-                                    )
-                                ))
+                                sec.questions.map(q => {
+                                    const isTextOrWriting = q.type === "text" || q.type === "writing";
+                                    const userVal = answers[q._key];
+                                    const isCorrectAnswer = submitted ? evaluateQuestion(q, userVal) : false;
+
+                                    return h("div", { key: q._key, className: "p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3" },
+                                        h("div", { className: "flex items-start justify-between gap-2" },
+                                            h("p", { className: "font-bold text-slate-800 text-base whitespace-pre-line leading-relaxed" }, `${q._displayNum}. ${q.question}`),
+                                            h("div", { className: "flex items-center gap-1.5 shrink-0" },
+                                                q.hint && !submitted && h("span", { className: "text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700" }, q.hint),
+                                                submitted && q.level && h("span", { className: "text-xs font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700" }, q.level),
+                                                submitted && typeof q.weight === "number" && h("span", {
+                                                    className: `text-xs font-bold px-2.5 py-0.5 rounded-full ${isCorrectAnswer ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"}`
+                                                }, isCorrectAnswer ? `+${q.weight} б.` : `0 / ${q.weight} б.`)
+                                            )
+                                        ),
+
+                                        // Варіант 1: Введення тексту (Use of English або Guided Writing)
+                                        isTextOrWriting
+                                            ? h("div", { className: "space-y-2 pt-1" },
+                                                h("div", { className: "relative" },
+                                                    h("input", {
+                                                        type: "text",
+                                                        disabled: submitted,
+                                                        value: userVal || "",
+                                                        onChange: (e) => {
+                                                            if (!submitted) {
+                                                                setAnswers(prev => ({ ...prev, [q._key]: e.target.value }));
+                                                            }
+                                                        },
+                                                        placeholder: q.type === "writing" ? "Впишіть пропущену частину речення..." : "Впишіть 1–2 слова...",
+                                                        className: `w-full px-4 py-3 rounded-xl border text-base font-medium transition focus:outline-none ${
+                                                            submitted
+                                                                ? (isCorrectAnswer
+                                                                    ? "bg-emerald-50 border-emerald-500 text-emerald-900 font-bold"
+                                                                    : "bg-rose-50 border-rose-500 text-rose-900")
+                                                                : "bg-white border-slate-300 text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                                        }`
+                                                    })
+                                                ),
+                                                submitted && !isCorrectAnswer && h("div", { className: "text-sm text-emerald-800 bg-emerald-50/90 border border-emerald-200 px-3.5 py-2 rounded-xl" },
+                                                    h("span", { className: "font-bold" }, "Правильна відповідь: "),
+                                                    (Array.isArray(q.acceptedAnswers) ? q.acceptedAnswers.join(" / ") : q.acceptedAnswers)
+                                                )
+                                            )
+                                            // Варіант 2: Multiple Choice (4 варіанти) або True / False
+                                            : h("div", { className: `grid ${q.type === "tf" ? "sm:grid-cols-2" : "sm:grid-cols-2"} gap-2.5` },
+                                                q._displayOptions.map((optObj, displayIdx) => {
+                                                    const isSelected = userVal === optObj.origIdx;
+                                                    const isCorrect = q.correct === optObj.origIdx;
+                                                    let btnStyle = "bg-white border-slate-200 text-slate-700 hover:border-indigo-400";
+                                                    if (submitted) {
+                                                        if (isCorrect) btnStyle = "bg-emerald-50 border-emerald-500 text-emerald-800 font-semibold";
+                                                        else if (isSelected && !isCorrect) btnStyle = "bg-rose-50 border-rose-500 text-rose-800";
+                                                        else btnStyle = "bg-white border-slate-200 text-slate-400 opacity-70";
+                                                    } else if (isSelected) {
+                                                        btnStyle = "bg-indigo-50 border-indigo-600 text-indigo-800 font-semibold ring-2 ring-indigo-500/20";
+                                                    }
+                                                    const badgeChar = q.type === "tf"
+                                                        ? (optObj.text === "True" ? "T" : "F")
+                                                        : String.fromCharCode(65 + displayIdx);
+
+                                                    return h("button", {
+                                                        key: displayIdx,
+                                                        type: "button",
+                                                        onClick: () => { if (!submitted) setAnswers(prev => ({ ...prev, [q._key]: optObj.origIdx })); },
+                                                        className: `p-3 rounded-xl border text-left text-sm transition flex items-center gap-2.5 ${btnStyle}`
+                                                    },
+                                                        h("span", { className: "w-6 h-6 rounded-full border flex items-center justify-center text-xs shrink-0 font-bold" }, badgeChar),
+                                                        h("span", null, optObj.text)
+                                                    );
+                                                })
+                                            )
+                                    );
+                                })
                             )
                         ))
                     ),
 
+                    // Нижня панель тесту
                     h("div", { className: "p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center shrink-0" },
-                        h("span", { className: "text-sm text-slate-500" }, `Відповідей: ${Object.keys(answers).length} з ${total}`),
+                        h("span", { className: "text-sm text-slate-600 font-medium" },
+                            answeredCount < total
+                                ? `Заповнено: ${answeredCount} з ${total} (залишилось ${total - answeredCount})`
+                                : `Усі ${total} завдань заповнено!`
+                        ),
                         !submitted
                             ? h("button", {
                                 onClick: handleSubmit,
-                                disabled: Object.keys(answers).length < total,
+                                disabled: answeredCount < total,
                                 className: "px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-bold rounded-xl shadow-md transition"
-                            }, isCefr ? "Визначити мій рівень CEFR" : "Перевірити та зберегти")
+                            }, isCefr ? "Визначити мій рівень CEFR" : "Здати тест і зберегти бал")
                             : h("button", {
                                 onClick: onClose,
                                 className: "px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition"
@@ -747,7 +991,7 @@
             );
         }
 
-        function HomeView({ setActiveTab, onOpenCefrTest }) {
+        function HomeView({ setActiveTab, onOpenCefrTest, onOpenDemoTest }) {
             return h("div", { className: "max-w-5xl mx-auto space-y-8" },
                 h("div", { className: "rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 p-8 md:p-12 text-white shadow-xl relative overflow-hidden" },
                     h("div", { className: "relative z-10 max-w-4xl space-y-4" },
@@ -764,7 +1008,12 @@
                                 type: "button",
                                 onClick: () => setActiveTab("Oxford Exam Trainer B2"),
                                 className: "px-6 py-3.5 bg-white/15 hover:bg-white/25 text-white font-bold rounded-xl backdrop-blur-md transition flex items-center gap-2 cursor-pointer"
-                            }, h(SvgIcon, { name: "grad", size: 20 }), "Exam Preparation (NMT)")
+                            }, h(SvgIcon, { name: "grad", size: 20 }), "Exam Preparation (NMT)"),
+                            h("button", {
+                                type: "button",
+                                onClick: onOpenDemoTest,
+                                className: "px-5 py-3.5 bg-indigo-900/40 hover:bg-indigo-900/60 border border-white/25 text-white font-semibold rounded-xl transition flex items-center gap-2 cursor-pointer"
+                            }, h(SvgIcon, { name: "edit", size: 18 }), "22-Question Standard Demo")
                         )
                     )
                 ),
@@ -846,7 +1095,6 @@
                         }, h(SvgIcon, { name: "share", size: 18 }), copiedPage ? "Посилання скопійовано!" : "Copy Page Link")
                     ),
 
-                    // Панель фільтрів CEFR + пошук для Listening Practice
                     hasLevels && h("div", { className: "pt-3 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4" },
                         h("div", { className: "flex flex-wrap gap-2" },
                             LISTENING_LEVELS.map(lvl => {
@@ -886,7 +1134,10 @@
                     : h("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6" },
                         filteredTests.map(test => {
                             const builtIn = isBuiltInQuiz(test);
-                            const badgeText = (test.level && test.level !== "All") ? test.level : null;
+                            const badgeText = test.isStandard22
+                                ? "22 Questions • 11 pts"
+                                : ((test.level && test.level !== "All") ? test.level : null);
+
                             return h("div", { key: test.id, className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition flex flex-col justify-between" },
                                 h("div", { className: "space-y-2.5 mb-6" },
                                     h("div", { className: "flex items-start justify-between gap-2" },
@@ -942,21 +1193,6 @@
                 return () => window.removeEventListener("hashchange", onHashChange);
             }, []);
 
-            useEffect(() => {
-                try {
-                    if (!sessionStorage.getItem("english_hub_guest_logged")) {
-                        let visitorInfo = "Відвідувач сайту";
-                        const saved = localStorage.getItem("english_hub_student");
-                        if (saved) {
-                            const parsed = JSON.parse(saved);
-                            if (parsed && parsed.studentName) visitorInfo = `${parsed.studentName} (${parsed.studentClass})`;
-                        }
-                        logToGoogleSheet("GUEST", visitorInfo, `Вхід (${activeTab})`, "—");
-                        sessionStorage.setItem("english_hub_guest_logged", "true");
-                    }
-                } catch (e) {}
-            }, []);
-
             const selectTab = (tabId) => {
                 setActiveTab(tabId);
                 setActiveSubFilter("All");
@@ -976,6 +1212,15 @@
             const openCefrTest = () => {
                 setActiveTest(CEFR_PLACEMENT_TEST);
                 window.location.hash = "cefr-test";
+            };
+
+            const openDemoTest = () => {
+                const demo = (TESTS_DATABASE["Full Blast 9"] || [])[0];
+                if (demo) {
+                    setActiveTab("Full Blast 9");
+                    setActiveTest(demo);
+                    window.location.hash = `test-${demo.id}`;
+                }
             };
 
             const openTest = (test) => {
@@ -1002,7 +1247,6 @@
                     onClick: () => setIsMobileMenuOpen(false)
                 }),
 
-                // Бокове меню з однаковим логотипом та фавіконом (Варіант 2)
                 h("aside", {
                     className: `fixed md:static inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out flex flex-col ${
                         isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
@@ -1056,7 +1300,7 @@
                     ),
                     h("div", { className: "flex-1 overflow-y-auto p-6 md:p-10" },
                         activeTab === "Home" || !currentCategoryConfig
-                            ? h(HomeView, { setActiveTab: selectTab, onOpenCefrTest: openCefrTest })
+                            ? h(HomeView, { setActiveTab: selectTab, onOpenCefrTest: openCefrTest, onOpenDemoTest: openDemoTest })
                             : h(CategoryView, {
                                 categoryConfig: currentCategoryConfig,
                                 activeSubFilter: activeSubFilter,
