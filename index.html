@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart English Hub — Interactive Learning</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+    <!-- Єдиний фавікон (Варіант 2: Відкрита книга із золотою іскрою) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234f46e5'/%3E%3Cstop offset='100%25' stop-color='%239333ea'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M32 25v23M14 44a2 2 0 0 1-2-2V23a2 2 0 0 1 2-2h9a9 9 0 0 1 9 9 9 9 0 0 1 9-9h9a2 2 0 0 1 2 2v19a2 2 0 0 1-2 2h-11a7 7 0 0 0-7 6 7 7 0 0 0-7-6H14z' fill='none' stroke='%23ffffff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M32 9l2.2 5.3L39.5 16.5l-5.3 2.2L32 24l-2.2-5.3-5.3-2.2 5.3-2.2L32 9z' fill='%23fbbf24'/%3E%3C/svg%3E">
     <style>
         body {
             margin: 0;
@@ -48,6 +49,7 @@
         // 2. НАЛАШТУВАННЯ МЕНЮ ТА РОЗДІЛІВ
         // =========================================================================
         const UNIT_LIST = Array.from({ length: 12 }, (_, i) => `Unit ${i + 1}`);
+        const LISTENING_LEVELS = ["All", "A1", "A2", "B1", "B2", "NMT / Exam"];
 
         const MENU_GROUPS = [
             {
@@ -85,131 +87,106 @@
             {
                 title: "🎧 Skills",
                 items: [
-                    { id: "Listening Practice", label: "Listening Practice", icon: "headphones" }
+                    { id: "Listening Practice", label: "Listening Practice", icon: "headphones", hasLevels: true }
                 ]
             }
         ];
 
         // =========================================================================
-        // 3. БАЗА ТЕСТІВ ТА МАТЕРІАЛІВ
+        // 3. ТЕСТ З ВИЗНАЧЕННЯ РІВНЯ CEFR (A1 — C1, ГРАМАТИКА + ЛЕКСИКА, 25 ПИТАНЬ)
+        // =========================================================================
+        const CEFR_PLACEMENT_TEST = {
+            id: "cefr-test",
+            isCefrTest: true,
+            title: "CEFR English Level Placement Test (A1 — C1)",
+            description: "25 progressive Grammar & Vocabulary questions to determine your current English level according to CEFR standards.",
+            questions: [
+                // --- A1 (1-5) ---
+                { level: "A1", question: "Hello! My name is Olena and I ________ from Ukraine.", options: ["is", "am", "are", "be"], correct: 1 },
+                { level: "A1", question: "Look at those people over there. ________ are my new neighbours.", options: ["This", "They", "Them", "Their"], correct: 1 },
+                { level: "A1", question: "My brother ________ to school by bus every morning.", options: ["go", "going", "goes", "is go"], correct: 2 },
+                { level: "A1", question: "Excuse me, what ________ is it? — It's half past three.", options: ["hour", "clock", "watch", "time"], correct: 3 },
+                { level: "A1", question: "There aren't ________ apples left in the fridge.", options: ["some", "any", "a", "much"], correct: 1 },
+
+                // --- A2 (6-10) ---
+                { level: "A2", question: "We ________ a really interesting film at the cinema last night.", options: ["saw", "see", "have seen", "were see"], correct: 0 },
+                { level: "A2", question: "This suitcase is much ________ than the blue one.", options: ["heavy", "more heavy", "heavier", "the heaviest"], correct: 2 },
+                { level: "A2", question: "I'm looking ________ my keys. Have you seen them anywhere?", options: ["at", "after", "for", "up"], correct: 2 },
+                { level: "A2", question: "While I ________ dinner, the phone suddenly rang.", options: ["cooked", "was cooking", "am cooking", "have cooked"], correct: 1 },
+                { level: "A2", question: "You ________ wear a seatbelt in the car — it's the law.", options: ["must", "can", "might", "could"], correct: 0 },
+
+                // --- B1 (11-15) ---
+                { level: "B1", question: "I ________ in this city since 2019, and I really love it here.", options: ["live", "lived", "have lived", "am living"], correct: 2 },
+                { level: "B1", question: "If it ________ tomorrow, we will cancel the picnic in the park.", options: ["will rain", "rains", "rained", "is raining"], correct: 1 },
+                { level: "B1", question: "The new bridge ________ by a famous architect next year.", options: ["will build", "is building", "will be built", "built"], correct: 2 },
+                { level: "B1", question: "She decided to ________ up yoga to reduce stress after work.", options: ["make", "take", "put", "get"], correct: 1 },
+                { level: "B1", question: "That's the woman ________ son won the national science competition.", options: ["who", "which", "whose", "whom"], correct: 2 },
+
+                // --- B2 (16-20) ---
+                { level: "B2", question: "If I ________ about the traffic jam earlier, I would have taken the train.", options: ["knew", "have known", "had known", "would know"], correct: 2 },
+                { level: "B2", question: "By the time we arrived at the theatre, the play ________.", options: ["already started", "had already started", "has already started", "was already starting"], correct: 1 },
+                { level: "B2", question: "Despite ________ very tired, he stayed up late to finish the report.", options: ["he was", "of being", "being", "to be"], correct: 2 },
+                { level: "B2", question: "I'd rather you ________ anyone about our plans just yet.", options: ["don't tell", "didn't tell", "not to tell", "haven't told"], correct: 1 },
+                { level: "B2", question: "The company is struggling to ________ with the rapid changes in technology.", options: ["keep up", "bring about", "turn down", "set off"], correct: 0 },
+
+                // --- C1 (21-25) ---
+                { level: "C1", question: "Not only ________ the deadline, but she also exceeded all expectations.", options: ["she met", "did she meet", "she did meet", "met she"], correct: 1 },
+                { level: "C1", question: "It is high time the government ________ decisive action on climate change.", options: ["takes", "will take", "took", "has taken"], correct: 2 },
+                { level: "C1", question: "The witness gave a ________ account of the incident, leaving no room for doubt.", options: ["lucid", "vague", "negligent", "dubious"], correct: 0 },
+                { level: "C1", question: "________ had we boarded the plane than the captain announced a technical delay.", options: ["Hardly", "No sooner", "Scarcely", "Rarely"], correct: 1 },
+                { level: "C1", question: "Her remarks were completely ________ to the topic under discussion.", options: ["irrelevant", "irreversible", "irreplaceable", "irresistible"], correct: 0 }
+            ]
+        };
+
+        function evaluateCefrScore(score) {
+            if (score <= 6) {
+                return {
+                    cefr: "A1 (Beginner)",
+                    badgeColor: "bg-sky-100 text-sky-800 border-sky-200",
+                    summary: "Ви володієте базовими фразами, простими часами (Present Simple) та повсякденною лексикою.",
+                    recommendation: "Рекомендовані розділи: Full Blast 5 — Full Blast 6"
+                };
+            }
+            if (score <= 12) {
+                return {
+                    cefr: "A2 (Elementary)",
+                    badgeColor: "bg-teal-100 text-teal-800 border-teal-200",
+                    summary: "Ви впевнено спілкуєтеся на знайомі теми, знаєте Past Simple, ступені порівняння та базові фразові дієслова.",
+                    recommendation: "Рекомендовані розділи: Full Blast 7 — Full Blast 8"
+                };
+            }
+            if (score <= 18) {
+                return {
+                    cefr: "B1 (Intermediate)",
+                    badgeColor: "bg-indigo-100 text-indigo-800 border-indigo-200",
+                    summary: "Хороший середній рівень! Ви орієнтуєтеся у Present Perfect, пасивному стані та умовних реченнях 1-го типу.",
+                    recommendation: "Рекомендовані розділи: Full Blast 9 — Full Blast 11, Karpiuk 10"
+                };
+            }
+            if (score <= 22) {
+                return {
+                    cefr: "B2 (Upper-Intermediate)",
+                    badgeColor: "bg-purple-100 text-purple-800 border-purple-200",
+                    summary: "Високий рівень володіння граматикою та лексикою, достатній для успішного складання НМТ та міжнародних іспитів.",
+                    recommendation: "Рекомендовані розділи: Oxford Exam Trainer B2, Get 200(2)"
+                };
+            }
+            return {
+                cefr: "C1 (Advanced)",
+                badgeColor: "bg-amber-100 text-amber-900 border-amber-300",
+                summary: "Вільне володіння складною граматикою (інверсія, умовні конструкції) та академічною лексикою.",
+                recommendation: "Рекомендовані розділи: Oxford Exam Trainer B2, Get 200(2) (поглиблений рівень)"
+            };
+        }
+
+        // =========================================================================
+        // 4. БАЗА ТЕСТІВ ТА МАТЕРІАЛІВ (В ОЧІКУВАННІ ВАШОГО ЄДИНОГО ЗРАЗКА ТЕСТІВ)
         // =========================================================================
         const TESTS_DATABASE = {
-            "Full Blast 5": [
-                { id: 1, title: "Module 1: Vocabulary", description: "Words for Module 1. Greetings, countries, nationalities.", link: "#" },
-                { id: 2, title: "Module 1: Grammar", description: "Verb to be, Have got, Present Simple.", link: "#" }
-            ],
-            "Full Blast 6": [
-                {
-                    id: 10,
-                    title: "Module 3 Test (22 Questions)",
-                    description: "22 Multiple Choice Questions (Vocabulary, Communication & Grammar). Max score: 11.",
-                    maxGrade: 11,
-                    questions: [
-                        { question: "Which part of the body is between your foot and your leg?", options: ["wrist", "ankle", "neck", "knee"], correct: 1 },
-                        { question: "Which part of the body connects your hand to your arm?", options: ["ankle", "back", "wrist", "knee"], correct: 2 },
-                        { question: "Walk on the __________, please! It's dangerous to walk in the street.", options: ["bush", "pavement", "ladder", "wheel"], correct: 1 },
-                        { question: "Oh, look! There's a cat behind that __________.", options: ["prize", "pavement", "bush", "neck"], correct: 2 },
-                        { question: "The __________ for the winner of this competition is a trip to Chile.", options: ["prize", "adventure", "noise", "voice"], correct: 0 },
-                        { question: "Donald was on the bumper car ride when he crashed and hurt his __________.", options: ["flat", "prize", "neck", "bush"], correct: 2 },
-                        { question: "I was __________ to see Alison at the concert.", options: ["probably", "surprised", "worried", "angry"], correct: 1 },
-                        { question: "My dad got a __________ tyre so he was late for work.", options: ["flat", "lucky", "broken", "heavy"], correct: 0 },
-                        { question: "I __________ on some water, fell down and hurt my knee.", options: ["sprained", "slipped", "chased", "crashed"], correct: 1 },
-                        { question: "Look at those __________ in the snow!", options: ["shadows", "adventures", "footprints", "wheels"], correct: 2 },
-                        { question: "Tony was riding his bike when he __________ into a tree.", options: ["chased", "slipped", "sprained", "crashed"], correct: 3 },
-                        { question: "That woman needs help! Someone call for an __________!", options: ["adventure", "ambulance", "accident", "elevator"], correct: 1 },
-                        { question: "Get me the __________. I want to climb up to that window.", options: ["wheel", "pavement", "ladder", "bush"], correct: 2 },
-                        { question: "Tell Gary to stop that __________. I can't hear the TV.", options: ["voice", "noise", "joke", "monster"], correct: 1 },
-                        { question: "She had an accident, but __________ she didn't get hurt.", options: ["immediately", "probably", "luckily", "suddenly"], correct: 2 },
-                        { question: "Choose the best response: — Why can't you get into your flat?", options: ["I missed the bus.", "I lost my keys.", "Never mind. I don't want any.", "I don't think so."], correct: 1 },
-                        { question: "Choose the best response: — There's no ketchup. Sorry.", options: ["Never mind. I don't want any.", "Believe it or not, I was stuck in a lift.", "I think someone's playing a joke on you.", "I missed the bus."], correct: 0 },
-                        { question: "A cat __________ me everywhere I went this morning.", options: ["followed", "was following", "were following", "is following"], correct: 1 },
-                        { question: "__________ you __________ TV at nine o'clock yesterday evening?", options: ["Did / watch", "Was / watching", "Were / watching", "Are / watching"], correct: 2 },
-                        { question: "While Ted __________ for his mobile phone, he __________ his keys.", options: ["looked / was finding", "was looking / found", "was looking / was finding", "looked / found"], correct: 1 },
-                        { question: "Shhhh! I think there's __________ in the kitchen.", options: ["anyone", "everyone", "someone", "no one"], correct: 2 },
-                        { question: "The police don't know what happened because __________ saw the accident.", options: ["nobody", "anybody", "nothing", "everyone"], correct: 0 }
-                    ]
-                }
-            ],
-            "Full Blast 9": [
-                { id: 5, title: "Unit 2", description: "22 Multiple Choice Questions (Vocabulary, Communication & Grammar).", link: "https://sites.google.com/lub1.ukr.education/interactive22-questionmcquiz/full-page-embed" },
-                { id: 9, title: "Unit 3", description: "Interactive online test for Unit 3.", link: "https://sites.google.com/view/fullblast9unit3/full-page-embed" }
-            ],
-            "Karpiuk 10": [
-                {
-                    id: 6,
-                    title: "Choose the Career (22 Questions)",
-                    description: "Context-based test on professions, education, and tenses (22 Questions). Max score: 11.",
-                    maxGrade: 11,
-                    sections: [
-                        {
-                            sectionTitle: "Part 1: The Beirut Interview (Grammar)",
-                            sectionInstructions: "Read the interview and choose the correct verb forms for the blanks [1] - [8].",
-                            contextHtml: `
-                                <strong>Interviewer:</strong> So, how long <span class="blank-marker">1</span> here?<br>
-                                <strong>Mary:</strong> For about 6 months now.<br>
-                                <strong>Interviewer:</strong> Why did you choose Beirut?<br>
-                                <strong>Mary:</strong> Because my husband John and I <span class="blank-marker">2</span> Arab culture and the language. John's an English teacher and he <span class="blank-marker">3</span> a job here in a language school.<br>
-                                <strong>Interviewer:</strong> Why did you want to take a year off?<br>
-                                <strong>Mary:</strong> Basically I <span class="blank-marker">4</span> a break from teaching. I love teaching children but I <span class="blank-marker">5</span> a change. Also I <span class="blank-marker">6</span> since I was little but I have never really had the chance to study drawing. So this <span class="blank-marker">7</span> like the perfect opportunity to have a change and learn to draw properly.<br>
-                                <strong>Interviewer:</strong> What have you been doing here since you arrived?<br>
-                                <strong>Mary:</strong> Well, I found a fantastic art teacher, called Fatima, and I <span class="blank-marker">8</span> classes with her since October.
-                            `,
-                            questions: [
-                                { num: 1, question: "Blank [1] (you / live)", options: ["did you live", "have you been living", "are you living", "do you live"], correct: 1 },
-                                { num: 2, question: "Blank [2] (always / love)", options: ["always loved", "are always loving", "have always loved", "always love"], correct: 2 },
-                                { num: 3, question: "Blank [3] (get)", options: ["got", "has got", "gets", "was getting"], correct: 0 },
-                                { num: 4, question: "Blank [4] (want)", options: ["have wanted", "was wanting", "want", "wanted"], correct: 3 },
-                                { num: 5, question: "Blank [5] (need)", options: ["am needing", "needed", "have needed", "need"], correct: 1 },
-                                { num: 6, question: "Blank [6] (draw and paint)", options: ["drew and painted", "have been drawing and painting", "draw and paint", "am drawing and painting"], correct: 1 },
-                                { num: 7, question: "Blank [7] (seem)", options: ["has seemed", "seems", "is seeming", "seemed"], correct: 3 },
-                                { num: 8, question: "Blank [8] (have)", options: ["have had", "had", "am having", "was having"], correct: 0 }
-                            ]
-                        },
-                        {
-                            sectionTitle: "Part 2: Work & Education (Vocabulary)",
-                            sectionInstructions: "Read the text about professions and choose the correct vocabulary words for the blanks [9] - [18].",
-                            contextHtml: `
-                                My cousin Liza is an interpreter. She gets a good <span class="blank-marker">9</span>. Liza speaks English and French <span class="blank-marker">10</span>. She studied at the university and travelled a lot. It helped her to improve her language skills, learn more about culture and traditions. Liza has an <span class="blank-marker">11</span> of working as an interpreter for seven years.<br><br>
-                                My older brother Denis is a manager. His job is <span class="blank-marker">12</span>. Although it is sometimes difficult to get in touch with him during the day, his <span class="blank-marker">13</span> is very interesting. First he <span class="blank-marker">14</span> from a university where he got a Master's degree in economics. Denis' work <span class="blank-marker">15</span> a lot of teamwork. I know he is quite successful. I'm proud of him.<br><br>
-                                As for me, I am a secretary at a textile factory. We receive many letters of <span class="blank-marker">16</span>, because our factory <span class="blank-marker">17</span> good work conditions. Next year I am going to get a Bachelor's degree in psychology and to <span class="blank-marker">18</span> for a position of a personnel manager.
-                            `,
-                            questions: [
-                                { num: 9, question: "Blank [9]", options: ["staff", "salary", "application", "profession"], correct: 1 },
-                                { num: 10, question: "Blank [10]", options: ["fluently", "requires", "well-paid", "offers"], correct: 0 },
-                                { num: 11, question: "Blank [11]", options: ["application", "profession", "experience", "staff"], correct: 2 },
-                                { num: 12, question: "Blank [12]", options: ["well-paid", "graduated", "applied", "required"], correct: 0 },
-                                { num: 13, question: "Blank [13]", options: ["staff", "profession", "salary", "experience"], correct: 1 },
-                                { num: 14, question: "Blank [14]", options: ["offered", "required", "graduated", "applied"], correct: 2 },
-                                { num: 15, question: "Blank [15]", options: ["graduates", "applies", "offers", "requires"], correct: 3 },
-                                { num: 16, question: "Blank [16]", options: ["salary", "application", "experience", "staff"], correct: 1 },
-                                { num: 17, question: "Blank [17]", options: ["offers", "graduates", "requires", "applies"], correct: 0 },
-                                { num: 18, question: "Blank [18]", options: ["require", "offer", "apply", "staff"], correct: 2 }
-                            ]
-                        },
-                        {
-                            sectionTitle: "Part 3: Past Simple vs Present Perfect Dialogues",
-                            sectionInstructions: "Read the short dialogues and choose the correct verb forms for the blanks [19] - [22].",
-                            contextHtml: `
-                                <strong>Dialogue 1</strong><br>
-                                <strong>A:</strong> How long <span class="blank-marker">19</span> at university?<br>
-                                <strong>B:</strong> I <span class="blank-marker">20</span> two years ago. I'm in my third year now.<br><br>
-                                <strong>Dialogue 2</strong><br>
-                                <strong>A:</strong> Do you live with your parents?<br>
-                                <strong>B:</strong> I lived with them for the first two years but I moved into a student hostel last September and I <span class="blank-marker">21</span> there since then.<br><br>
-                                <strong>Dialogue 3</strong><br>
-                                <strong>A:</strong> <span class="blank-marker">22</span> a job yet?<br>
-                                <strong>B:</strong> Yes, he has just started work in a hotel.
-                            `,
-                            questions: [
-                                { num: 19, question: "Blank [19] (you / be)", options: ["were you", "did you be", "are you", "have you been"], correct: 3 },
-                                { num: 20, question: "Blank [20] (start)", options: ["started", "have started", "start", "was starting"], correct: 0 },
-                                { num: 21, question: "Blank [21] (live)", options: ["am living", "lived", "have lived", "live"], correct: 2 },
-                                { num: 22, question: "Blank [22] (your brother / find)", options: ["Did your brother find", "Has your brother found", "Does your brother find", "Was your brother finding"], correct: 1 }
-                            ]
-                        }
-                    ]
-                }
-            ],
+            "Full Blast 5": [],
+            "Full Blast 6": [],
+            "Full Blast 9": [],
+            "Karpiuk 10": [],
             "Oxford Exam Trainer B2": [
                 { id: 3, unit: "All", title: "All Exam Preparation Materials (Google Drive)", description: "General folder with practice tests and materials for Oxford Exam Trainer B2.", link: "https://drive.google.com/drive/folders/1l4h0OvuMoXlUcPUQHRJNEaXZJ8GA-hc2?usp=sharing" }
             ],
@@ -217,12 +194,18 @@
                 { id: 7, unit: "All", title: "All Practice Materials & Worksheets (Google Drive)", description: "General folder with Word documents and practice tasks for Get 200 (Book 2).", link: "https://drive.google.com/drive/folders/1ah3A5jWdOc2AjvegAvTW3lYHms6JDs9E?usp=sharing" }
             ],
             "Listening Practice": [
-                { id: 8, title: "Listening Practice Materials", description: "Google Drive folder with audio files, tasks, and worksheets for listening comprehension.", link: "https://drive.google.com/drive/folders/1tvlO2Sn3fD2aD7lGWg-psbZVLnpI2nDN?usp=sharing" }
+                {
+                    id: 8,
+                    level: "All",
+                    title: "Main Listening Archive (Google Drive)",
+                    description: "Complete Google Drive folder with all audio tracks, scripts, and printable worksheets.",
+                    link: "https://drive.google.com/drive/folders/1tvlO2Sn3fD2aD7lGWg-psbZVLnpI2nDN?usp=sharing"
+                }
             ]
         };
 
         // =========================================================================
-        // 4. ДОПОМІЖНІ ФУНКЦІЇ
+        // 5. ДОПОМІЖНІ ФУНКЦІЇ
         // =========================================================================
         function isBuiltInQuiz(test) {
             return Boolean(
@@ -272,10 +255,11 @@
             } catch (e) {}
         }
 
-        function buildShareUrl(category, unit, testId) {
+        function buildShareUrl(category, subFilter, testId) {
             const base = window.location.origin + window.location.pathname;
+            if (testId === "cefr-test") return `${base}#cefr-test`;
             if (testId) return `${base}#test-${testId}`;
-            if (unit && unit !== "All") return `${base}#${encodeURIComponent(category)}/${encodeURIComponent(unit)}`;
+            if (subFilter && subFilter !== "All") return `${base}#${encodeURIComponent(category)}/${encodeURIComponent(subFilter)}`;
             return `${base}#${encodeURIComponent(category)}`;
         }
 
@@ -286,6 +270,9 @@
         }
 
         function findTestById(testsMap, targetId) {
+            if (String(targetId).toLowerCase() === "cefr-test") {
+                return { category: "Home", test: CEFR_PLACEMENT_TEST };
+            }
             for (const cat of Object.keys(testsMap)) {
                 const found = (testsMap[cat] || []).find(t => String(t.id) === String(targetId));
                 if (found) return { category: cat, test: found };
@@ -295,7 +282,11 @@
 
         function parseHashRoute(testsMap) {
             const rawHash = decodeURIComponent((window.location.hash || "").replace(/^#/, "")).trim();
-            if (!rawHash) return { tab: "Home", unit: "All", test: null };
+            if (!rawHash) return { tab: "Home", subFilter: "All", test: null };
+
+            if (rawHash.toLowerCase() === "cefr-test") {
+                return { tab: "Home", subFilter: "All", test: CEFR_PLACEMENT_TEST };
+            }
 
             if (rawHash.toLowerCase().startsWith("test-")) {
                 const id = rawHash.slice(5);
@@ -303,7 +294,7 @@
                 if (match) {
                     return {
                         tab: match.category,
-                        unit: match.test.unit || "All",
+                        subFilter: match.test.unit || match.test.level || "All",
                         test: match.test
                     };
                 }
@@ -312,20 +303,53 @@
             const parts = rawHash.split("/");
             const catConfig = findCategoryConfig(parts[0]);
             if (catConfig) {
-                let unit = "All";
+                let subFilter = "All";
                 if (catConfig.hasUnits && parts[1]) {
                     const matchedUnit = UNIT_LIST.find(u => u.toLowerCase() === parts[1].toLowerCase());
-                    if (matchedUnit) unit = matchedUnit;
+                    if (matchedUnit) subFilter = matchedUnit;
+                } else if (catConfig.hasLevels && parts[1]) {
+                    const matchedLevel = LISTENING_LEVELS.find(l => l.toLowerCase() === parts[1].toLowerCase());
+                    if (matchedLevel) subFilter = matchedLevel;
                 }
-                return { tab: catConfig.id, unit: unit, test: null };
+                return { tab: catConfig.id, subFilter: subFilter, test: null };
             }
 
-            return { tab: "Home", unit: "All", test: null };
+            return { tab: "Home", subFilter: "All", test: null };
         }
 
         // =========================================================================
-        // 5. ВЕКТОРНІ ІКОНКИ
+        // 6. ВЕКТОРНІ ІКОНКИ + ФІРМОВИЙ ЗНАК (ВАРІАНТ 2)
         // =========================================================================
+        function BrandLogoMark({ size = 40 }) {
+            return h("svg", {
+                xmlns: "http://www.w3.org/2000/svg",
+                width: size,
+                height: size,
+                viewBox: "0 0 64 64",
+                className: "shrink-0 shadow-md rounded-xl"
+            },
+                h("defs", null,
+                    h("linearGradient", { id: "seh-brand-grad", x1: "0%", y1: "0%", x2: "100%", y2: "100%" },
+                        h("stop", { offset: "0%", stopColor: "#4f46e5" }),
+                        h("stop", { offset: "100%", stopColor: "#9333ea" })
+                    )
+                ),
+                h("rect", { width: "64", height: "64", rx: "16", fill: "url(#seh-brand-grad)" }),
+                h("path", {
+                    d: "M32 25v23M14 44a2 2 0 0 1-2-2V23a2 2 0 0 1 2-2h9a9 9 0 0 1 9 9 9 9 0 0 1 9-9h9a2 2 0 0 1 2 2v19a2 2 0 0 1-2 2h-11a7 7 0 0 0-7 6 7 7 0 0 0-7-6H14z",
+                    fill: "none",
+                    stroke: "#ffffff",
+                    strokeWidth: "3.5",
+                    strokeLinecap: "round",
+                    strokeLinejoin: "round"
+                }),
+                h("path", {
+                    d: "M32 9l2.2 5.3L39.5 16.5l-5.3 2.2L32 24l-2.2-5.3-5.3-2.2 5.3-2.2L32 9z",
+                    fill: "#fbbf24"
+                })
+            );
+        }
+
         function SvgIcon({ name, size = 20, className = "" }) {
             const paths = {
                 house: [
@@ -338,10 +362,6 @@
                 ],
                 headphones: [
                     h("path", { key: 1, d: "M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3" })
-                ],
-                sparkles: [
-                    h("path", { key: 1, d: "M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" }),
-                    h("path", { key: 2, d: "M20 3v4" }), h("path", { key: 3, d: "M22 5h-4" })
                 ],
                 play: [h("polygon", { key: 1, points: "6 3 20 12 6 21 6 3" })],
                 share: [
@@ -367,6 +387,14 @@
                 bookText: [
                     h("path", { key: 1, d: "M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" }),
                     h("path", { key: 2, d: "M8 11h8" }), h("path", { key: 3, d: "M8 7h6" })
+                ],
+                search: [
+                    h("circle", { key: 1, cx: "11", cy: "11", r: "8" }),
+                    h("path", { key: 2, d: "m21 21-4.3-4.3" })
+                ],
+                award: [
+                    h("circle", { key: 1, cx: "12", cy: "8", r: "6" }),
+                    h("path", { key: 2, d: "M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" })
                 ]
             };
             return h("svg", {
@@ -384,7 +412,7 @@
         }
 
         // =========================================================================
-        // 6. ВБУДОВАНИЙ ПЛЕЄР ТЕСТІВ (ПІДТРИМУЄ ЗВИЧАЙНІ ТА КОНТЕКСТНІ ТЕСТИ)
+        // 7. ВБУДОВАНИЙ ПЛЕЄР ТЕСТІВ (ВКЛЮЧНО З CEFR PLACEMENT TEST)
         // =========================================================================
         function EmbeddedQuizModal({ test, category, onClose }) {
             const getSavedStudent = () => {
@@ -403,7 +431,6 @@
             const [answers, setAnswers] = useState({});
             const [submitted, setSubmitted] = useState(false);
 
-            // Нормалізуємо структуру тесту у масив секцій (щоб однаково працювали і звичайні, і контекстні тести)
             const normalizedSections = test.sections && test.sections.length > 0
                 ? test.sections
                 : [{ sectionTitle: null, sectionInstructions: null, contextHtml: null, questions: test.questions || [] }];
@@ -420,7 +447,8 @@
             const allFlatQuestions = sectionsWithKeys.reduce((acc, s) => acc.concat(s.questions), []);
             const total = allFlatQuestions.length;
             const maxGrade = test.maxGrade || 11;
-            const shareUrl = buildShareUrl(category, test.unit, test.id);
+            const isCefr = Boolean(test.isCefrTest);
+            const shareUrl = buildShareUrl(category, test.unit || test.level, test.id);
 
             const handleCopyTestLink = () => {
                 copyToClipboard(shareUrl);
@@ -443,36 +471,52 @@
             const handleSubmit = () => {
                 let correctCount = 0;
                 allFlatQuestions.forEach(q => { if (answers[q._key] === q.correct) correctCount++; });
-                const finalGrade = calculateGrade(correctCount);
                 setSubmitted(true);
+
                 if (student) {
-                    const unitPrefix = test.unit && test.unit !== "All" ? ` (${test.unit})` : "";
-                    logToGoogleSheet(
-                        student.studentClass,
-                        student.studentName,
-                        `${category}${unitPrefix}: ${test.title}`,
-                        `${finalGrade} / ${maxGrade} (${correctCount}/${total})`
-                    );
+                    if (isCefr) {
+                        const cefrResult = evaluateCefrScore(correctCount);
+                        logToGoogleSheet(
+                            student.studentClass,
+                            student.studentName,
+                            "CEFR Level Placement Test",
+                            `${cefrResult.cefr} (${correctCount}/${total})`
+                        );
+                    } else {
+                        const finalGrade = calculateGrade(correctCount);
+                        const unitPrefix = test.unit && test.unit !== "All" ? ` (${test.unit})` : "";
+                        logToGoogleSheet(
+                            student.studentClass,
+                            student.studentName,
+                            `${category}${unitPrefix}: ${test.title}`,
+                            `${finalGrade} / ${maxGrade} (${correctCount}/${total})`
+                        );
+                    }
                 }
             };
 
             let score = 0;
             let grade = 0;
+            let cefrEval = null;
             if (submitted) {
                 allFlatQuestions.forEach(q => { if (answers[q._key] === q.correct) score++; });
-                grade = calculateGrade(score);
+                if (isCefr) {
+                    cefrEval = evaluateCefrScore(score);
+                } else {
+                    grade = calculateGrade(score);
+                }
             }
 
             if (isEditingStudent || !student) {
                 return h("div", { className: "fixed inset-0 bg-slate-900/75 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" },
                     h("div", { className: "bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden" },
                         h("div", { className: "bg-gradient-to-r from-indigo-600 to-purple-600 p-6 flex justify-between items-center text-white" },
-                            h("div", null,
-                                h("div", { className: "flex items-center gap-1.5 text-xs text-indigo-100 font-bold mb-1" },
-                                    h(SvgIcon, { name: "sparkles", size: 14, className: "text-amber-300" }),
-                                    h("span", null, `Smart English Hub • ${category}${test.unit && test.unit !== "All" ? " • " + test.unit : ""}`)
-                                ),
-                                h("h3", { className: "text-xl font-bold" }, test.title)
+                            h("div", { className: "flex items-center gap-3" },
+                                h(BrandLogoMark, { size: 38 }),
+                                h("div", null,
+                                    h("div", { className: "text-xs text-indigo-100 font-bold" }, isCefr ? "Smart English Hub • Level Check" : `Smart English Hub • ${category}`),
+                                    h("h3", { className: "text-lg font-bold leading-snug" }, test.title)
+                                )
                             ),
                             h("button", { onClick: onClose, className: "hover:bg-white/20 p-2 rounded-full transition" }, h(SvgIcon, { name: "x", size: 22 }))
                         ),
@@ -508,21 +552,23 @@
 
             return h("div", { className: "fixed inset-0 bg-slate-900/70 z-[100] flex items-center justify-center p-2 sm:p-4 backdrop-blur-sm overflow-y-auto" },
                 h("div", { className: "bg-white rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]" },
-                    // Шапка тесту
                     h("div", { className: "bg-gradient-to-r from-indigo-600 to-purple-600 p-5 sm:p-6 flex justify-between items-center text-white shrink-0" },
-                        h("div", null,
-                            h("div", { className: "flex flex-wrap items-center gap-2" },
-                                h("span", { className: "text-xs font-bold text-amber-300 flex items-center gap-1" }, h(SvgIcon, { name: "sparkles", size: 14 }), "Smart English Hub"),
-                                h("span", { className: "text-xs uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, category),
-                                test.unit && test.unit !== "All" && h("span", { className: "text-xs bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, test.unit),
-                                h("span", { className: "text-xs bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full font-bold" }, `${student.studentName} (${student.studentClass})`),
-                                !submitted && h("button", {
-                                    type: "button",
-                                    onClick: () => { setLoginClass(student.studentClass); setLoginName(student.studentName); setIsEditingStudent(true); },
-                                    className: "text-xs underline text-indigo-100 hover:text-white ml-1"
-                                }, "Змінити")
-                            ),
-                            h("h3", { className: "text-xl md:text-2xl font-bold mt-1.5" }, test.title)
+                        h("div", { className: "flex items-center gap-3" },
+                            h("div", { className: "hidden sm:block" }, h(BrandLogoMark, { size: 42 })),
+                            h("div", null,
+                                h("div", { className: "flex flex-wrap items-center gap-2" },
+                                    h("span", { className: "text-xs font-bold text-amber-300" }, "Smart English Hub"),
+                                    !isCefr && h("span", { className: "text-xs uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, category),
+                                    test.unit && test.unit !== "All" && h("span", { className: "text-xs bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, test.unit),
+                                    h("span", { className: "text-xs bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full font-bold" }, `${student.studentName} (${student.studentClass})`),
+                                    !submitted && h("button", {
+                                        type: "button",
+                                        onClick: () => { setLoginClass(student.studentClass); setLoginName(student.studentName); setIsEditingStudent(true); },
+                                        className: "text-xs underline text-indigo-100 hover:text-white ml-1"
+                                    }, "Змінити")
+                                ),
+                                h("h3", { className: "text-lg md:text-2xl font-bold mt-1" }, test.title)
+                            )
                         ),
                         h("div", { className: "flex items-center gap-2" },
                             h("button", {
@@ -534,9 +580,28 @@
                         )
                     ),
 
-                    // Тіло тесту
                     h("div", { className: "p-5 sm:p-6 overflow-y-auto space-y-8 flex-1" },
-                        submitted && h("div", { className: "p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4" },
+                        // Результат для CEFR Placement Test
+                        submitted && isCefr && cefrEval && h("div", { className: "p-6 rounded-2xl bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50 border-2 border-indigo-200 space-y-4" },
+                            h("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4" },
+                                h("div", { className: "flex items-center gap-3.5" },
+                                    h("div", { className: "w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md" }, h(SvgIcon, { name: "award", size: 30 })),
+                                    h("div", null,
+                                        h("div", { className: "text-xs font-bold uppercase tracking-wider text-indigo-600" }, "Ваш визначений рівень CEFR"),
+                                        h("h4", { className: "text-2xl sm:text-3xl font-extrabold text-slate-900" }, cefrEval.cefr)
+                                    )
+                                ),
+                                h("div", { className: "bg-white px-5 py-3 rounded-xl border border-indigo-100 text-center shrink-0 shadow-sm" },
+                                    h("div", { className: "text-xs font-bold uppercase text-slate-400" }, "Результат"),
+                                    h("div", { className: "text-2xl font-extrabold text-indigo-700" }, `${score} / ${total}`)
+                                )
+                            ),
+                            h("p", { className: "text-slate-700 text-sm sm:text-base leading-relaxed" }, cefrEval.summary),
+                            h("div", { className: "p-3.5 rounded-xl bg-white border border-indigo-100 text-sm font-bold text-indigo-800" }, "📌 " + cefrEval.recommendation)
+                        ),
+
+                        // Результат для звичайного шкільного тесту
+                        submitted && !isCefr && h("div", { className: "p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4" },
                             h("div", { className: "flex items-center gap-3" },
                                 h("div", { className: "w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0" }, h(SvgIcon, { name: "check", size: 28 })),
                                 h("div", null,
@@ -561,7 +626,10 @@
                             }),
                             h("div", { className: "space-y-4" },
                                 sec.questions.map(q => h("div", { key: q._key, className: "p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3" },
-                                    h("p", { className: "font-bold text-slate-800 text-base" }, `${q._displayNum}. ${q.question}`),
+                                    h("div", { className: "flex items-start justify-between gap-2" },
+                                        h("p", { className: "font-bold text-slate-800 text-base" }, `${q._displayNum}. ${q.question}`),
+                                        submitted && q.level && h("span", { className: "text-xs font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700 shrink-0" }, q.level)
+                                    ),
                                     h("div", { className: "grid sm:grid-cols-2 gap-2.5" },
                                         q.options.map((opt, optIdx) => {
                                             const isSelected = answers[q._key] === optIdx;
@@ -590,7 +658,6 @@
                         ))
                     ),
 
-                    // Футер тесту
                     h("div", { className: "p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center shrink-0" },
                         h("span", { className: "text-sm text-slate-500" }, `Відповідей: ${Object.keys(answers).length} з ${total}`),
                         !submitted
@@ -598,7 +665,7 @@
                                 onClick: handleSubmit,
                                 disabled: Object.keys(answers).length < total,
                                 className: "px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-bold rounded-xl shadow-md transition"
-                            }, "Перевірити та зберегти")
+                            }, isCefr ? "Визначити мій рівень CEFR" : "Перевірити та зберегти")
                             : h("button", {
                                 onClick: onClose,
                                 className: "px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition"
@@ -610,7 +677,7 @@
 
         function ExternalTestModal({ test, category, onClose }) {
             const [copied, setCopied] = useState(false);
-            const shareUrl = buildShareUrl(category, test.unit, test.id);
+            const shareUrl = buildShareUrl(category, test.unit || test.level, test.id);
 
             const handleCopy = () => {
                 copyToClipboard(shareUrl);
@@ -622,9 +689,7 @@
                 h("div", { className: "bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden border border-slate-100" },
                     h("div", { className: "bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 p-6 flex justify-between items-center text-white" },
                         h("div", { className: "flex items-center gap-3" },
-                            h("div", { className: "w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-amber-300 shrink-0" },
-                                h(SvgIcon, { name: "sparkles", size: 22 })
-                            ),
+                            h(BrandLogoMark, { size: 40 }),
                             h("div", null,
                                 h("div", { className: "text-xs text-indigo-100 font-bold" }, `Smart English Hub • ${category}${test.unit && test.unit !== "All" ? " • " + test.unit : ""}`),
                                 h("h3", { className: "text-xl font-bold leading-snug" }, test.title)
@@ -669,21 +734,23 @@
             );
         }
 
-        function HomeView({ setActiveTab }) {
+        function HomeView({ setActiveTab, onOpenCefrTest }) {
             return h("div", { className: "max-w-5xl mx-auto space-y-8" },
                 h("div", { className: "rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 p-8 md:p-12 text-white shadow-xl relative overflow-hidden" },
                     h("div", { className: "relative z-10 max-w-4xl space-y-4" },
                         h("span", { className: "inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-sm font-medium" }, "✨ Interactive Learning"),
                         h("h1", { className: "text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight" }, "Master English with Smart English Hub"),
-                        h("p", { className: "text-indigo-100 text-lg md:text-xl leading-relaxed max-w-2xl" }, "Choose your grade or textbook in the menu on the left and start practicing!"),
+                        h("p", { className: "text-indigo-100 text-lg md:text-xl leading-relaxed max-w-2xl" }, "Check your English level (CEFR A1–C1) or choose your textbook in the menu on the left to start practicing!"),
                         h("div", { className: "pt-4 flex flex-wrap gap-3" },
                             h("button", {
-                                onClick: () => setActiveTab("Full Blast 6"),
-                                className: "px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 flex items-center gap-2"
-                            }, h(SvgIcon, { name: "play", size: 20 }), "Start Learning"),
+                                type: "button",
+                                onClick: onOpenCefrTest,
+                                className: "px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer"
+                            }, h(SvgIcon, { name: "play", size: 20 }), "Start Learning (CEFR Level Test)"),
                             h("button", {
+                                type: "button",
                                 onClick: () => setActiveTab("Oxford Exam Trainer B2"),
-                                className: "px-6 py-3.5 bg-white/15 hover:bg-white/25 text-white font-bold rounded-xl backdrop-blur-md transition flex items-center gap-2"
+                                className: "px-6 py-3.5 bg-white/15 hover:bg-white/25 text-white font-bold rounded-xl backdrop-blur-md transition flex items-center gap-2 cursor-pointer"
                             }, h(SvgIcon, { name: "grad", size: 20 }), "Exam Preparation (NMT)")
                         )
                     )
@@ -697,7 +764,7 @@
                     h("div", { className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center space-y-3" },
                         h("div", { className: "w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mx-auto" }, h(SvgIcon, { name: "play", size: 24 })),
                         h("h3", { className: "font-bold text-lg text-slate-800" }, "Instant Results"),
-                        h("p", { className: "text-slate-500 text-sm" }, "See your score and mistakes right after completing a test.")
+                        h("p", { className: "text-slate-500 text-sm" }, "See your score, CEFR level, and mistakes right after completing a test.")
                     ),
                     h("div", { className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center space-y-3" },
                         h("div", { className: "w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mx-auto" }, h(SvgIcon, { name: "grad", size: 24 })),
@@ -708,26 +775,40 @@
             );
         }
 
-        function CategoryView({ categoryConfig, activeUnit, onSelectUnit, tests, onOpenTest }) {
+        function CategoryView({ categoryConfig, activeSubFilter, onSelectSubFilter, tests, onOpenTest }) {
             const [copiedPage, setCopiedPage] = useState(false);
             const [copiedTestId, setCopiedTestId] = useState(null);
+            const [searchQuery, setSearchQuery] = useState("");
+
+            useEffect(() => {
+                setSearchQuery("");
+            }, [categoryConfig.id]);
 
             const category = categoryConfig.id;
             const hasUnits = Boolean(categoryConfig.hasUnits);
+            const hasLevels = Boolean(categoryConfig.hasLevels);
 
-            const filteredTests = hasUnits && activeUnit !== "All"
-                ? tests.filter(t => t.unit === activeUnit)
-                : tests;
+            const filteredTests = tests.filter(t => {
+                if (hasUnits && activeSubFilter !== "All" && t.unit !== activeSubFilter) return false;
+                if (hasLevels && activeSubFilter !== "All" && t.level !== activeSubFilter && t.level !== "All") return false;
+                if (searchQuery.trim()) {
+                    const q = searchQuery.toLowerCase();
+                    const matchTitle = (t.title || "").toLowerCase().includes(q);
+                    const matchDesc = (t.description || "").toLowerCase().includes(q);
+                    if (!matchTitle && !matchDesc) return false;
+                }
+                return true;
+            });
 
             const handleCopyPageLink = () => {
-                const url = buildShareUrl(category, hasUnits ? activeUnit : null, null);
+                const url = buildShareUrl(category, (hasUnits || hasLevels) ? activeSubFilter : null, null);
                 copyToClipboard(url);
                 setCopiedPage(true);
                 setTimeout(() => setCopiedPage(false), 3000);
             };
 
             const handleCopyTestLink = (test) => {
-                const url = buildShareUrl(category, test.unit, test.id);
+                const url = buildShareUrl(category, test.unit || test.level, test.id);
                 copyToClipboard(url);
                 setCopiedTestId(test.id);
                 setTimeout(() => setCopiedTestId(null), 3000);
@@ -739,12 +820,14 @@
                         h("div", null,
                             h("div", { className: "flex items-center gap-2.5 flex-wrap" },
                                 h("h1", { className: "text-2xl md:text-3xl font-bold text-slate-800" }, category),
-                                hasUnits && activeUnit !== "All" && h("span", { className: "px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold" }, activeUnit)
+                                (hasUnits || hasLevels) && activeSubFilter !== "All" && h("span", { className: "px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold" }, activeSubFilter)
                             ),
                             h("p", { className: "text-slate-500 text-sm mt-1" },
                                 hasUnits
                                     ? "Select a Unit below or browse all exam preparation tasks"
-                                    : "Select a test or resource below to start practicing"
+                                    : hasLevels
+                                        ? "Filter listening tracks and worksheets by CEFR level or search by topic"
+                                        : "Select a test or resource below to start practicing"
                             )
                         ),
                         h("button", {
@@ -754,15 +837,16 @@
                         }, h(SvgIcon, { name: "share", size: 18 }), copiedPage ? "Посилання скопійовано!" : "Copy Page Link")
                     ),
 
+                    // Панель Unit 1 - Unit 12 для Exam Preparation
                     hasUnits && h("div", { className: "pt-2 border-t border-slate-100" },
                         h("div", { className: "text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5" }, "Units Navigation (Unit 1 — Unit 12):"),
                         h("div", { className: "flex flex-wrap gap-2" },
                             ["All", ...UNIT_LIST].map(unitName => {
-                                const isSelected = activeUnit === unitName;
+                                const isSelected = activeSubFilter === unitName;
                                 return h("button", {
                                     key: unitName,
                                     type: "button",
-                                    onClick: () => onSelectUnit(unitName),
+                                    onClick: () => onSelectSubFilter(unitName),
                                     className: `px-3.5 py-1.5 rounded-xl text-sm font-semibold transition cursor-pointer ${
                                         isSelected
                                             ? "bg-indigo-600 text-white shadow-sm"
@@ -771,31 +855,63 @@
                                 }, unitName === "All" ? "All Units" : unitName);
                             })
                         )
+                    ),
+
+                    // Панель фільтрів CEFR + пошук для Listening Practice
+                    hasLevels && h("div", { className: "pt-3 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4" },
+                        h("div", { className: "flex flex-wrap gap-2" },
+                            LISTENING_LEVELS.map(lvl => {
+                                const isSelected = activeSubFilter === lvl;
+                                return h("button", {
+                                    key: lvl,
+                                    type: "button",
+                                    onClick: () => onSelectSubFilter(lvl),
+                                    className: `px-3.5 py-1.5 rounded-xl text-sm font-semibold transition cursor-pointer ${
+                                        isSelected
+                                            ? "bg-indigo-600 text-white shadow-sm"
+                                            : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900"
+                                    }`
+                                }, lvl === "All" ? "All Levels" : lvl);
+                            })
+                        ),
+                        h("div", { className: "relative w-full md:w-64" },
+                            h("div", { className: "absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400" },
+                                h(SvgIcon, { name: "search", size: 16 })
+                            ),
+                            h("input", {
+                                type: "text",
+                                value: searchQuery,
+                                onChange: (e) => setSearchQuery(e.target.value),
+                                placeholder: "Пошук аудіювання...",
+                                className: "w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            })
+                        )
                     )
                 ),
 
                 filteredTests.length === 0
                     ? h("div", { className: "text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200 space-y-2" },
                         h("p", { className: "text-slate-600 font-semibold" },
-                            hasUnits && activeUnit !== "All"
-                                ? `${category} — ${activeUnit}: матеріали та тести готуються`
-                                : "У цьому розділі поки немає доданих тестів."
+                            hasUnits && activeSubFilter !== "All"
+                                ? `${category} — ${activeSubFilter}: матеріали та тести готуються`
+                                : "У цьому розділі поки немає доданих тестів або матеріалів."
                         ),
-                        h("p", { className: "text-slate-400 text-sm" }, "Нові завдання з'являться тут найближчим часом.")
+                        h("p", { className: "text-slate-400 text-sm" }, "Нові завдання з'являться тут за єдиним стандартом найближчим часом.")
                     )
                     : h("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6" },
                         filteredTests.map(test => {
                             const builtIn = isBuiltInQuiz(test);
+                            const badgeText = (test.unit && test.unit !== "All") ? test.unit : (test.level && test.level !== "All" ? test.level : null);
                             return h("div", { key: test.id, className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition flex flex-col justify-between" },
                                 h("div", { className: "space-y-2.5 mb-6" },
                                     h("div", { className: "flex items-start justify-between gap-2" },
                                         h("div", null,
-                                            test.unit && test.unit !== "All" && h("span", { className: "inline-block text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md mb-1.5" }, test.unit),
+                                            badgeText && h("span", { className: "inline-block text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md mb-1.5" }, badgeText),
                                             h("h3", { className: "font-bold text-lg text-slate-800 leading-snug" }, test.title)
                                         ),
                                         h("button", {
                                             type: "button",
-                                            title: "Скопіювати пряме посилання на цей тест",
+                                            title: "Скопіювати пряме посилання на цей матеріал",
                                             onClick: () => handleCopyTestLink(test),
                                             className: "p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 text-slate-500 hover:text-indigo-600 transition shrink-0 flex items-center gap-1 text-xs font-semibold cursor-pointer"
                                         },
@@ -821,12 +937,12 @@
         }
 
         // =========================================================================
-        // 7. ГОЛОВНИЙ ДОДАТОК
+        // 8. ГОЛОВНИЙ ДОДАТОК
         // =========================================================================
         function App() {
             const initialRoute = parseHashRoute(TESTS_DATABASE);
             const [activeTab, setActiveTab] = useState(initialRoute.tab);
-            const [activeUnit, setActiveUnit] = useState(initialRoute.unit);
+            const [activeSubFilter, setActiveSubFilter] = useState(initialRoute.subFilter);
             const [activeTest, setActiveTest] = useState(initialRoute.test);
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -834,7 +950,7 @@
                 const onHashChange = () => {
                     const route = parseHashRoute(TESTS_DATABASE);
                     setActiveTab(route.tab);
-                    setActiveUnit(route.unit);
+                    setActiveSubFilter(route.subFilter);
                     setActiveTest(route.test);
                 };
                 window.addEventListener("hashchange", onHashChange);
@@ -858,30 +974,39 @@
 
             const selectTab = (tabId) => {
                 setActiveTab(tabId);
-                setActiveUnit("All");
+                setActiveSubFilter("All");
                 setActiveTest(null);
                 setIsMobileMenuOpen(false);
                 window.location.hash = tabId === "Home" ? "" : encodeURIComponent(tabId);
             };
 
-            const selectUnit = (unitName) => {
-                setActiveUnit(unitName);
+            const selectSubFilter = (filterName) => {
+                setActiveSubFilter(filterName);
                 setActiveTest(null);
-                window.location.hash = unitName === "All"
+                window.location.hash = filterName === "All"
                     ? encodeURIComponent(activeTab)
-                    : `${encodeURIComponent(activeTab)}/${encodeURIComponent(unitName)}`;
+                    : `${encodeURIComponent(activeTab)}/${encodeURIComponent(filterName)}`;
+            };
+
+            const openCefrTest = () => {
+                setActiveTest(CEFR_PLACEMENT_TEST);
+                window.location.hash = "cefr-test";
             };
 
             const openTest = (test) => {
                 setActiveTest(test);
-                window.location.hash = `test-${test.id}`;
+                window.location.hash = test.id === "cefr-test" ? "cefr-test" : `test-${test.id}`;
             };
 
             const closeTest = () => {
                 setActiveTest(null);
-                window.location.hash = activeUnit !== "All"
-                    ? `${encodeURIComponent(activeTab)}/${encodeURIComponent(activeUnit)}`
-                    : encodeURIComponent(activeTab);
+                if (activeTab === "Home") {
+                    window.location.hash = "";
+                } else {
+                    window.location.hash = activeSubFilter !== "All"
+                        ? `${encodeURIComponent(activeTab)}/${encodeURIComponent(activeSubFilter)}`
+                        : encodeURIComponent(activeTab);
+                }
             };
 
             const currentCategoryConfig = findCategoryConfig(activeTab);
@@ -892,6 +1017,7 @@
                     onClick: () => setIsMobileMenuOpen(false)
                 }),
 
+                // Бокове меню з однаковим логотипом та фавіконом (Варіант 2)
                 h("aside", {
                     className: `fixed md:static inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out flex flex-col ${
                         isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
@@ -902,9 +1028,7 @@
                         className: "p-6 border-b border-slate-100 flex items-center justify-between cursor-pointer"
                     },
                         h("div", { className: "flex items-center gap-3" },
-                            h("div", { className: "w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg" },
-                                h(SvgIcon, { name: "sparkles", size: 22 })
-                            ),
+                            h(BrandLogoMark, { size: 40 }),
                             h("h1", { className: "text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600" }, "Smart English Hub")
                         ),
                         h("button", { className: "md:hidden text-slate-500", onClick: (e) => { e.stopPropagation(); setIsMobileMenuOpen(false); } },
@@ -940,15 +1064,18 @@
                             h("button", { onClick: () => setIsMobileMenuOpen(true), className: "p-2 -ml-2 text-slate-600" }, h(SvgIcon, { name: "menu", size: 24 })),
                             h("span", { className: "font-bold text-slate-800 ml-2" }, activeTab)
                         ),
-                        h("span", { onClick: () => selectTab("Home"), className: "text-xs font-bold text-indigo-600 cursor-pointer" }, "Smart English Hub")
+                        h("div", { onClick: () => selectTab("Home"), className: "flex items-center gap-2 cursor-pointer" },
+                            h(BrandLogoMark, { size: 28 }),
+                            h("span", { className: "text-xs font-bold text-indigo-600" }, "Smart English Hub")
+                        )
                     ),
                     h("div", { className: "flex-1 overflow-y-auto p-6 md:p-10" },
                         activeTab === "Home" || !currentCategoryConfig
-                            ? h(HomeView, { setActiveTab: selectTab })
+                            ? h(HomeView, { setActiveTab: selectTab, onOpenCefrTest: openCefrTest })
                             : h(CategoryView, {
                                 categoryConfig: currentCategoryConfig,
-                                activeUnit: activeUnit,
-                                onSelectUnit: selectUnit,
+                                activeSubFilter: activeSubFilter,
+                                onSelectSubFilter: selectSubFilter,
                                 tests: TESTS_DATABASE[activeTab] || [],
                                 onOpenTest: openTest
                             })
