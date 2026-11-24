@@ -85,9 +85,10 @@
                 ]
             },
             {
-                title: "🎧 Skills",
+                title: "🎧 Skills & Library",
                 items: [
-                    { id: "Listening Practice", label: "Listening Practice", icon: "headphones", hasLevels: true }
+                    { id: "Listening Practice", label: "Listening Practice", icon: "headphones", hasLevels: true },
+                    { id: "Books", label: "Books & Textbooks", icon: "bookText" }
                 ]
             }
         ];
@@ -180,7 +181,7 @@
         }
 
         // =========================================================================
-        // 4. БАЗА ТЕСТІВ ТА МАТЕРІАЛІВ (В ОЧІКУВАННІ ВАШОГО ЄДИНОГО ЗРАЗКА ТЕСТІВ)
+        // 4. БАЗА ТЕСТІВ ТА МАТЕРІАЛІВ (ОНОВЛЕНІ ПОСИЛАННЯ НА НОВИЙ GOOGLE ДИСК)
         // =========================================================================
         const TESTS_DATABASE = {
             "Full Blast 5": [],
@@ -188,18 +189,38 @@
             "Full Blast 9": [],
             "Karpiuk 10": [],
             "Oxford Exam Trainer B2": [
-                { id: 3, unit: "All", title: "All Exam Preparation Materials (Google Drive)", description: "General folder with practice tests and materials for Oxford Exam Trainer B2.", link: "https://drive.google.com/drive/folders/1l4h0OvuMoXlUcPUQHRJNEaXZJ8GA-hc2?usp=sharing" }
+                {
+                    id: 3,
+                    unit: "All",
+                    title: "All Exam Preparation Materials (Unit 1 — Unit 12)",
+                    description: "Complete Google Drive folder with all Unit 1–12 folders, practice tests, and exam preparation materials for Oxford Exam Trainer B2.",
+                    link: "https://drive.google.com/drive/folders/1ZZUAZgyDhoW9yz5D6foTTnNhtz9zI98G?usp=drive_link"
+                }
             ],
             "Get 200(2)": [
-                { id: 7, unit: "All", title: "All Practice Materials & Worksheets (Google Drive)", description: "General folder with Word documents and practice tasks for Get 200 (Book 2).", link: "https://drive.google.com/drive/folders/1ah3A5jWdOc2AjvegAvTW3lYHms6JDs9E?usp=sharing" }
+                {
+                    id: 7,
+                    unit: "All",
+                    title: "All Practice Materials & Worksheets (Unit 1 — Unit 12)",
+                    description: "Complete Google Drive folder with all Unit 1–12 folders, Word documents, and practice tasks for Get 200 (Book 2).",
+                    link: "https://drive.google.com/drive/folders/1imagPKioPQ7K1QEvnfPnrEfO-6M4F3yl?usp=drive_link"
+                }
             ],
             "Listening Practice": [
                 {
                     id: 8,
                     level: "All",
                     title: "Main Listening Archive (Google Drive)",
-                    description: "Complete Google Drive folder with all audio tracks, scripts, and printable worksheets.",
-                    link: "https://drive.google.com/drive/folders/1tvlO2Sn3fD2aD7lGWg-psbZVLnpI2nDN?usp=sharing"
+                    description: "Complete Google Drive folder with all audio tracks, scripts, and printable worksheets organized by units and levels.",
+                    link: "https://drive.google.com/drive/folders/1rH7lpcANQDl-5lOgdwcRBD5ZN9w78Z8T?usp=drive_link"
+                }
+            ],
+            "Books": [
+                {
+                    id: 9,
+                    title: "Books & Textbooks Library (Google Drive)",
+                    description: "Digital library with Student's Books, Workbooks, Teacher's resources, and supplementary PDF textbooks.",
+                    link: "https://drive.google.com/drive/folders/1hNKq4USYqtPVo3J9CuH0KCKNenwgDmWW?usp=drive_link"
                 }
             ]
         };
@@ -727,7 +748,7 @@
                                 target: "_blank",
                                 rel: "noopener noreferrer",
                                 className: "py-3 px-5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md transition flex items-center justify-center gap-2 sm:w-2/3"
-                            }, h(SvgIcon, { name: "external", size: 18 }), "Відкрити матеріал")
+                            }, h(SvgIcon, { name: "external", size: 18 }), "Відкрити папку на Drive")
                         )
                     )
                 )
@@ -769,7 +790,7 @@
                     h("div", { className: "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center space-y-3" },
                         h("div", { className: "w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mx-auto" }, h(SvgIcon, { name: "grad", size: 24 })),
                         h("h3", { className: "font-bold text-lg text-slate-800" }, "Exam Preparation"),
-                        h("p", { className: "text-slate-500 text-sm" }, "Dedicated Unit 1–12 sections for NMT, ZNO, and international exams.")
+                        h("p", { className: "text-slate-500 text-sm" }, "Dedicated Unit 1–12 folders and resources for NMT, ZNO, and international exams.")
                     )
                 )
             );
@@ -819,15 +840,15 @@
                     h("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4" },
                         h("div", null,
                             h("div", { className: "flex items-center gap-2.5 flex-wrap" },
-                                h("h1", { className: "text-2xl md:text-3xl font-bold text-slate-800" }, category),
+                                h("h1", { className: "text-2xl md:text-3xl font-bold text-slate-800" }, categoryConfig.label || category),
                                 (hasUnits || hasLevels) && activeSubFilter !== "All" && h("span", { className: "px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold" }, activeSubFilter)
                             ),
                             h("p", { className: "text-slate-500 text-sm mt-1" },
                                 hasUnits
-                                    ? "Select a Unit below or browse all exam preparation tasks"
+                                    ? "Open the Google Drive archive (contains all Unit 1 — Unit 12 folders) or select an interactive test below"
                                     : hasLevels
-                                        ? "Filter listening tracks and worksheets by CEFR level or search by topic"
-                                        : "Select a test or resource below to start practicing"
+                                        ? "Open the Google Drive listening archive or filter interactive tracks by CEFR level"
+                                        : "Select a test or resource folder below"
                             )
                         ),
                         h("button", {
@@ -893,10 +914,14 @@
                     ? h("div", { className: "text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200 space-y-2" },
                         h("p", { className: "text-slate-600 font-semibold" },
                             hasUnits && activeSubFilter !== "All"
-                                ? `${category} — ${activeSubFilter}: матеріали та тести готуються`
+                                ? `${category} — ${activeSubFilter}: інтерактивний онлайн-тест готується (усі файли юніта доступні у вкладці All Units)`
                                 : "У цьому розділі поки немає доданих тестів або матеріалів."
                         ),
-                        h("p", { className: "text-slate-400 text-sm" }, "Нові завдання з'являться тут за єдиним стандартом найближчим часом.")
+                        hasUnits && activeSubFilter !== "All" && h("button", {
+                            type: "button",
+                            onClick: () => onSelectSubFilter("All"),
+                            className: "mt-2 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold rounded-xl text-sm transition cursor-pointer"
+                        }, "Перейти до All Units (Google Drive)")
                     )
                     : h("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6" },
                         filteredTests.map(test => {
@@ -929,7 +954,7 @@
                                             ? "bg-indigo-600 hover:bg-indigo-700 text-white"
                                             : "bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white"
                                     }`
-                                }, h(SvgIcon, { name: "play", size: 16 }), builtIn ? "Start Test" : "Open")
+                                }, h(SvgIcon, { name: builtIn ? "play" : "external", size: 16 }), builtIn ? "Start Test" : "Open Folder")
                             );
                         })
                     )
