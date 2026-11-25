@@ -784,7 +784,9 @@
                     questions: sec.questions.map(q => {
                         const key = globalIndex++;
                         const qType = q.type || (q.acceptedAnswers ? "text" : "mc");
-                        const shuffled = shuffleOptionsForQuestion({ ...q, type: qType });
+                        const shuffled = (test.isStudyGuide || !q.options)
+    ? { ...q, type: qType }
+    : shuffleOptionsForQuestion({ ...q, type: qType });
                         return {
                             ...shuffled,
                             _key: key,
