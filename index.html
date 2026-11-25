@@ -420,6 +420,57 @@
                             ]
                         }
                     ]
+                },{
+                    id: 1006,
+                    isStudyGuide: true,
+                    title: "Karpiuk 10 — End of Term 1 Speaking",
+                    description: "Speaking Exam Questions for Preparation (Topics: People & Relationships, Choose the Career • Target Grammar: used to, Present Perfect Simple & Continuous).",
+                    sections: [
+                        {
+                            sectionTitle: "Block 1. Family, Birth Order & Personality Traits",
+                            sectionInstructions: "Prepare detailed answers (4–6 sentences) using personality adjectives and 'used to'.",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> firstborn / middle / youngest / only child, get on well, ambitious, bossy, sociable, responsible, sensitive, spoilt, affectionate, competitive, reliable, moody.</p><p><strong>Target Grammar:</strong> <em>When I was younger, I <strong>used to be</strong>... / My brother <strong>didn't use to</strong>...</em></p></div>",
+                            questions: [
+                                { question: "How does your birth order in the family (oldest, middle, youngest, or only child) affect your personality? Describe your main strengths and weaknesses." },
+                                { question: "How has your character changed since childhood? What habits or traits did you use to have when you were younger that you don't have now?" },
+                                { question: "What personal qualities do you value most in family members and friends, and which traits (e.g., being bossy, selfish, or manipulative) do you find hardest to deal with?" },
+                                { question: "Have you ever had to look after younger brothers, sisters, or cousins? How did that experience make you more responsible?" }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Block 2. Friendship & Relationships (Present Perfect Simple & Continuous)",
+                            sectionInstructions: "Prepare to speak for 1–2 minutes using 'Present Perfect Simple' (how long / how many times) and 'Present Perfect Continuous' (for / since).",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> close friend, have a lot in common, keep in touch, lose touch, argue over small things, trust and respect, support each other.</p><p><strong>Target Grammar:</strong> <em>We <strong>have known</strong> each other since... / We <strong>have been hanging out</strong> together for...</em></p></div>",
+                            questions: [
+                                { question: "Tell about your closest friend. How long have you known each other, and what have you been doing together recently?" },
+                                { question: "Do true friends need to have a lot in common, or can people with completely different personalities get on well? Give examples from your life." },
+                                { question: "Have you ever lost touch with a good friend after changing schools or moving? What have you been doing to keep in touch with friends who live far away?" },
+                                { question: "What usually causes arguments between teenagers and their parents or friends, and how have you learnt to solve conflicts diplomatically?" }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Block 3. Choosing a Career, Skills & Qualifications",
+                            sectionInstructions: "Discuss future professions, essential skills, and personal suitability using target vocabulary and tenses.",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> well-paid job, qualification, Bachelor's / Master's degree, IT skills, fluency in English, work experience, career advisor, advancement.</p><p><strong>Target Grammar:</strong> <em>I <strong>have been thinking</strong> about a career in... / I <strong>have already decided</strong> to...</em></p></div>",
+                            questions: [
+                                { question: "What profession have you been considering for your future career, and which of your personal qualities and skills make you suitable for it?" },
+                                { question: "What is more important to you when choosing a job: a high salary, good prospects for advancement, or doing something creative and enjoyable? Why?" },
+                                { question: "What childhood dream jobs did you use to want when you were a kid, and how have your career goals changed since then?" },
+                                { question: "Why are fluency in foreign languages and strong IT skills considered essential requirements in almost every modern profession today?" }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Block 4. Part-time Jobs, Work Experience & Interviews",
+                            sectionInstructions: "Imagine real-life job situations and share your opinion using 'Present Perfect' and 'used to'.",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> vacancy, apply for a job, letter of application, CV, full training provided, working on a cruiseship, teamwork, responsible for.</p><p><strong>Target Grammar:</strong> <em>I <strong>have never worked</strong> as..., but I <strong>have been improving</strong> my...</em></p></div>",
+                            questions: [
+                                { question: "Would you like to try a summer job abroad (for example, working on a cruiseship or in a summer camp) before entering university? What would be the main advantages and challenges?" },
+                                { question: "Have you ever earned your own money or done volunteer work? What skills have you gained from working in a team?" },
+                                { question: "Imagine you are at a job interview for a position you really want. How would you persuade the employer to hire you even if you don't have wide work experience yet?" },
+                                { question: "Do you prefer working independently or as part of a team? Explain how being cooperative and tactful helps people succeed at work." }
+                            ]
+                        }
+                    ]
                 }
             ],
             "Oxford Exam Trainer B2": [
@@ -462,6 +513,7 @@
         // =========================================================================
         function isBuiltInQuiz(test) {
             return Boolean(
+                test.isStudyGuide ||
                 (test.questions && test.questions.length > 0) ||
                 (test.sections && test.sections.length > 0)
             );
@@ -751,7 +803,57 @@
             const maxGrade = test.maxGrade || 11;
             const isCefr = Boolean(test.isCefrTest);
             const shareUrl = buildShareUrl(category, test.level, test.id);
-
+if (test.isStudyGuide) {
+                return h("div", { className: "fixed inset-0 bg-slate-900/70 z-[100] flex items-center justify-center p-2 sm:p-4 backdrop-blur-sm overflow-y-auto" },
+                    h("div", { className: "bg-white rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]" },
+                        h("div", { className: "bg-gradient-to-r from-indigo-600 to-purple-600 p-5 sm:p-6 flex justify-between items-center text-white shrink-0" },
+                            h("div", { className: "flex items-center gap-3" },
+                                h("div", { className: "hidden sm:block" }, h(BrandLogoMark, { size: 42 })),
+                                h("div", null,
+                                    h("div", { className: "flex flex-wrap items-center gap-2" },
+                                        h("span", { className: "text-xs font-bold text-amber-300" }, "Smart English Hub"),
+                                        h("span", { className: "text-xs uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, category),
+                                        h("span", { className: "text-xs bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full font-bold" }, "Speaking Exam Preparation")
+                                    ),
+                                    h("h3", { className: "text-lg md:text-2xl font-bold mt-1" }, test.title)
+                                )
+                            ),
+                            h("div", { className: "flex items-center gap-2" },
+                                h("button", {
+                                    type: "button",
+                                    onClick: handleCopyTestLink,
+                                    className: "px-3 py-1.5 bg-white/15 hover:bg-white/25 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                                }, h(SvgIcon, { name: "share", size: 14 }), copied ? "Скопійовано!" : "Copy Link"),
+                                h("button", { onClick: onClose, className: "hover:bg-white/20 p-2 rounded-full transition" }, h(SvgIcon, { name: "x", size: 24 }))
+                            )
+                        ),
+                        h("div", { className: "p-5 sm:p-6 overflow-y-auto space-y-8 flex-1" },
+                            sectionsWithKeys.map((sec, sIdx) => h("div", { key: sIdx, className: "space-y-4" },
+                                sec.sectionTitle && h("div", { className: "border-b border-indigo-100 pb-2" },
+                                    h("h4", { className: "text-lg sm:text-xl font-bold text-indigo-950" }, sec.sectionTitle),
+                                    sec.sectionInstructions && h("p", { className: "text-sm text-slate-500 mt-0.5" }, sec.sectionInstructions)
+                                ),
+                                sec.contextHtml && h("div", {
+                                    className: "p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 text-slate-800 text-sm leading-relaxed",
+                                    dangerouslySetInnerHTML: { __html: sec.contextHtml }
+                                }),
+                                h("div", { className: "space-y-3" },
+                                    sec.questions.map(q => h("div", { key: q._key, className: "p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80" },
+                                        h("p", { className: "font-bold text-slate-800 text-base leading-relaxed" }, `${q._displayNum}. ${q.question}`)
+                                    ))
+                                )
+                            ))
+                        ),
+                        h("div", { className: "p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center shrink-0" },
+                            h("span", { className: "text-xs sm:text-sm text-slate-500 font-medium" }, "Підготуйте розгорнуті відповіді (4–6 речень) на питання з кожного блоку."),
+                            h("button", {
+                                onClick: onClose,
+                                className: "px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition cursor-pointer"
+                            }, "Закрити")
+                        )
+                    )
+                );
+            }
             const answeredCount = allFlatQuestions.filter(q => {
                 const val = answers[q._key];
                 if (q.type === "text" || q.type === "writing") {
