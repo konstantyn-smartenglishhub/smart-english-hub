@@ -174,70 +174,70 @@
         const TESTS_DATABASE = {
             "Full Blast 5": [],
             "Full Blast 6": [],
-            "Full Blast 9": [
+            "Full Blast 9": [],
+            "Karpiuk 10": [
                 {
-                    id: 101,
+                    id: 1002,
                     isStandard22: true,
-                    title: "Full Blast 9 — Unit 1: Teen Life (Standard Demo)",
-                    description: "22 questions (Vocabulary, Reading True/False, Grammar, Use of English & Guided Writing) • Max grade: 11 points.",
+                    title: "Karpiuk 10 — Unit 2: Choose the Career",
+                    description: "22 questions (Vocabulary, Job Advertisements Reading T/F, Grammar & Letter Writing, Use of English, Guided Writing) • Max grade: 11 points.",
                     sections: [
                         {
-                            sectionTitle: "Part 1. Vocabulary (Multiple Choice)",
-                            sectionInstructions: "Choose the correct word (A, B, C, or D) to complete each sentence. (6 × 0.4 pts)",
+                            sectionTitle: "Part 1. Vocabulary: Career & Qualities (Multiple Choice)",
+                            sectionInstructions: "Choose the correct word or preposition (A, B, C, or D) to complete each sentence. (6 × 0.4 pts)",
                             questions: [
-                                { type: "mc", weight: 0.4, question: "My best friend is very ________; she always shares her notes and helps me with homework.", options: ["selfish", "generous", "stubborn", "bossy"], correct: 1 },
-                                { type: "mc", weight: 0.4, question: "You shouldn't ________ everything you read on social media without checking the facts.", options: ["trust", "argue", "complain", "refuse"], correct: 0 },
-                                { type: "mc", weight: 0.4, question: "Mark is really ________ on photography and spends every weekend taking pictures in the city.", options: ["fond", "interested", "keen", "crazy"], correct: 2 },
-                                { type: "mc", weight: 0.4, question: "I couldn't ________ with the noise from the street, so I closed the window.", options: ["put up", "get along", "hang out", "turn down"], correct: 0 },
-                                { type: "mc", weight: 0.4, question: "Don't be so ________! Wait your turn in the queue like everyone else.", options: ["reliable", "impatient", "cheerful", "outgoing"], correct: 1 },
-                                { type: "mc", weight: 0.4, question: "We decided to ________ in touch via email after the summer camp ended.", options: ["make", "hold", "keep", "take"], correct: 2 }
+                                { type: "mc", weight: 0.4, question: "Passing university exams gives you a formal ________ for a particular job.", options: ["vacancy", "qualification", "requirement", "safety"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Good IT skills are ________ for anyone who wants to work in a modern office.", options: ["essential", "imaginative", "tactful", "diplomatic"], correct: 0 },
+                                { type: "mc", weight: 0.4, question: "My sister speaks English and French ________ because she lived abroad for five years.", options: ["attentively", "fluently", "systematically", "practically"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "As a Technical Training Engineer, you will be responsible ________ writing technical documentation.", options: ["with", "from", "for", "at"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "The director is very satisfied ________ the work of the new personnel manager.", options: ["for", "from", "of", "with"], correct: 3 },
+                                { type: "mc", weight: 0.4, question: "A leading fashion company is looking very hard for ambitious graduates — it ________ new staff.", options: ["provides", "earns", "seeks", "graduates"], correct: 2 }
                             ]
                         },
                         {
-                            sectionTitle: "Part 2. Reading Comprehension (True / False)",
-                            sectionInstructions: "Read the short text below and decide whether statements 7–11 are True or False. (5 × 0.4 pts)",
-                            contextHtml: "<p class='font-bold text-indigo-950 mb-2'>Digital Detox Challenge</p><p>Last month, fifteen students from Oakwood High School agreed to spend seven days without smartphones or social media. During the first two days, most participants admitted feeling anxious and kept reaching for their pockets out of habit. However, by day four, nearly everyone noticed positive changes: they slept better, finished their homework twice as fast, and spent more time talking face-to-face during breaks. At the end of the week, twelve out of fifteen students decided to limit their screen time to two hours a day.</p>",
+                            sectionTitle: "Part 2. Reading: Job Advertisements (True / False)",
+                            sectionInstructions: "Read the three job advertisements from your textbook and decide whether statements 7–11 are True or False. (5 × 0.4 pts)",
+                            contextHtml: "<div class='space-y-3'><p><strong class='text-indigo-950'>Advert C — Graduates: A Career in Fashion (£11,100+):</strong> A leading fashion company seeks ambitious graduates with some experience to train in MERCHANDISING. Duties will include stock allocation, assessment and analysis of sales figures to predict future trends. Knowledge of fashion and some design experience would be valuable.</p><p><strong class='text-indigo-950'>Advert D — WORKING ON A CRUISESHIP:</strong> Visit Hawaii, the Caribbean, the Mediterranean, Florida, the Far East! Earn up to $4,000 per month tax-free while visiting exotic places. Arrow Cruise lines need porters, waitresses/waiters, sport instructors, club and casino staff now. New contracts (6 or 12 months) start every month. Full training is provided. All you need is fluency in English and another language, a lively personality and a sense of adventure.</p><p><strong class='text-indigo-950'>Advert E — POSITION: Technical Training Engineer (Liverpool, England):</strong> Responsibilities: deliver technical training courses to overseas customers; write or edit technical training documentation. Requirements: excellent English mother tongue or second language; good telecom or computer background; wide teaching experience preferred; responsible, cooperative and enthusiastic. No limits on nationality.</p></div>",
                             questions: [
-                                { type: "tf", weight: 0.4, question: "Fifty students from Oakwood High School took part in the challenge.", options: ["True", "False"], correct: 1 },
-                                { type: "tf", weight: 0.4, question: "At the beginning of the week, some students felt nervous without their phones.", options: ["True", "False"], correct: 0 },
-                                { type: "tf", weight: 0.4, question: "By the fourth day, students needed more time to complete their homework.", options: ["True", "False"], correct: 1 },
-                                { type: "tf", weight: 0.4, question: "Students communicated more in person during school breaks.", options: ["True", "False"], correct: 0 },
-                                { type: "tf", weight: 0.4, question: "All fifteen participants stopped using smartphones completely after the experiment.", options: ["True", "False"], correct: 1 }
+                                { type: "tf", weight: 0.4, question: "The merchandising position in Advert C is open to graduates who already have some experience.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "Applicants for the cruiseship job (Advert D) must already have full professional training before applying.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "To work on the cruiseship, you need to speak English and at least one other language fluently.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "The Technical Training Engineer in Liverpool must be a British citizen.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "In Advert E, teaching experience and a computer or telecom background are preferred.", options: ["True", "False"], correct: 0 }
                             ]
                         },
                         {
-                            sectionTitle: "Part 3. Grammar (Multiple Choice)",
-                            sectionInstructions: "Choose the correct grammatical form (A, B, C, or D). (5 × 0.4 pts)",
+                            sectionTitle: "Part 3. Grammar & Formal Letters (Multiple Choice)",
+                            sectionInstructions: "Choose the correct grammatical form or letter-writing rule (A, B, C, or D). (5 × 0.4 pts)",
                             questions: [
-                                { type: "mc", weight: 0.4, question: "Look at those dark clouds! It ________ rain any minute now.", options: ["will", "is going to", "rains", "is raining"], correct: 1 },
-                                { type: "mc", weight: 0.4, question: "My cousin ________ in London for three years, and she loves it there.", options: ["lives", "lived", "has lived", "is living"], correct: 2 },
-                                { type: "mc", weight: 0.4, question: "This is the skatepark ________ we usually meet after classes.", options: ["which", "who", "whose", "where"], correct: 3 },
-                                { type: "mc", weight: 0.4, question: "Sarah ________ to the gym twice a week to stay fit.", options: ["go", "goes", "is going", "has gone"], correct: 1 },
-                                { type: "mc", weight: 0.4, question: "I'm sorry, I can't talk right now because I ________ for my English test.", options: ["study", "studied", "am studying", "have studied"], correct: 2 }
+                                { type: "mc", weight: 0.4, question: "We ________ in Kyiv for 12 years, and we are still living here now.", options: ["lived", "have been living", "are living", "had lived"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "How long ________ at university? — I started two years ago.", options: ["were you", "did you be", "have you been", "are you"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "________ a job yet? — Yes, he has just started working in a hotel.", options: ["Did your brother find", "Has your brother found", "Has your brother been finding", "Does your brother find"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Letters written to people you do not know or people in authority (such as a job application) are called ________.", options: ["informal letters", "semi-formal letters", "formal letters", "personal notes"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "In a well-structured application letter, where do you state your reasons for writing?", options: ["In the introductory paragraph", "In the concluding paragraph", "In the ending after your full name", "In the greeting"], correct: 0 }
                             ]
                         },
                         {
-                            sectionTitle: "Part 4. Use of English (Word Formation & Grammar Type-in)",
-                            sectionInstructions: "Complete each gap with the correct form of the word in brackets. Type ONLY 1–2 words without a full stop. (4 × 0.77 pts)",
+                            sectionTitle: "Part 4. Use of English: Career Profile (Type-in)",
+                            sectionInstructions: "Complete each gap using the correct word or form based on the word in brackets. Type ONLY 1 word without a full stop. (4 × 0.77 pts)",
                             questions: [
-                                { type: "text", weight: 0.77, hint: "Word formation: noun → adjective", question: "My brother is very ________ (CREATE) and loves designing video games.", acceptedAnswers: ["creative"] },
-                                { type: "text", weight: 0.77, hint: "Verb tense: Past Continuous", question: "While we ________ (WALK) home yesterday evening, we saw a shooting star.", acceptedAnswers: ["were walking"] },
-                                { type: "text", weight: 0.77, hint: "Word formation: verb → noun", question: "True ________ (FRIEND) is based on honesty and mutual respect.", acceptedAnswers: ["friendship"] },
-                                { type: "text", weight: 0.77, hint: "Comparative degree", question: "Today's math test was much ________ (EASY) than the one we had last Friday.", acceptedAnswers: ["easier"] }
+                                { type: "text", weight: 0.77, hint: "Noun: money earned monthly", question: "My cousin Liza is an interpreter. She gets a good ________ (SALARIES / singular).", acceptedAnswers: ["salary"] },
+                                { type: "text", weight: 0.77, hint: "Word formation: adjective → adverb", question: "Liza studied at university and speaks English and French ________ (FLUENT).", acceptedAnswers: ["fluently"] },
+                                { type: "text", weight: 0.77, hint: "Verb tense: Past Simple", question: "First, my brother Denis ________ (GRADUATE) from a university where he got a Bachelor's degree in economics.", acceptedAnswers: ["graduated"] },
+                                { type: "text", weight: 0.77, hint: "Verb tense: Present Simple (3rd person)", question: "Denis' work ________ (REQUIRE) a lot of teamwork, and he is quite successful.", acceptedAnswers: ["requires"] }
                             ]
                         },
                         {
                             sectionTitle: "Part 5. Guided Writing (Sentence Transformation)",
                             sectionInstructions: "Complete the second sentence so that it has a similar meaning to the first sentence, using the word given in BOLD. Type ONLY the missing words (2–4 words). (2 × 0.77 pts)",
                             questions: [
-                                { type: "writing", weight: 0.77, hint: "Use the word: KEEN (max 3 words)", question: "Original: Alex really likes playing table tennis.\nRewrite: Alex is very ________________________ table tennis.", acceptedAnswers: ["keen on playing", "keen on"] },
-                                { type: "writing", weight: 0.77, hint: "Use the word: SINCE (max 3 words)", question: "Original: We moved to Kharkiv in 2020 and still live here.\nRewrite: We ________________________ in Kharkiv since 2020.", acceptedAnswers: ["have lived", "have been living", "'ve lived", "'ve been living"] }
+                                { type: "writing", weight: 0.77, hint: "Use the word: FOR (Present Perfect Continuous)", question: "Original: Liza started working as an interpreter seven years ago and still works there.\nRewrite: Liza ________________________ as an interpreter for seven years.", acceptedAnswers: ["has been working", "'s been working"] },
+                                { type: "writing", weight: 0.77, hint: "Use the word: RESPONSIBLE", question: "Original: The new personnel manager's duty is working with the staff.\nRewrite: The new personnel manager is ________________________ with the staff.", acceptedAnswers: ["responsible for working"] }
                             ]
                         }
                     ]
                 }
             ],
-            "Karpiuk 10": [],
             "Oxford Exam Trainer B2": [
                 {
                     id: 3,
@@ -495,10 +495,6 @@
                 award: [
                     h("circle", { key: 1, cx: "12", cy: "8", r: "6" }),
                     h("path", { key: 2, d: "M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" })
-                ],
-                edit: [
-                    h("path", { key: 1, d: "M12 20h9" }),
-                    h("path", { key: 2, d: "M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" })
                 ]
             };
             return h("svg", {
@@ -536,13 +532,11 @@
                 const s = getSavedStudent();
                 return s ? s.studentName : "";
             });
-            // Обов'язкове підтвердження класу та прізвища при вході в кожен тест
             const [isConfirmedLogin, setIsConfirmedLogin] = useState(false);
             const [copied, setCopied] = useState(false);
             const [answers, setAnswers] = useState({});
             const [submitted, setSubmitted] = useState(false);
 
-            // Підготовка секцій та перемішування варіантів відповідей один раз при відкритті тесту
             const sectionsWithKeys = useMemo(() => {
                 const normalizedSections = test.sections && test.sections.length > 0
                     ? test.sections
@@ -582,7 +576,6 @@
                 return val !== undefined && val !== null;
             }).length;
 
-            // Захист від випадкового оновлення / закриття вкладки під час проходження тесту
             useEffect(() => {
                 const handleBeforeUnload = (e) => {
                     if (isConfirmedLogin && !submitted && answeredCount > 0) {
@@ -633,7 +626,6 @@
 
                 let finalGrade = 0;
                 if (hasCustomWeights) {
-                    // Варіант Б: 16 * 0.4 + 6 * 0.77 = 11.02 -> обмежуємо максимумом 11 та округлюємо до цілого
                     const capped = Math.min(maxGrade, weightedSum);
                     finalGrade = Math.round(capped);
                 } else {
@@ -687,7 +679,6 @@
             const cefrEval = submitted && isCefr && resultData ? evaluateCefrScore(resultData.correctCount) : null;
             const progressPercent = total > 0 ? Math.round((answeredCount / total) * 100) : 0;
 
-            // Екран обов'язкової реєстрації перед початком тесту
             if (!isConfirmedLogin || !student) {
                 return h("div", { className: "fixed inset-0 bg-slate-900/75 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" },
                     h("div", { className: "bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden" },
@@ -737,7 +728,6 @@
 
             return h("div", { className: "fixed inset-0 bg-slate-900/70 z-[100] flex items-center justify-center p-2 sm:p-4 backdrop-blur-sm overflow-y-auto" },
                 h("div", { className: "bg-white rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]" },
-                    // Шапка тесту
                     h("div", { className: "bg-gradient-to-r from-indigo-600 to-purple-600 p-5 sm:p-6 flex justify-between items-center text-white shrink-0" },
                         h("div", { className: "flex items-center gap-3" },
                             h("div", { className: "hidden sm:block" }, h(BrandLogoMark, { size: 42 })),
@@ -765,7 +755,6 @@
                         )
                     ),
 
-                    // Смужка прогресу виконання (поки тест не здано)
                     !submitted && h("div", { className: "bg-indigo-50/80 px-6 py-2.5 border-b border-indigo-100 flex items-center justify-between gap-4 shrink-0" },
                         h("div", { className: "flex-1 bg-slate-200 h-2 rounded-full overflow-hidden" },
                             h("div", {
@@ -776,9 +765,7 @@
                         h("span", { className: "text-xs font-bold text-indigo-900 shrink-0" }, `Виконано: ${answeredCount} з ${total} (${progressPercent}%)`)
                     ),
 
-                    // Тіло тесту
                     h("div", { className: "p-5 sm:p-6 overflow-y-auto space-y-8 flex-1" },
-                        // Картка результату CEFR
                         submitted && isCefr && cefrEval && resultData && h("div", { className: "p-6 rounded-2xl bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50 border-2 border-indigo-200 space-y-4" },
                             h("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-4" },
                                 h("div", { className: "flex items-center gap-3.5" },
@@ -797,7 +784,6 @@
                             h("div", { className: "p-3.5 rounded-xl bg-white border border-indigo-100 text-sm font-bold text-indigo-800" }, "📌 " + cefrEval.recommendation)
                         ),
 
-                        // Картка результату шкільного/екзаменаційного тесту (з назвою тесту, ПІБ, класом і балом)
                         submitted && !isCefr && resultData && h("div", { className: "p-6 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 space-y-4" },
                             h("div", { className: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" },
                                 h("div", { className: "flex items-start gap-3.5" },
@@ -820,7 +806,6 @@
                             )
                         ),
 
-                        // Секції та питання
                         sectionsWithKeys.map((sec, sIdx) => h("div", { key: sIdx, className: "space-y-4" },
                             sec.sectionTitle && h("div", { className: "border-b border-indigo-100 pb-2" },
                                 h("h4", { className: "text-lg sm:text-xl font-bold text-indigo-950" }, sec.sectionTitle),
@@ -848,7 +833,6 @@
                                             )
                                         ),
 
-                                        // Варіант 1: Введення тексту (Use of English або Guided Writing)
                                         isTextOrWriting
                                             ? h("div", { className: "space-y-2 pt-1" },
                                                 h("div", { className: "relative" },
@@ -861,7 +845,7 @@
                                                                 setAnswers(prev => ({ ...prev, [q._key]: e.target.value }));
                                                             }
                                                         },
-                                                        placeholder: q.type === "writing" ? "Впишіть пропущену частину речення..." : "Впишіть 1–2 слова...",
+                                                        placeholder: q.type === "writing" ? "Впишіть пропущену частину речення..." : "Впишіть 1 слово...",
                                                         className: `w-full px-4 py-3 rounded-xl border text-base font-medium transition focus:outline-none ${
                                                             submitted
                                                                 ? (isCorrectAnswer
@@ -876,8 +860,7 @@
                                                     (Array.isArray(q.acceptedAnswers) ? q.acceptedAnswers.join(" / ") : q.acceptedAnswers)
                                                 )
                                             )
-                                            // Варіант 2: Multiple Choice (4 варіанти) або True / False
-                                            : h("div", { className: `grid ${q.type === "tf" ? "sm:grid-cols-2" : "sm:grid-cols-2"} gap-2.5` },
+                                            : h("div", { className: "grid sm:grid-cols-2 gap-2.5" },
                                                 q._displayOptions.map((optObj, displayIdx) => {
                                                     const isSelected = userVal === optObj.origIdx;
                                                     const isCorrect = q.correct === optObj.origIdx;
@@ -910,7 +893,6 @@
                         ))
                     ),
 
-                    // Нижня панель тесту
                     h("div", { className: "p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center shrink-0" },
                         h("span", { className: "text-sm text-slate-600 font-medium" },
                             answeredCount < total
@@ -991,7 +973,7 @@
             );
         }
 
-        function HomeView({ setActiveTab, onOpenCefrTest, onOpenDemoTest }) {
+        function HomeView({ setActiveTab, onOpenCefrTest }) {
             return h("div", { className: "max-w-5xl mx-auto space-y-8" },
                 h("div", { className: "rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 p-8 md:p-12 text-white shadow-xl relative overflow-hidden" },
                     h("div", { className: "relative z-10 max-w-4xl space-y-4" },
@@ -1008,12 +990,7 @@
                                 type: "button",
                                 onClick: () => setActiveTab("Oxford Exam Trainer B2"),
                                 className: "px-6 py-3.5 bg-white/15 hover:bg-white/25 text-white font-bold rounded-xl backdrop-blur-md transition flex items-center gap-2 cursor-pointer"
-                            }, h(SvgIcon, { name: "grad", size: 20 }), "Exam Preparation (NMT)"),
-                            h("button", {
-                                type: "button",
-                                onClick: onOpenDemoTest,
-                                className: "px-5 py-3.5 bg-indigo-900/40 hover:bg-indigo-900/60 border border-white/25 text-white font-semibold rounded-xl transition flex items-center gap-2 cursor-pointer"
-                            }, h(SvgIcon, { name: "edit", size: 18 }), "22-Question Standard Demo")
+                            }, h(SvgIcon, { name: "grad", size: 20 }), "Exam Preparation (NMT)")
                         )
                     )
                 ),
@@ -1214,15 +1191,6 @@
                 window.location.hash = "cefr-test";
             };
 
-            const openDemoTest = () => {
-                const demo = (TESTS_DATABASE["Full Blast 9"] || [])[0];
-                if (demo) {
-                    setActiveTab("Full Blast 9");
-                    setActiveTest(demo);
-                    window.location.hash = `test-${demo.id}`;
-                }
-            };
-
             const openTest = (test) => {
                 setActiveTest(test);
                 window.location.hash = test.id === "cefr-test" ? "cefr-test" : `test-${test.id}`;
@@ -1300,7 +1268,7 @@
                     ),
                     h("div", { className: "flex-1 overflow-y-auto p-6 md:p-10" },
                         activeTab === "Home" || !currentCategoryConfig
-                            ? h(HomeView, { setActiveTab: selectTab, onOpenCefrTest: openCefrTest, onOpenDemoTest: openDemoTest })
+                            ? h(HomeView, { setActiveTab: selectTab, onOpenCefrTest: openCefrTest })
                             : h(CategoryView, {
                                 categoryConfig: currentCategoryConfig,
                                 activeSubFilter: activeSubFilter,
