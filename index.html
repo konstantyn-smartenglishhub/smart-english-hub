@@ -298,6 +298,66 @@
                             ]
                         }
                     ]
+                },{
+                    id: 1004,
+                    isStandard22: true,
+                    title: "Karpiuk 10 — End of Term 1 Writing",
+                    description: "22 questions (Letter Structure & Register, Model Letter Analysis T/F, Linking Words & Accuracy, Use of English & Guided Sentence Transformation) • Max grade: 11 points.",
+                    sections: [
+                        {
+                            sectionTitle: "Part 1. Writing Conventions & Letter Structure (Multiple Choice)",
+                            sectionInstructions: "Choose the best answer (A, B, C, or D) according to English letter-writing rules. (6 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "Which style of letter should you use when applying for a job or writing to someone in authority?", options: ["Informal style", "Formal style", "Friendly chat style", "Personal note style"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "If you begin a formal letter with 'Dear Sir or Madam,', how should you end it?", options: ["Best wishes,", "Love,", "Yours faithfully,", "See you soon,"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "What is the correct order of parts in a formal letter?", options: ["Greeting → Introduction → Body → Conclusion → Ending", "Introduction → Greeting → Conclusion → Body → Ending", "Greeting → Body → Introduction → Ending → Conclusion", "Ending → Greeting → Introduction → Body → Conclusion"], correct: 0 },
+                                { type: "mc", weight: 0.4, question: "In which part of a letter of application do you describe your qualifications, experience, and personal qualities?", options: ["In the greeting", "In the introductory paragraph", "In the body paragraphs", "In the proper ending"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "Which sentence is the most appropriate for the introductory paragraph of a formal job application?", options: ["Hey! I want that cool job on your ship.", "I am writing to apply for the position of Technical Training Engineer advertised in your brochure.", "Write back to me as fast as you can!", "I hope you are doing great and having a nice week."], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Which closing remark is best suited for the concluding paragraph of a formal job application?", options: ["Thanks a lot for reading my letter!", "I look forward to hearing from you in the near future.", "Call me whenever you are free.", "That's all about me for now."], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 2. Analyzing a Model Letter of Application (True / False)",
+                            sectionInstructions: "Read the model letter of application below and decide whether statements 7–11 are True or False. (5 × 0.4 pts)",
+                            contextHtml: "<div class='space-y-2.5 text-sm sm:text-base'><p class='font-bold text-indigo-950'>Model Letter of Application</p><p>Dear Ms Bennie,</p><p>I am writing to apply for the trainee position in Merchandising advertised in <em>Fashion Connections</em>. I recently graduated from university with a Bachelor's degree in Economics and have a strong interest in the fashion industry.</p><p>During my studies, I worked part-time in a clothing store, where I gained valuable experience in stock allocation and customer service. Furthermore, I have strong analytical skills and speak English and French fluently. I am a responsible, cooperative, and ambitious person who enjoys working as part of a team.</p><p>I have enclosed my CV for your consideration. Thank you for your time, and I look forward to attending an interview at your convenience.</p><p>Yours sincerely,<br>Olena Kovalenko</p></div>",
+                            questions: [
+                                { type: "tf", weight: 0.4, question: "The writer uses 'Yours sincerely,' because she knows the recipient's surname (Ms Bennie).", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "In the first paragraph, Olena clearly states the position she is applying for and where she saw the advertisement.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "The letter is written in an informal style with contractions and slang.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Olena mentions both her practical work experience and her personal qualities in the body paragraph.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "The writer forgets to mention that she has included her CV with the application.", options: ["True", "False"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 3. Cohesion, Linking Words & Accuracy in Writing (Multiple Choice)",
+                            sectionInstructions: "Choose the best word or phrase (A, B, C, or D) to make each written sentence clear, accurate, and natural. (5 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "________ we do not have a lot in common, my close friend and I get on extremely well.", options: ["Because", "Although", "Therefore", "However"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "I am confident that my IT skills and experience make me suitable ________ this vacancy.", options: ["with", "to", "for", "at"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "I look forward to ________ from you soon regarding my application.", options: ["hear", "heard", "hearing", "be hearing"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "My brother has been working as a manager ________ he graduated from university in 2022.", options: ["for", "since", "yet", "during"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "In addition to ________ cooperative and energetic, a good team leader must be tactful.", options: ["be", "been", "being", "is"], correct: 2 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 4. Editing & Word Formation for Writing (Type-in)",
+                            sectionInstructions: "Complete each sentence by writing the correct form of the word in brackets. Type ONLY 1–3 words without a full stop. (4 × 0.77 pts)",
+                            questions: [
+                                { type: "text", weight: 0.77, hint: "Word formation: verb → noun", question: "The textile factory receives dozens of letters of ________ (APPLY) every week.", acceptedAnswers: ["application"] },
+                                { type: "text", weight: 0.77, hint: "Word formation: adjective → adverb", question: "To work on an international cruiseship, you must speak English ________ (FLUENT).", acceptedAnswers: ["fluently"] },
+                                { type: "text", weight: 0.77, hint: "Present Perfect Continuous", question: "I ________ (WORK) as an interpreter for seven years, so I have wide experience.", acceptedAnswers: ["have been working", "'ve been working"] },
+                                { type: "text", weight: 0.77, hint: "Past Simple", question: "She ________ (GRADUATE) from university last summer and immediately started seeking a job.", acceptedAnswers: ["graduated"] }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 5. Guided Writing (Sentence Transformation)",
+                            sectionInstructions: "Rewrite the missing part of the second sentence so that it has a formal/natural written meaning similar to the first sentence, using the word in BOLD. Type ONLY the missing words (2–4 words). (2 × 0.77 pts)",
+                            questions: [
+                                { type: "writing", weight: 0.77, hint: "Use the word: APPLY (formal register)", question: "Original: I want to ask for the job of a personnel manager at your company.\nRewrite: I am writing to ________________________ the position of a personnel manager at your company.", acceptedAnswers: ["apply for"] },
+                                { type: "writing", weight: 0.77, hint: "Use the word: TOUCH (relationships)", question: "Original: Even after moving to another city, we still communicate regularly.\nRewrite: Even after moving to another city, we still ________________________ each other.", acceptedAnswers: ["keep in touch with", "stay in touch with"] }
+                            ]
+                        }
+                    ]
                 }
             ],
             "Oxford Exam Trainer B2": [
