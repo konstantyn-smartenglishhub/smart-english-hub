@@ -809,24 +809,29 @@ if (test.isStudyGuide) {
                 return h("div", { className: "fixed inset-0 bg-slate-900/70 z-[100] flex items-center justify-center p-2 sm:p-4 backdrop-blur-sm overflow-y-auto" },
                     h("div", { className: "bg-white rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]" },
                         h("div", { className: "bg-gradient-to-r from-indigo-600 to-purple-600 p-5 sm:p-6 flex justify-between items-center text-white shrink-0" },
-                            h("div", { className: "flex items-center gap-3" },
-                                h("div", { className: "hidden sm:block" }, h(BrandLogoMark, { size: 42 })),
-                                h("div", null,
-                                    h("div", { className: "flex flex-wrap items-center gap-2" },
-                                        h("span", { className: "text-xs font-bold text-amber-300" }, "Smart English Hub"),
-                                        h("span", { className: "text-xs uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, category),
-                                        h("span", { className: "text-xs bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full font-bold" }, "Speaking Exam Preparation")
-                                    ),
-                                    h("h3", { className: "text-lg md:text-2xl font-bold mt-1" }, test.title)
-                                )
+                            h("div", null,
+                                h("div", { className: "flex flex-wrap items-center gap-2" },
+                                    h("span", { className: "text-xs font-bold text-amber-300" }, "Smart English Hub"),
+                                    h("span", { className: "text-xs uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full font-semibold" }, category),
+                                    h("span", { className: "text-xs bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full font-bold" }, "Speaking Exam Preparation")
+                                ),
+                                h("h3", { className: "text-lg md:text-2xl font-bold mt-1" }, test.title)
                             ),
                             h("div", { className: "flex items-center gap-2" },
                                 h("button", {
                                     type: "button",
-                                    onClick: handleCopyTestLink,
-                                    className: "px-3 py-1.5 bg-white/15 hover:bg-white/25 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
-                                }, h(SvgIcon, { name: "share", size: 14 }), copied ? "Скопійовано!" : "Copy Link"),
-                                h("button", { onClick: onClose, className: "hover:bg-white/20 p-2 rounded-full transition" }, h(SvgIcon, { name: "x", size: 24 }))
+                                    onClick: () => {
+                                        if (navigator.clipboard) navigator.clipboard.writeText(shareUrl);
+                                        setCopied(true);
+                                        setTimeout(() => setCopied(false), 2000);
+                                    },
+                                    className: "px-3 py-1.5 bg-white/15 hover:bg-white/25 rounded-xl text-xs font-semibold transition cursor-pointer"
+                                }, copied ? "Скопійовано!" : "🔗 Copy Link"),
+                                h("button", {
+                                    type: "button",
+                                    onClick: onClose,
+                                    className: "hover:bg-white/20 px-3 py-1.5 rounded-xl text-lg font-bold transition cursor-pointer"
+                                }, "✕")
                             )
                         ),
                         h("div", { className: "p-5 sm:p-6 overflow-y-auto space-y-8 flex-1" },
@@ -849,6 +854,7 @@ if (test.isStudyGuide) {
                         h("div", { className: "p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center shrink-0" },
                             h("span", { className: "text-xs sm:text-sm text-slate-500 font-medium" }, "Підготуйте розгорнуті відповіді (4–6 речень) на питання з кожного блоку."),
                             h("button", {
+                                type: "button",
                                 onClick: onClose,
                                 className: "px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition cursor-pointer"
                             }, "Закрити")
