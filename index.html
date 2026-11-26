@@ -174,7 +174,245 @@
         const TESTS_DATABASE = {
             "Full Blast 5": [],
             "Full Blast 6": [],
-            "Full Blast 9": [],
+            "Full Blast 9": [
+                {
+                    id: 2001,
+                    isStandard22: true,
+                    title: "Full Blast 9 — End of Term 1 Reading",
+                    description: "22 questions (Vocabulary in Context, Reading Comprehension T/F & MC, Gap-Filling & Guided Summary: Modules 1–3) • Max grade: 11 points.",
+                    sections: [
+                        {
+                            sectionTitle: "Part 1. Vocabulary in Context: People, Hobbies & Media (Multiple Choice)",
+                            sectionInstructions: "Read each short sentence and choose the word or phrase (A, B, C, or D) that best completes the meaning. (6 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "Mark is an only child, so he doesn't have any ________ to share his room with.", options: ["colleagues", "siblings", "acquaintances", "opponents"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Everyone says that Emma ________ her mother because they both have the same cheerful personality and dark eyes.", options: ["takes after", "takes over", "runs into", "gives a miss"], correct: 0 },
+                                { type: "mc", weight: 0.4, question: "Teenagers often buy expensive clothes just to ________ with their classmates at school.", options: ["fall behind", "fit in", "cut off", "shut down"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Tom has been ________ go-karting and extreme sports since he tried them at a summer camp.", options: ["sick of", "fed up with", "keen on", "bored with"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "One major ________ of spending too much time on social media is that you have less time for real-life friends.", options: ["highlight", "drawback", "attitude", "choice"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "The new sci-fi film became an instant ________, earning millions of dollars in its first weekend.", options: ["flop", "chat show", "box-office hit", "tutorial"], correct: 2 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 2. Reading Comprehension: The Price of a Secret (True / False)",
+                            sectionInstructions: "Read the story below carefully and decide whether statements 7–11 are True or False. (5 × 0.4 pts)",
+                            contextHtml: "<div class='space-y-2.5 text-sm sm:text-base text-slate-800'><p class='font-bold text-indigo-950'>The Price of a Secret</p><p>Keeping a secret is so important that a close friendship can easily depend on it. Helen had never realised how serious this was until a few months ago. Her best friend Tina asked Helen to help plan a surprise birthday party for her husband, John. Tina needed reliable support as there were such a lot of things that needed to be organised before the weekend. However, Tina strictly asked Helen not to say a word to anyone.</p><p>In spite of what Tina had told her, Helen casually mentioned the surprise party to a couple of acquaintances, who quickly passed the news on to a few more people. By Friday afternoon, so many guests knew about the event that it wasn't a secret any more. Worse still, Helen sent a text message about the party to Tina's phone, and John accidentally saw it on the screen.</p><p>Tina was extremely angry! She phoned Helen and shouted at her so loudly that the whole neighbourhood could hear her. Although everyone at the gathering tried to calm Tina down, she remained furious with Helen. In the end, they still had the party, and despite the fact that John tried hard to cheer Tina up, the evening felt tense. Helen didn't come to the celebration, and the two friends haven't spoken since then, even though their mutual friends have tried to bring them together.</p></div>",
+                            questions: [
+                                { type: "tf", weight: 0.4, question: "Tina asked Helen to help organise a surprise party for Tina's brother.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Helen promised to keep the secret, yet she still told some people about the party.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "John found out about the surprise when he saw a message on Tina's phone.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "Tina forgave Helen immediately after talking to her on the phone.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Helen decided not to attend the party, and she and Tina are still not speaking to each other.", options: ["True", "False"], correct: 0 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 3. Reading Comprehension: Eco-Events, Digital Safety & Cinema (Multiple Choice)",
+                            sectionInstructions: "Read the three short texts below and choose the best answer (A, B, C, or D) for questions 12–16. (5 × 0.4 pts)",
+                            contextHtml: "<div class='space-y-3 text-sm sm:text-base text-slate-800'><div class='p-3 rounded-xl bg-white border border-slate-200'><p class='font-bold text-indigo-950'>Text A: Bike Ride to Save the Forest</p><p>Today, an environmental organisation called <em>Friends of the Earth</em> is organising a charity bike ride to raise money to save our local forest. About 1,000 participants are taking part in this event. While regular cyclists usually compete in 10-kilometre races, some experienced riders enjoy more challenging routes across several cities. As one participant explained: 'Forests are disappearing as we speak. When people cut down trees, the environment is destroyed. Taking part in this bike ride is one practical way to help people understand the problem.'</p></div><div class='p-3 rounded-xl bg-white border border-slate-200'><p class='font-bold text-indigo-950'>Text B: Online Security Alert</p><p>Modern smartphones and laptops allow us to stream films, download updates, and keep in touch with friends ASAP. However, users should never take online safety for granted. Always install reliable antivirus software and avoid clicking on suspicious spam links, as they can lead to identity theft or cause your system to crash.</p></div><div class='p-3 rounded-xl bg-white border border-slate-200'><p class='font-bold text-indigo-950'>Text C: Behind the Scenes</p><p>A successful film relies not only on its lead actors, but also on the entire crew working behind the camera. From the screenwriter who creates the lines to the camera operator and director, every team member must cooperate under pressure so that the final episode comes out on schedule.</p></div></div>",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "According to Text A, what is the main purpose of the bike ride organised by Friends of the Earth?", options: ["To test new electric bicycles", "To raise money and protect the local forest", "To select professional athletes for an international race", "To build a new cycle path between cities"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "What does the participant in Text A say happens when trees are cut down?", options: ["Cycling becomes faster", "The environment is destroyed", "More people move to the forest", "Local cities become cleaner"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "According to Text B, why should users avoid clicking on suspicious spam links?", options: ["They make the screen brighter", "They slow down online streaming", "They can cause identity theft or system crashes", "They automatically delete your contacts"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "What advice does Text B give to protect your computer or phone?", options: ["Shut down the device permanently", "Install reliable antivirus software", "Share your personal account online", "Never download system updates"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "What is the main idea of Text C?", options: ["Lead actors are the only important people on a film set", "Screenwriters usually direct every episode", "A successful film depends on teamwork across the whole crew", "Film crews rarely work under pressure"], correct: 2 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 4. Reading Gap-Filling: Key Vocabulary (Type-in)",
+                            sectionInstructions: "Complete each sentence based on the texts and vocabulary from Modules 1–3 with ONE exact word. Type ONLY 1 word without a full stop. (4 × 0.77 pts)",
+                            questions: [
+                                { type: "text", weight: 0.77, hint: "Text A: noun (a person who takes part in an event)", question: "Around one thousand ________ joined the charity bike ride to protect the forest.", acceptedAnswers: ["participants", "cyclists", "riders"] },
+                                { type: "text", weight: 0.77, hint: "Text B: verb (watch video or listen to audio live over the internet)", question: "Fast internet connections allow users to ________ films and music online easily.", acceptedAnswers: ["stream"] },
+                                { type: "text", weight: 0.77, hint: "Text C: noun (the group of people working together to make a film)", question: "Besides the lead actors, the entire film ________ works hard behind the camera.", acceptedAnswers: ["crew"] },
+                                { type: "text", weight: 0.77, hint: "Module 1–2: adjective (reliable, someone you can trust)", question: "Tina needed ________ support from her friend when planning the surprise party.", acceptedAnswers: ["reliable"] }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 5. Guided Writing: Reading Summary Transformation",
+                            sectionInstructions: "Complete the second sentence so that it summarises the ideas from the texts accurately, using the word in BOLD. Type ONLY the missing words (2–5 words). (2 × 0.77 pts)",
+                            questions: [
+                                { type: "writing", weight: 0.77, hint: "Use the word: SO (Part 2 text)", question: "Original: A lot of guests knew about the party, so it wasn't a secret any more.\nRewrite: ________________________ knew about the party that it wasn't a secret any more.", acceptedAnswers: ["So many people", "So many guests"] },
+                                { type: "writing", weight: 0.77, hint: "Use the word: DESPITE (Part 2 text)", question: "Original: John tried hard to cheer Tina up, yet the evening was still tense.\nRewrite: ________________________ that John tried hard to cheer Tina up, the evening was still tense.", acceptedAnswers: ["Despite the fact"] }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 2002,
+                    isStandard22: true,
+                    title: "Full Blast 9 — End of Term 1 Writing",
+                    description: "22 questions (Grammar & Error Correction, Word Formation & Prepositions, Gap-Filling & Sentence Transformation: Modules 1–3) • Max grade: 11 points.",
+                    sections: [
+                        {
+                            sectionTitle: "Part 1. Grammar & Sentence Structure for Writing (Multiple Choice)",
+                            sectionInstructions: "Choose the grammatically correct option (A, B, C, or D) to complete each sentence for questions 1–6. (6 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "The way you dealt with that difficult situation was ________ impressive.", options: ["much", "quite", "far", "enough"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "The harder you practise your writing skills, ________ results you will get.", options: ["the best", "the better", "better", "the more good"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Jack ________ about the slow Wi-Fi connection! It's so annoying!", options: ["always complain", "is always complaining", "has always complained", "always is complaining"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "She is saving money ________ she can buy a portable laptop for university.", options: ["so as", "in order", "so that", "despite"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "It was ________ an incredible experience that I'll remember it for the rest of my life.", options: ["so", "such", "too", "very"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "This soup ________ delicious! What spices did you add to it?", options: ["is tasting", "tastes", "has tasted", "was tasting"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 2. Vocabulary, Collocations & Linkers in Writing (True / False)",
+                            sectionInstructions: "Decide whether each sentence (7–11) uses vocabulary, collocations, and linking words correctly (True) or contains a mistake (False). (5 × 0.4 pts)",
+                            questions: [
+                                { type: "tf", weight: 0.4, question: "Sentence: 'Our new house is furthest from the city centre than yours.'", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Sentence: 'I have a terrible toothache, so I'm seeing a dentist this afternoon.'", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "Sentence: 'In spite of what Tina had told her, Helen mentioned the surprise party to several people.'", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "Sentence: 'Please drop me a line ASAP so we can arrange the time of our meeting.'", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "Sentence: 'I don't think that this adventure novel is as interesting than the one I read last month.'", options: ["True", "False"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 3. Word Formation & Prepositions (Multiple Choice)",
+                            sectionInstructions: "Choose the correct form of the word or preposition (A, B, C, or D) for questions 12–16. (5 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "My brother is very ________ (COMPETE) and hates losing even in friendly board games.", options: ["competition", "competitive", "competitively", "compete"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "The new film was a huge ________ (DISAPPOINT) despite having famous lead actors.", options: ["disappointing", "disappointed", "disappointment", "disappoint"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "You shouldn't rely ________ other people to solve all your problems for you.", options: ["in", "at", "on", "for"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "We arrived at the stadium ________ time to see the opening ceremony.", options: ["in", "on", "at", "by"], correct: 0 },
+                                { type: "mc", weight: 0.4, question: "Many teenagers are enthusiastic ________ creating short videos and editing clips.", options: ["with", "about", "of", "for"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 4. Editing & Cloze Gap-Filling (Type-in)",
+                            sectionInstructions: "Complete each sentence with ONE exact word (grammar linker, verb form, or preposition). Type ONLY 1 word without a full stop. (4 × 0.77 pts)",
+                            questions: [
+                                { type: "text", weight: 0.77, hint: "Use 'so' or 'such' before an adjective without a noun", question: "Keeping a secret is ________ important that a close friendship can depend on it.", acceptedAnswers: ["so"] },
+                                { type: "text", weight: 0.77, hint: "Present Simple of 'organise' (general fact / habit)", question: "Every spring, our local eco-club ________ a charity bike ride to protect the forest.", acceptedAnswers: ["organises", "organizes"] },
+                                { type: "text", weight: 0.77, hint: "Preposition after 'apologise'", question: "You should apologise ________ forgetting to reply to her message yesterday.", acceptedAnswers: ["for"] },
+                                { type: "text", weight: 0.77, hint: "Comparative form of 'good' (getting ... and ...)", question: "This young artist's work is getting better and ________ every single day.", acceptedAnswers: ["better"] }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 5. Guided Writing: Sentence Transformation",
+                            sectionInstructions: "Complete the second sentence so that it has a similar meaning to the first sentence, using the word in BOLD. Type ONLY the missing words (2–5 words). (2 × 0.77 pts)",
+                            questions: [
+                                { type: "writing", weight: 0.77, hint: "Use the word: LESS", question: "Original: Carla is not as competitive as Sophie.\nRewrite: Carla ________________________ Sophie.", acceptedAnswers: ["is less competitive than"] },
+                                { type: "writing", weight: 0.77, hint: "Use the word: ORDER", question: "Original: They practise every day because they want to win the competition.\nRewrite: They practise every day ________________________ the competition.", acceptedAnswers: ["in order to win"] }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 2003,
+                    isStandard22: true,
+                    title: "Full Blast 9 — End of Term 1 Listening",
+                    description: "22 questions (Audio Comprehension MC, True/False, Listening Gap-Filling & Guided Summary: Modules 1–3 • Max 2 plays per track) • Max grade: 11 points.",
+                    sections: [
+                        {
+                            sectionTitle: "Part 1. Listening Comprehension: Family & Personality (Multiple Choice)",
+                            sectionInstructions: "Listen to Audio Track 1 (maximum 2 plays allowed) and choose the best answer (A, B, C, or D) for questions 1–6. (6 × 0.4 pts)",
+                            contextHtml: "<div class='p-3.5 bg-white rounded-xl border border-indigo-200 shadow-sm flex flex-wrap items-center justify-between gap-3'><div><div class='font-bold text-indigo-950 text-sm'>🎧 Audio Track 1: Max's Family & Personality</div><div class='text-xs text-slate-500'>Натуральне озвучення • Ліміт: максимум 2 прослуховування</div></div><div class='flex items-center gap-2'><audio id='aud-2003-1' preload='none' src='fb9_track1.mp3'></audio><button type='button' id='btn-2003-1' data-left='2' onclick=\"var a=document.getElementById('aud-2003-1'); var left=parseInt(this.dataset.left,10); if(!a.paused){ a.pause(); this.innerText='▶ Продовжити ('+left+'/2)'; return; } if(a.currentTime===0 || a.ended){ if(left<=0) return; left--; this.dataset.left=left; if(left===0){ this.innerText='🔊 Відтворення (остання спроба)'; } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } a.onended=function(){ var btn=document.getElementById('btn-2003-1'); var l=parseInt(btn.dataset.left,10); if(l<=0){ btn.disabled=true; btn.innerText='🔒 Ліміт вичерпано (0/2)'; btn.className='px-4 py-2 bg-slate-300 text-slate-500 text-xs font-bold rounded-lg cursor-not-allowed'; } else { btn.innerText='▶ Play Track 1 (Залишилось: '+l+'/2)'; } }; a.play();\" class='px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow transition cursor-pointer'>▶ Play Track 1 (Залишилось: 2/2)</button></div></div>",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "What is Max's position in his family?", options: ["He is an only child", "He is the oldest child", "He is the youngest child", "He is a middle child"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "Who does Max take after in personality?", options: ["His older sister", "His dad", "His grandfather", "His school coach"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Which qualities do Max and his dad share?", options: ["Being moody and stubborn", "Being ambitious, reliable, and determined", "Being spoilt and negative", "Being strict and silent"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "How does Max react when he is under pressure before exams?", options: ["He argues with his classmates", "He gives up easily", "He tries to keep calm and stay focused", "He forgets everything he studied"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "What is Max currently learning to manage at school?", options: ["A school newspaper", "A small school charity project", "An international football tournament", "A computer repair club"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Why does Max's sister Clara sometimes give him a hard time?", options: ["Because she is a perfectionist and likes things in order", "Because she doesn't like his friends", "Because she wants to move to another city", "Because he borrows her laptop without asking"], correct: 0 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 2. Listening Comprehension: Trying a New Sport (True / False)",
+                            sectionInstructions: "Listen to Audio Track 2 (maximum 2 plays allowed) and decide whether statements 7–11 are True or False. (5 × 0.4 pts)",
+                            contextHtml: "<div class='p-3.5 bg-white rounded-xl border border-indigo-200 shadow-sm flex flex-wrap items-center justify-between gap-3'><div><div class='font-bold text-indigo-950 text-sm'>🎧 Audio Track 2: Indoor Rock Climbing</div><div class='text-xs text-slate-500'>Натуральне озвучення • Ліміт: максимум 2 прослуховування</div></div><div class='flex items-center gap-2'><audio id='aud-2003-2' preload='none' src='fb9_track2.mp3'></audio><button type='button' id='btn-2003-2' data-left='2' onclick=\"var a=document.getElementById('aud-2003-2'); var left=parseInt(this.dataset.left,10); if(!a.paused){ a.pause(); this.innerText='▶ Продовжити ('+left+'/2)'; return; } if(a.currentTime===0 || a.ended){ if(left<=0) return; left--; this.dataset.left=left; if(left===0){ this.innerText='🔊 Відтворення (остання спроба)'; } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } a.onended=function(){ var btn=document.getElementById('btn-2003-2'); var l=parseInt(btn.dataset.left,10); if(l<=0){ btn.disabled=true; btn.innerText='🔒 Ліміт вичерпано (0/2)'; btn.className='px-4 py-2 bg-slate-300 text-slate-500 text-xs font-bold rounded-lg cursor-not-allowed'; } else { btn.innerText='▶ Play Track 2 (Залишилось: '+l+'/2)'; } }; a.play();\" class='px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow transition cursor-pointer'>▶ Play Track 2 (Залишилось: 2/2)</button></div></div>",
+                            questions: [
+                                { type: "tf", weight: 0.4, question: "The speaker decided to try indoor rock climbing at a sports centre in the inner city.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "Before trying climbing, she loved spending every afternoon playing video games and never got tired of it.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "A trainer at the centre handed out safety gear and explained the basic techniques.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "She felt completely relaxed from the very first minute and wasn't afraid of the height at all.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Next Saturday, she is taking part in a friendly one-to-one competition against another beginner.", options: ["True", "False"], correct: 0 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 3. Listening for Specific Information: Tech & Screen Weekly (Multiple Choice)",
+                            sectionInstructions: "Listen to Audio Track 3 (maximum 2 plays allowed) and choose the correct detail (A, B, C, or D) for questions 12–16. (5 × 0.4 pts)",
+                            contextHtml: "<div class='p-3.5 bg-white rounded-xl border border-indigo-200 shadow-sm flex flex-wrap items-center justify-between gap-3'><div><div class='font-bold text-indigo-950 text-sm'>🎧 Audio Track 3: Tech & Screen Weekly</div><div class='text-xs text-slate-500'>Натуральне озвучення • Ліміт: максимум 2 прослуховування</div></div><div class='flex items-center gap-2'><audio id='aud-2003-3' preload='none' src='fb9_track3.mp3'></audio><button type='button' id='btn-2003-3' data-left='2' onclick=\"var a=document.getElementById('aud-2003-3'); var left=parseInt(this.dataset.left,10); if(!a.paused){ a.pause(); this.innerText='▶ Продовжити ('+left+'/2)'; return; } if(a.currentTime===0 || a.ended){ if(left<=0) return; left--; this.dataset.left=left; if(left===0){ this.innerText='🔊 Відтворення (остання спроба)'; } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } a.onended=function(){ var btn=document.getElementById('btn-2003-3'); var l=parseInt(btn.dataset.left,10); if(l<=0){ btn.disabled=true; btn.innerText='🔒 Ліміт вичерпано (0/2)'; btn.className='px-4 py-2 bg-slate-300 text-slate-500 text-xs font-bold rounded-lg cursor-not-allowed'; } else { btn.innerText='▶ Play Track 3 (Залишилось: '+l+'/2)'; } }; a.play();\" class='px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow transition cursor-pointer'>▶ Play Track 3 (Залишилось: 2/2)</button></div></div>",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "What is the famous independent studio bringing out next Friday?", options: ["A new antivirus program", "A brand-new sci-fi series", "A documentary about extreme sports", "A live chat show"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "What do critics predict about the new series?", options: ["It will be a total flop", "It will be a box-office hit", "It will be cancelled after one episode", "Nobody will watch the trailer"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "When do cybersecurity experts say teenagers should be especially careful?", options: ["When buying sports equipment", "When scrolling through social media or downloading free gaming updates", "When watching films at the cinema", "When writing letters to friends"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "What software does the announcement advise users to install?", options: ["Video editing software", "Reliable antivirus software", "Virtual reality games", "New keyboard drivers"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "What serious online risk is mentioned at the end of the broadcast?", options: ["Overpriced tickets", "Identity theft", "Poor signal", "Overcrowded websites"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 4. Listening Gap-Filling (Type-in)",
+                            sectionInstructions: "Based on Audio Tracks 1–3, complete each sentence with the exact missing word you heard. Type ONLY 1 word without a full stop. (4 × 0.77 pts)",
+                            questions: [
+                                { type: "text", weight: 0.77, hint: "Track 1: noun (people in your team)", question: "Max has to be responsible and listen carefully to his ________ during the project.", acceptedAnswers: ["teammates"] },
+                                { type: "text", weight: 0.77, hint: "Track 2: noun (physical power)", question: "With regular climbing practice, she started building up her ________ and confidence.", acceptedAnswers: ["strength"] },
+                                { type: "text", weight: 0.77, hint: "Track 3: adjective (amazing, impressive)", question: "Critics say the trailer for the new sci-fi series looks ________.", acceptedAnswers: ["spectacular"] },
+                                { type: "text", weight: 0.77, hint: "Track 3: noun (a disadvantage or problem)", question: "Identity theft is described as a serious ________ of the digital age.", acceptedAnswers: ["drawback"] }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 5. Guided Writing: Listening Summary Transformation",
+                            sectionInstructions: "Complete the second sentence so that it accurately summarises what you heard in the tracks, using the word in BOLD. Type ONLY the missing words (2–4 words). (2 × 0.77 pts)",
+                            questions: [
+                                { type: "writing", weight: 0.77, hint: "Use the word: UP (Track 2)", question: "Original: She became tired and bored of sitting at her desk every afternoon.\nRewrite: She was getting completely ________________________ sitting at her desk every afternoon.", acceptedAnswers: ["fed up with"] },
+                                { type: "writing", weight: 0.77, hint: "Use the word: ALTHOUGH (Track 3)", question: "Original: The film crew worked under tight deadlines, yet the trailer looks spectacular.\nRewrite: ________________________ worked under tight deadlines, the trailer looks spectacular.", acceptedAnswers: ["Although the film crew", "Although the crew"] }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 2004,
+                    isStudyGuide: true,
+                    title: "Full Blast 9 — End of Term 1 Speaking",
+                    description: "Speaking Exam Questions for Preparation (Topics: Teen Life & Relationships, Active Lifestyle & Hobbies, Modern Technology & Media • Modules 1–3).",
+                    sections: [
+                        {
+                            sectionTitle: "Block 1. Personality, Family & Peer Relationships (Module 1)",
+                            sectionInstructions: "Prepare detailed answers (4–6 sentences) using personality adjectives and Present Simple / Present Progressive.",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> sibling, only child, take after sb, role model, peer pressure, fit in, keep calm, under pressure, ambitious, reliable, stubborn, cheerful, supportive.</p><p><strong>Useful Phrases:</strong> <em>If you ask me... / The way I see it... / For one thing...</em></p></div>",
+                            questions: [
+                                { question: "Who do you take after in your family in terms of appearance and personality? Describe your strongest character traits." },
+                                { question: "What qualities make someone a true friend or a good role model for teenagers today? Give examples." },
+                                { question: "How do you usually deal with stress when you are under pressure before important tests or competitions?" },
+                                { question: "Do you think peer pressure affects teenagers' choices (clothes, hobbies, behaviour)? How can someone stay true to themselves and still fit in?" }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Block 2. Sports, Hobbies & Active Lifestyle (Module 2)",
+                            sectionInstructions: "Prepare to speak for 1–2 minutes using expressions of likes/dislikes and comparatives.",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> keen on, fond of, fed up with, give sth a go, indoor / outdoor activities, extreme sports, opponent, teammate, build up strength, overcome fear.</p><p><strong>Target Grammar:</strong> <em>Comparatives & Superlatives (as... as, the harder..., the better..., far more exciting than...)</em></p></div>",
+                            questions: [
+                                { question: "What sports or creative hobbies are you keen on, and how long have you been doing them?" },
+                                { question: "Have you ever decided to give a completely new activity or extreme sport a go? Describe your experience and feelings." },
+                                { question: "Which do you prefer: individual sports (like cycling or swimming) or team sports (like football or basketball)? Compare their advantages." },
+                                { question: "Why are many teenagers becoming fed up with passive screen time, and what can schools or cities do to encourage an active lifestyle?" }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Block 3. Gadgets, Social Media & Digital Safety (Module 3a)",
+                            sectionInstructions: "Discuss everyday technology, benefits of the internet, and online risks.",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> portable, software, antivirus, update, stream, keep in touch, social media, drawback, cyberbullying, identity theft, spam, take for granted.</p><p><strong>Useful Phrases:</strong> <em>I mean... / What's more... / On the other hand...</em></p></div>",
+                            questions: [
+                                { question: "Which digital device or app could you not imagine your daily life without, and how does it help you study or keep in touch with friends?" },
+                                { question: "What are the main advantages and drawbacks of social media for teenagers today?" },
+                                { question: "What rules should internet users follow to protect their personal accounts from viruses, spam, and identity theft?" },
+                                { question: "Do you agree that modern teenagers sometimes take fast internet and smartphones for granted? Explain your opinion." }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Block 4. Cinema, TV Series & Entertainment (Module 3b)",
+                            sectionInstructions: "Talk about films, series, and behind-the-scenes work using cinema vocabulary.",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> box-office hit, flop, lead actor, director, screenwriter, film crew, episode, trailer, review, spectacular, disappointing, based on.</p><p><strong>Target Grammar:</strong> <em>Clauses of result & concession (so... that, such a... that, although, despite)</em></p></div>",
+                            questions: [
+                                { question: "Tell about a film or TV series you have watched recently that was such a great experience that you would recommend it to everyone." },
+                                { question: "What makes a movie a box-office hit rather than a flop: a talented lead actor, an original screenwriter, or spectacular special effects?" },
+                                { question: "Do you prefer watching films streamed at home or going to the cinema with friends? Why?" },
+                                { question: "Which behind-the-scenes profession in the film industry (director, camera operator, screenwriter) would you find most interesting to try?" }
+                            ]
+                        }
+                    ]
+                }
+            ],
             "Karpiuk 10": [
                 {
                     id: 1002,
