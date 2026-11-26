@@ -173,7 +173,304 @@
         // =========================================================================
         const TESTS_DATABASE = {
             "Full Blast 5": [],
-            "Full Blast 6": [],
+            "Full Blast 6": [
+                {
+                    id: 3001,
+                    isStandard22: true,
+                    title: "Full Blast 6 — End of Term 1 Reading",
+                    description: "22 questions (Vocabulary in Context, Reading Comprehension T/F & MC, Gap-Filling & Guided Summary: Modules 1–4) • Max grade: 11 points.",
+                    sections: [
+                        {
+                            sectionTitle: "Part 1. Vocabulary in Context: Free Time, Travel & City (Multiple Choice)",
+                            sectionInstructions: "Read each sentence and choose the word or phrase (A, B, C, or D) that best completes the meaning. (6 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "When we arrived at the campsite near the lake, we immediately put up our ________.", options: ["ticket", "tent", "souvenir", "poster"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "We were driving to the beach yesterday morning when we got a ________ tyre.", options: ["stuck", "crowded", "flat", "safe"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "Sandy was really ________ when she saw a huge shark swimming near the boat.", options: ["frightened", "outgoing", "excited", "polite"], correct: 0 },
+                                { type: "mc", weight: 0.4, question: "I usually hang ________ with my friends at the youth club on Saturday afternoons.", options: ["in", "off", "out", "for"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "We need to get ________ the bus now because this is the last stop!", options: ["into", "off", "on", "out"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "In the city centre, the art museum is right ________ the public library.", options: ["opposite", "between", "through", "into"], correct: 0 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 2. Reading Comprehension: Lisa's New Flat in the City (True / False)",
+                            sectionInstructions: "Read Lisa's letter to Mary carefully and decide whether statements 7–11 are True or False. (5 × 0.4 pts)",
+                            contextHtml: "<div class='space-y-2.5 text-sm sm:text-base text-slate-800'><p class='font-bold text-indigo-950'>Dear Mary,</p><p>I'm writing to you from my new flat in the city. I'm living with my sister now. The flat is great and it's very modern. It's got large windows, a big balcony and two bedrooms. Unfortunately, I'm sleeping in the smaller room, but the view is better. The neighbourhood is really safe, and the underground stops right in front of our block of flats.</p><p>It's amazing how easy it is to get around. In the city centre, there are many great shops, restaurants, theatres and museums! I love living here. The only bad thing is that sometimes it's noisy. Last night, the traffic was very bad and I couldn't sleep. Anyway, come and visit me sometime. Maybe this weekend? We can spend the day in the city centre and have a great time!</p><p class='font-semibold'>Write back soon,<br>Lisa</p></div>",
+                            questions: [
+                                { type: "tf", weight: 0.4, question: "Lisa and her sister sleep in the same bedroom in their new flat.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Lisa's bedroom is smaller than her sister's, but it has a better view.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "The underground station is very far away from Lisa's block of flats.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Lisa enjoys spending time in the city centre because there are lots of shops, theatres, and museums.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "Last night, Lisa couldn't sleep well because the street traffic was very noisy.", options: ["True", "False"], correct: 0 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 3. Reading Comprehension: Weekend Trips & City Life (Multiple Choice)",
+                            sectionInstructions: "Read the three short texts below and choose the best answer (A, B, C, or D) for questions 12–16. (5 × 0.4 pts)",
+                            contextHtml: "<div class='space-y-3 text-sm sm:text-base text-slate-800'><div class='p-3 rounded-xl bg-white border border-slate-200'><p class='font-bold text-indigo-950'>Text A: A Day at the Funfair</p><p>Last Sunday, Carol and her brother Danny went to the city funfair. Carol usually goes on the Ferris wheel because she loves looking at the city from high up. However, Danny wanted to try the roller coaster. It was the most exciting ride at the funfair, even though Danny felt a bit dizzy afterwards. Before going home, they wanted to buy some doughnuts, but the stall didn't have any left, so they got popcorn instead.</p></div><div class='p-3 rounded-xl bg-white border border-slate-200'><p class='font-bold text-indigo-950'>Text B: School Travel Habits</p><p>When Donna's grandfather was young, there weren't many cars in his town, so he used to go to school on foot every day. Today, lots of students use the underground or take the bus to school. Cycling is also popular, but cyclists must always ride carefully and wear a helmet.</p></div><div class='p-3 rounded-xl bg-white border border-slate-200'><p class='font-bold text-indigo-950'>Text C: A Trip to Spain</p><p>Last summer, Mark stayed in Spain for three months with his family. They visited historic castles, went swimming every afternoon, and bought souvenirs at local markets. Mark also posted letters and postcards to his classmates back home.</p></div></div>",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "According to Text A, which ride does Carol usually go on at the funfair?", options: ["The roller coaster", "The Ferris wheel", "The bumper cars", "The water slide"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Why did Carol and Danny buy popcorn at the funfair?", options: ["Because popcorn was cheaper than doughnuts", "Because they don't like doughnuts", "Because the stall didn't have any doughnuts left", "Because Danny was allergic to chocolate"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "According to Text B, how did Donna's grandfather use to travel to school?", options: ["By bike", "By underground", "On foot", "By bus"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "What safety advice does Text B give to cyclists?", options: ["Ride fast on main roads", "Ride carefully and wear a helmet", "Never ride in the morning", "Take the bus instead of cycling"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "How long did Mark stay in Spain according to Text C?", options: ["For two weeks", "For three months", "For one year", "For three days"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 4. Reading Gap-Filling: Key Vocabulary (Type-in)",
+                            sectionInstructions: "Complete each sentence based on the texts and vocabulary from Modules 1–4 with ONE exact word. Type ONLY 1 word without a full stop. (4 × 0.77 pts)",
+                            questions: [
+                                { type: "text", weight: 0.77, hint: "Lisa's letter: noun (outside area on an upper floor of a flat)", question: "Lisa's modern flat has large windows, two bedrooms, and a big ________.", acceptedAnswers: ["balcony"] },
+                                { type: "text", weight: 0.77, hint: "Lisa's letter: adjective (not dangerous)", question: "Lisa says her new neighbourhood is really ________ and easy to get around.", acceptedAnswers: ["safe"] },
+                                { type: "text", weight: 0.77, hint: "Text C: noun (things you buy on holiday to remember a place)", question: "During his holiday in Spain, Mark bought ________ at local markets.", acceptedAnswers: ["souvenirs"] },
+                                { type: "text", weight: 0.77, hint: "Module 1–4: verb (go to another country)", question: "Many people love to ________ abroad during their summer holidays.", acceptedAnswers: ["travel"] }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 5. Guided Writing: Reading Summary Transformation",
+                            sectionInstructions: "Complete the second sentence so that it summarises the ideas from the texts accurately, using the word in BOLD. Type ONLY the missing words (2–4 words). (2 × 0.77 pts)",
+                            questions: [
+                                { type: "writing", weight: 0.77, hint: "Use the word: THAN (Lisa's letter)", question: "Original: Lisa sleeps in the smaller bedroom, while her sister has the big one.\nRewrite: Lisa's bedroom is ________________________ her sister's bedroom.", acceptedAnswers: ["smaller than"] },
+                                { type: "writing", weight: 0.77, hint: "Use the word: USED (Text B)", question: "Original: When Donna's grandfather was young, he walked to school every day.\nRewrite: Donna's grandfather ________________________ to school on foot.", acceptedAnswers: ["used to go", "used to walk"] }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 3002,
+                    isStandard22: true,
+                    title: "Full Blast 6 — End of Term 1 Writing",
+                    description: "22 questions (Tenses, Comparatives & Superlatives, Adverbs & Prepositions, Gap-Filling & Sentence Transformation: Modules 1–4) • Max grade: 11 points.",
+                    sections: [
+                        {
+                            sectionTitle: "Part 1. Grammar & Tenses for Writing (Multiple Choice)",
+                            sectionInstructions: "Choose the grammatically correct option (A, B, C, or D) to complete each sentence for questions 1–6. (6 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "Kate and Mike ________ to buy new posters for their room because they don't like the old ones.", options: ["want", "are wanting", "wants", "wanted"], correct: 0 },
+                                { type: "mc", weight: 0.4, question: "Look! Why ________ Beth ________ so fast? — Because she's late for school.", options: ["does / run", "is / running", "did / run", "was / running"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "While Paul ________ home last night, he had a minor accident.", options: ["drove", "drives", "was driving", "is driving"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "When Phil ________ the long queue in front of the cinema, he left immediately.", options: ["saw", "was seeing", "sees", "see"], correct: 0 },
+                                { type: "mc", weight: 0.4, question: "Oliver and Fred can't stand ________ arts and crafts at the weekend.", options: ["do", "to do", "doing", "did"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "When my father was young, he ________ go to school by bike every morning.", options: ["used", "used to", "didn't use", "use to"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 2. Prepositions, Adverbs & Pronouns in Writing (True / False)",
+                            sectionInstructions: "Decide whether each sentence (7–11) is grammatically correct (True) or contains an error (False). (5 × 0.4 pts)",
+                            questions: [
+                                { type: "tf", weight: 0.4, question: "Sentence: 'Debbie is very good at singing. She sings really well.'", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "Sentence: 'I can't find my cat and I've looked everything in the house.'", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Sentence: 'Walk down King Street and turn right at the traffic lights.'", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "Sentence: 'My family and I usually have lunch at one o'clock on the weekend.'", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Sentence: 'I'd like to go hiking in the mountains next week.'", options: ["True", "False"], correct: 0 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 3. Adjectives, Adverbs & Indefinite Pronouns (Multiple Choice)",
+                            sectionInstructions: "Choose the correct word or form (A, B, C, or D) for questions 12–16. (5 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "Bruce is the ________ football player in our school team.", options: ["good", "better", "best", "most good"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "Motorbikes are much ________ than bicycles on busy city roads.", options: ["dangerous", "more dangerous", "most dangerous", "dangerously"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Is Miss Richards in the library? — No, I looked, but there's ________ there.", options: ["somebody", "anybody", "nobody", "everybody"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "Be careful on those wet roads! Please ride your bike ________.", options: ["careful", "carefully", "fastly", "good"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "My brother ________ swim when he was five years old, but now he swims very well.", options: ["can't", "couldn't", "could", "might"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 4. Grammar & Prepositions Gap-Filling (Type-in)",
+                            sectionInstructions: "Complete each sentence with ONE exact word (adjective/adverb form, preposition, or quantifier). Type ONLY 1 word without a full stop. (4 × 0.77 pts)",
+                            questions: [
+                                { type: "text", weight: 0.77, hint: "Comparative form of 'easy'", question: "Exercise B is much ________ than exercise D.", acceptedAnswers: ["easier"] },
+                                { type: "text", weight: 0.77, hint: "Adverb formed from 'easy'", question: "This grammar task is easy. I can finish it ________ in five minutes.", acceptedAnswers: ["easily"] },
+                                { type: "text", weight: 0.77, hint: "Preposition after 'look' (= try to find)", question: "I'm looking ________ my house keys, but I can't find them anywhere.", acceptedAnswers: ["for"] },
+                                { type: "text", weight: 0.77, hint: "Use 'some', 'any', or 'no' in a negative sentence", question: "They didn't have ________ doughnuts left at the café, so we ordered popcorn.", acceptedAnswers: ["any"] }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 5. Guided Writing: Sentence Transformation",
+                            sectionInstructions: "Complete the second sentence so that it has a similar meaning to the first sentence, using the word in BOLD. Type ONLY the missing words (2–4 words). (2 × 0.77 pts)",
+                            questions: [
+                                { type: "writing", weight: 0.77, hint: "Use the word: AS", question: "Original: My sister's room is cleaner than my room.\nRewrite: My room isn't ________________________ my sister's.", acceptedAnswers: ["as clean as"] },
+                                { type: "writing", weight: 0.77, hint: "Use the word: CHEAPEST", question: "Original: No other means of transport is cheaper than the bus.\nRewrite: The bus is ________________________ means of transport.", acceptedAnswers: ["the cheapest"] }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 3003,
+                    isStandard22: true,
+                    title: "Full Blast 6 — End of Term 1 Listening",
+                    description: "22 questions (Audio Comprehension MC, True/False, Listening Gap-Filling & Guided Summary: Modules 1–4 • Max 2 plays per track) • Max grade: 11 points.",
+                    sections: [
+                        {
+                            sectionTitle: "Part 1. Listening Comprehension: Sam's New Neighbourhood (Multiple Choice)",
+                            sectionInstructions: "Listen to Audio Track 1 (maximum 2 plays allowed) and choose the best answer (A, B, C, or D) for questions 1–6. (6 × 0.4 pts)",
+                            contextHtml: "<div class='p-3.5 bg-white rounded-xl border border-indigo-200 shadow-sm flex flex-wrap items-center justify-between gap-3'><div><div class='font-bold text-indigo-950 text-sm'>🎧 Audio Track 1: Sam's New Flat & Friend Leo</div><div class='text-xs text-slate-500'>Натуральне озвучення • Ліміт: максимум 2 прослуховування</div></div><div class='flex items-center gap-2'><audio id='aud-3003-1' preload='none' src='fb6_track1.mp3'></audio><button type='button' id='btn-3003-1' data-left='2' onclick=\"var a=document.getElementById('aud-3003-1'); var left=parseInt(this.dataset.left,10); if(!a.paused){ a.pause(); this.innerText='▶ Продовжити ('+left+'/2)'; return; } if(a.currentTime===0 || a.ended){ if(left<=0) return; left--; this.dataset.left=left; if(left===0){ this.innerText='🔊 Відтворення (остання спроба)'; } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } a.onended=function(){ var btn=document.getElementById('btn-3003-1'); var l=parseInt(btn.dataset.left,10); if(l<=0){ btn.disabled=true; btn.innerText='🔒 Ліміт вичерпано (0/2)'; btn.className='px-4 py-2 bg-slate-300 text-slate-500 text-xs font-bold rounded-lg cursor-not-allowed'; } else { btn.innerText='▶ Play Track 1 (Залишилось: '+l+'/2)'; } }; a.play();\" class='px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow transition cursor-pointer'>▶ Play Track 1 (Залишилось: 2/2)</button></div></div>",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "When did Sam's family move to their new flat in the city centre?", options: ["Last week", "Last month", "Two years ago", "Yesterday"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "How does Sam describe his new neighbourhood?", options: ["Much noisier than their old street", "Much quieter than their old street", "Very far from the city centre", "Very dangerous at night"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Where is the underground station located?", options: ["Behind the park", "Right opposite their block of flats", "Next to the cinema", "Two kilometres away"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Where does Sam usually hang out with his friend Leo at the weekend?", options: ["At the shopping centre", "At the youth club", "At the swimming pool", "At the train station"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "What does Leo look like and what is he like?", options: ["Short and shy", "Tall and slim, very friendly and outgoing", "Tall and serious", "Short and moody"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Where is the local museum that Sam and Leo sometimes visit?", options: ["Opposite the bank", "Next to the library", "Behind the youth club", "In front of the school"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 2. Listening Comprehension: Last Saturday's Adventures (True / False)",
+                            sectionInstructions: "Listen to Audio Track 2 (maximum 2 plays allowed) and decide whether statements 7–11 are True or False. (5 × 0.4 pts)",
+                            contextHtml: "<div class='p-3.5 bg-white rounded-xl border border-indigo-200 shadow-sm flex flex-wrap items-center justify-between gap-3'><div><div class='font-bold text-indigo-950 text-sm'>🎧 Audio Track 2: A Crazy Saturday</div><div class='text-xs text-slate-500'>Натуральне озвучення • Ліміт: максимум 2 прослуховування</div></div><div class='flex items-center gap-2'><audio id='aud-3003-2' preload='none' src='fb6_track2.mp3'></audio><button type='button' id='btn-3003-2' data-left='2' onclick=\"var a=document.getElementById('aud-3003-2'); var left=parseInt(this.dataset.left,10); if(!a.paused){ a.pause(); this.innerText='▶ Продовжити ('+left+'/2)'; return; } if(a.currentTime===0 || a.ended){ if(left<=0) return; left--; this.dataset.left=left; if(left===0){ this.innerText='🔊 Відтворення (остання спроба)'; } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } a.onended=function(){ var btn=document.getElementById('btn-3003-2'); var l=parseInt(btn.dataset.left,10); if(l<=0){ btn.disabled=true; btn.innerText='🔒 Ліміт вичерпано (0/2)'; btn.className='px-4 py-2 bg-slate-300 text-slate-500 text-xs font-bold rounded-lg cursor-not-allowed'; } else { btn.innerText='▶ Play Track 2 (Залишилось: '+l+'/2)'; } }; a.play();\" class='px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow transition cursor-pointer'>▶ Play Track 2 (Залишилось: 2/2)</button></div></div>",
+                            questions: [
+                                { type: "tf", weight: 0.4, question: "In the morning, Tim was riding his bike slowly when he crashed into a bus stop.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Tim sprained his ankle in the accident on King Street.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "The speaker's dad was nearby and drove Tim to the hospital immediately.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "In the afternoon, the speaker visited the funfair with her cousin Kate.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "The speaker thought the Ferris wheel was the most exciting ride at the funfair.", options: ["True", "False"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 3. Listening for Specific Information: Summer Trip to Spain (Multiple Choice)",
+                            sectionInstructions: "Listen to Audio Track 3 (maximum 2 plays allowed) and choose the correct detail (A, B, C, or D) for questions 12–16. (5 × 0.4 pts)",
+                            contextHtml: "<div class='p-3.5 bg-white rounded-xl border border-indigo-200 shadow-sm flex flex-wrap items-center justify-between gap-3'><div><div class='font-bold text-indigo-950 text-sm'>🎧 Audio Track 3: Summer Holiday in Spain</div><div class='text-xs text-slate-500'>Натуральне озвучення • Ліміт: максимум 2 прослуховування</div></div><div class='flex items-center gap-2'><audio id='aud-3003-3' preload='none' src='fb6_track3.mp3'></audio><button type='button' id='btn-3003-3' data-left='2' onclick=\"var a=document.getElementById('aud-3003-3'); var left=parseInt(this.dataset.left,10); if(!a.paused){ a.pause(); this.innerText='▶ Продовжити ('+left+'/2)'; return; } if(a.currentTime===0 || a.ended){ if(left<=0) return; left--; this.dataset.left=left; if(left===0){ this.innerText='🔊 Відтворення (остання спроба)'; } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } } else { this.innerText='⏸ Пауза (залишилось: '+left+'/2)'; } a.onended=function(){ var btn=document.getElementById('btn-3003-3'); var l=parseInt(btn.dataset.left,10); if(l<=0){ btn.disabled=true; btn.innerText='🔒 Ліміт вичерпано (0/2)'; btn.className='px-4 py-2 bg-slate-300 text-slate-500 text-xs font-bold rounded-lg cursor-not-allowed'; } else { btn.innerText='▶ Play Track 3 (Залишилось: '+l+'/2)'; } }; a.play();\" class='px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow transition cursor-pointer'>▶ Play Track 3 (Залишилось: 2/2)</button></div></div>",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "How long did the speaker's family stay in Spain last summer?", options: ["For one week", "For two weeks", "For three months", "For ten days"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Where did the family stay during their holiday?", options: ["At a five-star hotel", "At a lovely campsite near the beach", "In a city flat", "At a relative's house"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "What did they buy in the local market every morning?", options: ["Tickets", "Souvenirs", "Posters", "Bicycles"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Why did they miss the bus to the airport on their last day?", options: ["Because they overslept", "Because the traffic was so heavy", "Because they lost their tickets", "Because the bus broke down"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "How did they finally get to the airport in time for their flight?", options: ["On foot", "By underground", "By taxi", "By boat"], correct: 2 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 4. Listening Gap-Filling (Type-in)",
+                            sectionInstructions: "Based on Audio Tracks 1–3, complete each sentence with the exact missing word you heard. Type ONLY 1 word without a full stop. (4 × 0.77 pts)",
+                            questions: [
+                                { type: "text", weight: 0.77, hint: "Track 1: sport on a board with wheels", question: "Sometimes Sam and Leo go ________ in the park at the weekend.", acceptedAnswers: ["skateboarding"] },
+                                { type: "text", weight: 0.77, hint: "Track 2: part of the leg near the foot", question: "Tim crashed into a tree and sprained his ________.", acceptedAnswers: ["ankle"] },
+                                { type: "text", weight: 0.77, hint: "Track 3: portable shelter used when camping", question: "At the campsite near the beach, the family put up a huge ________.", acceptedAnswers: ["tent"] },
+                                { type: "text", weight: 0.77, hint: "Track 3: cars and buses on the road", question: "They missed the airport bus because the ________ was so heavy.", acceptedAnswers: ["traffic"] }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 5. Guided Writing: Listening Summary Transformation",
+                            sectionInstructions: "Complete the second sentence so that it accurately summarises what you heard in the tracks, using the word in BOLD. Type ONLY the missing words (2–4 words). (2 × 0.77 pts)",
+                            questions: [
+                                { type: "writing", weight: 0.77, hint: "Use the word: QUIETER (Track 1)", question: "Original: Sam's old street was noisier than his new neighbourhood.\nRewrite: Sam's new neighbourhood is ________________________ his old street.", acceptedAnswers: ["much quieter than", "quieter than"] },
+                                { type: "writing", weight: 0.77, hint: "Use the word: MOST (Track 2)", question: "Original: No other ride at the funfair was more exciting than the roller coaster.\nRewrite: The roller coaster was ________________________ ride at the funfair.", acceptedAnswers: ["the most exciting"] }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 3004,
+                    isStudyGuide: true,
+                    title: "Full Blast 6 — End of Term 1 Speaking",
+                    description: "Speaking Exam Questions for Preparation (Topics: Free Time & Friends, Travel & Accidents, Town & Places • Modules 1–4).",
+                    sections: [
+                        {
+                            sectionTitle: "Block 1. Free Time, Hobbies & Friends (Module 1)",
+                            sectionInstructions: "Prepare detailed answers (4–6 sentences) using Present Simple, Present Progressive, and 'like / love / can't stand + -ing'.",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> hang out with friends, youth club, arts and crafts, go skateboarding, go hiking, friendly, outgoing, active, shy, tall and slim.</p><p><strong>Target Grammar:</strong> <em>I usually... / At the moment I am... / I love doing... / I can't stand...</em></p></div>",
+                            questions: [
+                                { question: "What do you usually do in your free time and at the weekend? How often do you hang out with your friends?" },
+                                { question: "Describe your best friend. What does he/she look like, and what is he/she like?" },
+                                { question: "Which hobbies or sports do you enjoy doing, and what activities can't you stand?" },
+                                { question: "What did you and your friends do last weekend? Tell a short story." }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Block 2. Holidays, Travel & Experiences (Module 2)",
+                            sectionInstructions: "Prepare to speak for 1–2 minutes using Past Simple and 'used to'.",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> travel abroad, campsite, put up a tent, buy souvenirs, miss the bus, check in at a hotel, means of transport, underground, on foot.</p><p><strong>Target Grammar:</strong> <em>Past Simple & 'When I was younger, I used to...'</em></p></div>",
+                            questions: [
+                                { question: "Have you ever travelled abroad or visited another city in Ukraine? Where did you stay and what did you do there?" },
+                                { question: "What is your favourite means of transport when travelling, and why? Compare different ways of travelling (e.g., bus vs train)." },
+                                { question: "Have you ever been camping and put up a tent? Describe what you liked or didn't like about it." },
+                                { question: "How did your parents or grandparents use to get to school when they were young compared to how you go to school today?" }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Block 3. Accidents, Health & Funfair Adventures (Module 3)",
+                            sectionInstructions: "Describe past events using Past Simple and Past Progressive ('while' / 'when') and adverbs of manner.",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> crash into, fall down, sprain an ankle, break an arm, flat tyre, ambulance, frightened, lucky, funfair, Ferris wheel, roller coaster, carefully, fast.</p><p><strong>Target Grammar:</strong> <em>While I was riding..., I saw... / When the accident happened, we were...</em></p></div>",
+                            questions: [
+                                { question: "Have you ever had a minor accident (for example, falling off a bike or spraining your ankle)? What were you doing when it happened?" },
+                                { question: "Tell about a visit to a funfair or amusement park. Which rides did you go on, and which was the most exciting?" },
+                                { question: "Why is it important to ride a bike carefully and follow safety rules on busy streets?" }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Block 4. My Neighbourhood, Town & Places (Module 4)",
+                            sectionInstructions: "Describe your neighbourhood and give directions using prepositions of place and comparatives/superlatives.",
+                            contextHtml: "<div class='text-xs sm:text-sm text-indigo-950 space-y-1'><p><strong>Useful Vocabulary:</strong> block of flats, neighbourhood, chemist's, florist's, art gallery, pedestrian crossing, traffic lights, opposite, next to, between, in front of, behind.</p><p><strong>Useful Phrases:</strong> <em>Walk down... / Turn left at the traffic lights / It's on your right.</em></p></div>",
+                            questions: [
+                                { question: "Describe your house or flat and your neighbourhood. What places (parks, shops, museums, sports courts) are near your home?" },
+                                { question: "What do you like most about your town or city, and is there anything you would like to change (e.g., noisy traffic or crowded buses)?" },
+                                { question: "Explain how to get from your school to the nearest park, supermarket, or bus stop using directions." }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 3005,
+                    isStandard22: true,
+                    title: "Full Blast 6 — Unit 4: Places",
+                    description: "22 questions (Places & City Vocabulary, Reading Comprehension, Modals, Prepositions of Place/Movement & Comparatives/Superlatives) • Max grade: 11 points.",
+                    sections: [
+                        {
+                            sectionTitle: "Part 1. Vocabulary: Places in Town & Compound Nouns (Multiple Choice)",
+                            sectionInstructions: "Choose the correct word or phrase (A, B, C, or D) to complete each sentence for questions 1–6. (6 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "Oliver had a bad headache, so he went to the ________ to buy some medicine.", options: ["florist's", "chemist's", "newsagent's", "art gallery"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Always use the ________ when you want to cross a busy road safely.", options: ["petrol station", "pedestrian crossing", "car park", "tree house"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Walk down the street and turn left at the traffic ________.", options: ["signs", "lights", "parks", "flats"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "The police caught the bank ________ just outside the building yesterday afternoon.", options: ["tourist", "scientist", "robber", "neighbour"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "There were lots of great live bands performing at the summer music ________.", options: ["barbecue", "festival", "market", "planet"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Go ________ on and stop right in front of the computer shop.", options: ["right", "straight", "opposite", "between"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 2. Reading Comprehension: Two Cities Named London (True / False)",
+                            sectionInstructions: "Read Samantha's text carefully and decide whether statements 7–11 are True or False. (5 × 0.4 pts)",
+                            contextHtml: "<div class='space-y-2.5 text-sm sm:text-base text-slate-800'><p class='font-bold text-indigo-950'>Two Cities Named London</p><p>Hi! My name's Samantha and I live in London. That's London, Ohio, USA! It's a bit different from London, England. It isn't as big as London, England, and there aren't as many things to do, but I like it. There is a great swimming pool here and there are lots of parks. They are smaller than the parks in London, England, though. My house is on North Main Street and it's opposite a basketball court. I go there every day to play.</p><p>Last year I travelled to Europe for a month. It was my longest trip ever. Of course, I stayed in London, England, for a few days, just to see what it was like. It's a beautiful city with lots to do. The red double-decker buses were great and I really liked the museums. But I think London, Ohio, is nicer, though, because it's my home.</p></div>",
+                            questions: [
+                                { type: "tf", weight: 0.4, question: "Samantha lives in London, England, right next to a famous museum.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "London, Ohio, is smaller than London, England, and has fewer things to do.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "Samantha's house is on North Main Street, opposite a basketball court where she plays every day.", options: ["True", "False"], correct: 0 },
+                                { type: "tf", weight: 0.4, question: "Last year, Samantha stayed in London, England, for a whole month.", options: ["True", "False"], correct: 1 },
+                                { type: "tf", weight: 0.4, question: "Even though Samantha enjoyed the red double-decker buses and museums in England, she prefers London, Ohio, because it is her home.", options: ["True", "False"], correct: 0 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 3. Grammar: Modals, Prepositions & Adjectives (Multiple Choice)",
+                            sectionInstructions: "Choose the correct grammatical option (A, B, C, or D) for questions 12–16. (5 × 0.4 pts)",
+                            questions: [
+                                { type: "mc", weight: 0.4, question: "________ you turn left at the next corner, please?", options: ["May", "Might", "Could", "Mustn't"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "Arnold isn't in the kitchen. He ________ be in his bedroom, but I'm not sure.", options: ["can", "might", "could to", "may to"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "The newsagent's is ________ to the hotel on the main square.", options: ["opposite", "between", "next", "in front"], correct: 2 },
+                                { type: "mc", weight: 0.4, question: "Is the florist's ________ the shoe shop and the sweet shop?", options: ["behind", "between", "next", "opposite"], correct: 1 },
+                                { type: "mc", weight: 0.4, question: "Sam couldn't see the film screen because the man ________ her was wearing a huge hat!", options: ["behind", "in front of", "next", "between"], correct: 1 }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 4. Vocabulary & Adjective Forms Gap-Filling (Type-in)",
+                            sectionInstructions: "Complete each sentence with ONE exact word (vocabulary from Module 4 or the correct comparative/superlative form). Type ONLY 1 word without a full stop. (4 × 0.77 pts)",
+                            questions: [
+                                { type: "text", weight: 0.77, hint: "Superlative form of 'busy' (Saturday is usually the ... day)", question: "Saturday is usually the ________ day of the week at the shopping centre.", acceptedAnswers: ["busiest"] },
+                                { type: "text", weight: 0.77, hint: "Comparative form of 'safe' (it's ... to take a taxi than walk)", question: "Late at night, I always think it's ________ to take a taxi than walk alone.", acceptedAnswers: ["safer"] },
+                                { type: "text", weight: 0.77, hint: "Superlative form of 'heavy' (this is the ... bag of the three)", question: "This is the ________ bag of the three! What have you got inside it?", acceptedAnswers: ["heaviest"] },
+                                { type: "text", weight: 0.77, hint: "Noun: a place where people buy fresh fruit and vegetables", question: "Could you get me some fresh fruit and vegetables from the local ________?", acceptedAnswers: ["market"] }
+                            ]
+                        },
+                        {
+                            sectionTitle: "Part 5. Guided Writing: Sentence Transformation",
+                            sectionInstructions: "Complete the second sentence so that it has a similar meaning to the first sentence, using the word in BOLD. Type ONLY the missing words (2–4 words). (2 × 0.77 pts)",
+                            questions: [
+                                { type: "writing", weight: 0.77, hint: "Use the word: POPULAR (Grammar C4)", question: "Original: Both the National Museum and the Science Museum are equally popular.\nRewrite: The National Museum is ________________________ the Science Museum.", acceptedAnswers: ["as popular as"] },
+                                { type: "writing", weight: 0.77, hint: "Use the word: EXPENSIVE (Grammar C1)", question: "Original: No other shoes in the shop cost more than these ones.\nRewrite: My daughter always wants to buy ________________________ shoes in the shop.", acceptedAnswers: ["the most expensive"] }
+                            ]
+                        }
+                    ]
+                }
+            ],
             "Full Blast 9": [
                 {
                     id: 2001,
