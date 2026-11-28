@@ -21,7 +21,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
     body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-    /* Верхня панель */
     header {
       background: var(--primary);
       color: #fff;
@@ -64,7 +63,6 @@
     .btn-primary { background: var(--primary); color: #fff; font-size: 16px; padding: 12px 28px; }
     .btn-primary:hover { background: #1d4ed8; }
 
-    /* Стартовий екран */
     #start-screen {
       flex: 1;
       display: flex;
@@ -102,7 +100,6 @@
       font-size: 15px;
     }
 
-    /* Робоча зона тесту */
     #exam-screen { display: none; flex: 1; flex-direction: column; overflow: hidden; }
 
     .nav-bar {
@@ -142,7 +139,6 @@
     }
     .q-pill.answered { background: var(--primary-light); border-color: var(--accent); color: var(--primary); }
 
-    /* Split Screen контейнер */
     .workspace {
       flex: 1;
       display: flex;
@@ -228,7 +224,6 @@
       width: 100%;
     }
 
-    /* Вікно результатів для учня */
     #result-modal {
       display: none;
       position: fixed;
@@ -294,13 +289,16 @@
     }
     .mistake-exp { font-size: 14px; color: #1e293b; margin-top: 6px; line-height: 1.5; }
 
-    /* Збільшений шрифт */
     body.large-text .pane { font-size: 19px; }
     body.large-text .question-title { font-size: 19px; }
     body.large-text .option-label { font-size: 18px; }
   </style>
 </head>
 <body>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx135u5XoDKAX5-V746aUSE_HtTmse9bT5ky618RctWZ_MwdpTPkgKkATZBfJd5Ag/exec";
+</script>
 
 <header>
   <div class="brand">
@@ -315,7 +313,6 @@
   </div>
 </header>
 
-<!-- СТАРТОВИЙ ЕКРАН -->
 <div id="start-screen">
   <div class="start-card">
     <h1>Exam Preparation (NMT)</h1>
@@ -341,7 +338,6 @@
   </div>
 </div>
 
-<!-- РОБОЧИЙ ЕКРАН ТЕСТУ -->
 <div id="exam-screen">
   <div class="nav-bar">
     <div class="part-tabs">
@@ -355,7 +351,6 @@
   <div class="workspace" id="workspace"></div>
 </div>
 
-<!-- ВІКНО РЕЗУЛЬТАТІВ ДЛЯ УЧНЯ -->
 <div id="result-modal">
   <div class="result-box">
     <div class="result-header">
@@ -387,9 +382,6 @@
 </div>
 
 <script>
-// ВСТАВТЕ СЮДИ URL ВАШОГО APPS SCRIPT (той самий, що використовується в інших тестах сайту)
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx135u5XoDKAX5-V746aUSE_HtTmse9bT5ky618RctWZ_MwdpTPkgKkATZBfJd5Ag/exec";
-
 const NMT_SCALE = {
   0: 0, 1: 0, 2: 0, 3: 0, 4: 0,
   5: 100, 6: 105, 7: 111, 8: 116, 9: 121, 10: 126,
@@ -908,40 +900,49 @@ function finishExam() {
   body.innerHTML = html;
   document.getElementById("result-modal").style.display = "flex";
 
-  // Відправка результатів у Google Таблицю (через ваш Apps Script)
   const breakdownStr = `R1:${partScores.p1}/5, R2:${partScores.p2}/5, R3:${partScores.p3}/6, UoE:${partScores.p4}/16`;
   const mistakesStr = mistakes.length === 0
     ? "Без помилок"
     : mistakes.map(m => `№${m.id} (${m.topic})`).join("; ");
 
   const payload = {
+    sheet: "NMT",
+    tab: "NMT",
+    sheetName: "NMT",
     testType: "NMT",
-    testName: "Exam Preparation (NMT)",
+    test: "NMT",
+    testName: "NMT",
+    title: "NMT",
+    topic: "NMT",
+    name: studentName,
     studentName: studentName,
+    student: studentName,
+    class: studentClass,
     studentClass: studentClass,
+    grade: studentClass,
+    group: studentClass,
     score: nmtDisplay,
+    result: nmtDisplay,
+    points: rawScore,
+    total: 32,
     rawScore: `${rawScore}/32`,
     timeSpent: timeSpentStr,
     details: breakdownStr,
     mistakes: mistakesStr
   };
 
-  if (SCRIPT_URL && SCRIPT_URL.startsWith("http")) {
-    fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-    .then(() => {
-      document.getElementById("save-status").textContent = "✅ Результат відправлено в журнал учнів";
-    })
-    .catch(() => {
-      document.getElementById("save-status").textContent = "⚠️ Не вдалося відправити результат у таблицю";
-    });
-  } else {
-    document.getElementById("save-status").textContent = "ℹ️ Додайте SCRIPT_URL у файл nmt.html для автозапису в таблицю";
-  }
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    document.getElementById("save-status").textContent = "✅ Результат відправлено в журнал учнів (NMT)";
+  })
+  .catch(() => {
+    document.getElementById("save-status").textContent = "⚠️ Не вдалося відправити результат у таблицю";
+  });
 }
 </script>
 </body>
