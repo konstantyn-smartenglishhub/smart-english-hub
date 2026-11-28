@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Preparation (NMT) — Smart English Hub</title>
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #dbeafe;
+      --accent: #0284c7;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --success: #16a34a;
+      --danger: #dc2626;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
+    body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* Верхня панель */
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 10;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 700; }
+    .brand a { color: #fff; text-decoration: none; }
+    .badge { background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 12px; font-size: 13px; }
+    .controls { display: flex; align-items: center; gap: 12px; }
+    .timer {
+      background: #0f172a;
+      color: #38bdf8;
+      font-weight: 700;
+      font-size: 18px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      letter-spacing: 1px;
+    }
+    .timer.warning { color: #f87171; animation: pulse 1s infinite; }
+    @keyframes pulse { 50% { opacity: 0.6; } }
+
+    .btn {
+      border: none;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+    .btn-light { background: rgba(255,255,255,0.18); color: #fff; }
+    .btn-light:hover { background: rgba(255,255,255,0.3); }
+    .btn-finish { background: #22c55e; color: #fff; }
+    .btn-finish:hover { background: #16a34a; }
+    .btn-primary { background: var(--primary); color: #fff; font-size: 16px; padding: 12px 28px; }
+    .btn-primary:hover { background: #1d4ed8; }
+
+    /* Стартовий екран */
+    #start-screen {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .start-card {
+      background: var(--card);
+      max-width: 650px;
+      width: 100%;
+      padding: 36px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+    .start-card h1 { font-size: 26px; color: var(--primary); margin-bottom: 10px; }
+    .start-card p { color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+    .structure-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 22px;
+      font-size: 14px;
+    }
+    .structure-box li { margin-left: 20px; margin-bottom: 6px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+    .form-group input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    /* Робоча зона тесту */
+    #exam-screen { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+
+    .nav-bar {
+      background: #fff;
+      padding: 10px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+    .part-tabs { display: flex; gap: 8px; margin-right: 16px; }
+    .part-tab {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .part-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .q-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+    .q-pill {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .q-pill.answered { background: var(--primary-light); border-color: var(--accent); color: var(--primary); }
+
+    /* Split Screen контейнер */
+    .workspace {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      padding: 16px 24px;
+      gap: 20px;
+    }
+    .pane {
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 24px;
+      overflow-y: auto;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+    .pane-left { flex: 1.15; }
+    .pane-right { flex: 0.85; }
+    .pane-full { flex: 1; max-width: 1150px; margin: 0 auto; }
+
+    .passage-title { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 14px; }
+    .passage-text p { margin-bottom: 14px; text-align: justify; }
+    .gap-marker {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+      padding: 0 8px;
+      border-radius: 4px;
+      border: 1px solid var(--accent);
+    }
+
+    .task-instruction {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+    .question-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+      background: #fcfcfd;
+    }
+    .question-title { font-weight: 700; margin-bottom: 10px; font-size: 16px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      background: #fff;
+      transition: 0.15s;
+    }
+    .option-label:hover { background: #f1f5f9; }
+    .option-label input { margin-top: 4px; }
+
+    .matching-layout { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 20px; }
+    .headings-sticky {
+      position: sticky;
+      top: 0;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .headings-sticky h4 { margin-bottom: 10px; color: var(--primary); }
+    .heading-item { margin-bottom: 8px; font-size: 15px; }
+    .match-select {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--accent);
+      font-weight: 600;
+      font-size: 15px;
+      background: #fff;
+      width: 100%;
+    }
+
+    /* Вікно результатів для учня */
+    #result-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.78);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .result-box {
+      background: #fff;
+      max-width: 900px;
+      width: 100%;
+      max-height: 92vh;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .result-header {
+      background: var(--primary);
+      color: #fff;
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .score-banner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      padding: 20px 28px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+    }
+    .score-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .score-card .val { font-size: 28px; font-weight: 800; color: var(--primary); }
+    .score-card .lbl { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    .result-body { padding: 24px 28px; overflow-y: auto; flex: 1; }
+    .mistake-card {
+      border: 1px solid #fecaca;
+      background: #fef2f2;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+    }
+    .mistake-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-weight: 700; color: var(--danger); margin-bottom: 6px; }
+    .topic-tag {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .mistake-exp { font-size: 14px; color: #1e293b; margin-top: 6px; line-height: 1.5; }
+
+    /* Збільшений шрифт */
+    body.large-text .pane { font-size: 19px; }
+    body.large-text .question-title { font-size: 19px; }
+    body.large-text .option-label { font-size: 18px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <a href="index.html">← Smart English Hub</a>
+    <span class="badge">Exam Preparation (NMT) • 32 питання</span>
+  </div>
+  <div class="controls">
+    <button class="btn btn-light" onclick="toggleFontSize()" title="Збільшити розмір тексту">🔍 A+ / A-</button>
+    <button class="btn btn-light" onclick="toggleFullScreen()" title="Розгорнути на весь екран">⛶ На весь екран</button>
+    <div class="timer" id="timer-display" style="display:none;">60:00</div>
+    <button class="btn btn-finish" id="finish-btn" style="display:none;" onclick="confirmFinish()">Завершити тест</button>
+  </div>
+</header>
+
+<!-- СТАРТОВИЙ ЕКРАН -->
+<div id="start-screen">
+  <div class="start-card">
+    <h1>Exam Preparation (NMT)</h1>
+    <p>Повноформатний симулятор НМТ з англійської мови (32 завдання, 60 хвилин). Після завершення ви отримаєте бал за шкалою НМТ (100–200) та детальний розбір помилок із зазначенням тем.</p>
+    <div class="structure-box">
+      <strong>Структура тесту:</strong>
+      <ul>
+        <li><strong>Завдання 1–5 (Reading):</strong> Встановлення відповідності (заголовки до текстів) — 5 балів</li>
+        <li><strong>Завдання 6–10 (Reading, Split Screen):</strong> Вибір однієї правильної відповіді до тексту — 5 балів</li>
+        <li><strong>Завдання 11–16 (Reading):</strong> Встановлення відповідності (твердження / описи) — 6 балів</li>
+        <li><strong>Завдання 17–32 (Use of English, Split Screen):</strong> Заповнення пропусків (лексика та граматика) — 16 балів</li>
+      </ul>
+    </div>
+    <div class="form-group">
+      <label for="student-name">Прізвище та ім'я учня *</label>
+      <input type="text" id="student-name" placeholder="Наприклад: Коваленко Максим" required>
+    </div>
+    <div class="form-group">
+      <label for="student-class">Клас / Група</label>
+      <input type="text" id="student-class" placeholder="Наприклад: 11-А">
+    </div>
+    <button class="btn btn-primary" style="width:100%;" onclick="startExam()">Розпочати тестування (60 хв)</button>
+  </div>
+</div>
+
+<!-- РОБОЧИЙ ЕКРАН ТЕСТУ -->
+<div id="exam-screen">
+  <div class="nav-bar">
+    <div class="part-tabs">
+      <button class="part-tab active" id="tab-1" onclick="switchPart(1)">Частина 1 (1–5)</button>
+      <button class="part-tab" id="tab-2" onclick="switchPart(2)">Частина 2 (6–10)</button>
+      <button class="part-tab" id="tab-3" onclick="switchPart(3)">Частина 3 (11–16)</button>
+      <button class="part-tab" id="tab-4" onclick="switchPart(4)">Частина 4 (17–32)</button>
+    </div>
+    <div class="q-pills" id="q-pills"></div>
+  </div>
+  <div class="workspace" id="workspace"></div>
+</div>
+
+<!-- ВІКНО РЕЗУЛЬТАТІВ ДЛЯ УЧНЯ -->
+<div id="result-modal">
+  <div class="result-box">
+    <div class="result-header">
+      <div>
+        <h2 id="res-student-title">Результати тестування НМТ</h2>
+        <span id="save-status" style="font-size:13px; opacity:0.9;">Запис результату в журнал учнів...</span>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-light" onclick="location.reload()">Пройти ще раз</button>
+        <a href="index.html" class="btn btn-finish" style="text-decoration:none;">На головну</a>
+      </div>
+    </div>
+    <div class="score-banner">
+      <div class="score-card">
+        <div class="val" id="res-nmt-score">0</div>
+        <div class="lbl">Рейтинговий бал НМТ (100–200)</div>
+      </div>
+      <div class="score-card">
+        <div class="val" id="res-raw-score">0 / 32</div>
+        <div class="lbl">Тестові бали</div>
+      </div>
+      <div class="score-card">
+        <div class="val" id="res-time">00:00</div>
+        <div class="lbl">Витрачено часу</div>
+      </div>
+    </div>
+    <div class="result-body" id="result-body"></div>
+  </div>
+</div>
+
+<script>
+// ВСТАВТЕ СЮДИ URL ВАШОГО APPS SCRIPT (той самий, що використовується в інших тестах сайту)
+const SCRIPT_URL = "https://script.google.com/macros/s/.../exec";
+
+const NMT_SCALE = {
+  0: 0, 1: 0, 2: 0, 3: 0, 4: 0,
+  5: 100, 6: 105, 7: 111, 8: 116, 9: 121, 10: 126,
+  11: 130, 12: 134, 13: 137, 14: 140, 15: 143, 16: 145,
+  17: 147, 18: 149, 19: 151, 20: 153, 21: 155, 22: 158,
+  23: 161, 24: 164, 25: 167, 26: 170, 27: 174, 28: 178,
+  29: 183, 30: 189, 31: 195, 32: 200
+};
+
+const EXAM_DATA = {
+  part1: {
+    instruction: "Read the texts below. Match choices (A–H) to (1–5). There are three choices you do not need to use.",
+    choices: {
+      A: "Eco-friendly packaging initiative",
+      B: "Volunteer opportunity at an animal shelter",
+      C: "Public transport schedule changes",
+      D: "Digital photography workshop for beginners",
+      E: "Charity book swap event",
+      F: "Language exchange club meeting",
+      G: "Urban rooftop gardening course",
+      H: "Free museum admission day"
+    },
+    items: [
+      {
+        id: 1,
+        text: "Bring your pre-loved novels to the Central Library courtyard this Saturday! For every book you donate, you will receive a token to pick another title from our shelves. All remaining books will be delivered to rural school libraries.",
+        correct: "E",
+        topic: "Reading: Визначення основної ідеї (Matching Headings)",
+        explanation: "Ключові слова 'pre-loved novels', 'donate', 'pick another title' вказують на благодійний обмін книгами (Charity book swap event)."
+      },
+      {
+        id: 2,
+        text: "Starting Monday, Route 42 buses will operate every 20 minutes instead of 10 due to roadworks on Oak Avenue. Passengers are advised to allow extra travel time during morning rush hours.",
+        correct: "C",
+        topic: "Reading: Визначення основної ідеї (Matching Headings)",
+        explanation: "Повідомлення про зміну інтервалу руху автобусів ('operate every 20 minutes instead of 10') відповідає заголовку C (Public transport schedule changes)."
+      },
+      {
+        id: 3,
+        text: "Want to practise speaking Spanish, French, or German in a relaxed atmosphere? Join us at Bean & Leaf Café every Thursday at 6 PM. Native speakers and learners of all levels are welcome!",
+        correct: "F",
+        topic: "Reading: Визначення основної ідеї (Matching Headings)",
+        explanation: "Йдеться про практику розмовної іноземної мови в невимушеній атмосфері ('practise speaking... Native speakers and learners'), що відповідає мовному клубу (F)."
+      },
+      {
+        id: 4,
+        text: "Our local bakery has replaced all plastic bags and takeaway cups with 100% compostable cornstarch containers. Customers who bring their own reusable mugs also get a 15% discount on coffee.",
+        correct: "A",
+        topic: "Reading: Визначення основної ідеї (Matching Headings)",
+        explanation: "Заміна пластику на біорозкладну тару ('replaced all plastic bags... with compostable containers') — це екологічна ініціатива (A)."
+      },
+      {
+        id: 5,
+        text: "Learn how to master manual settings, natural lighting, and composition using any camera or smartphone. No prior experience is required. Spaces are limited to 12 participants.",
+        correct: "D",
+        topic: "Reading: Визначення основної ідеї (Matching Headings)",
+        explanation: "Навчання налаштуванням камери, освітленню та композиції для початківців ('No prior experience is required') відповідає майстер-класу з фотографії (D)."
+      }
+    ]
+  },
+
+  part2: {
+    title: "The Rise of Vertical Farming in Modern Cities",
+    passage: [
+      "As the global population continues to grow and urban areas expand, traditional agriculture faces unprecedented challenges. Extreme weather events, soil degradation, and shrinking farmland threaten food security worldwide. In response, scientists and entrepreneurs are increasingly turning to vertical farming—a method of growing crops in vertically stacked layers inside controlled indoor environments.",
+      "Unlike conventional farms that rely on sunlight and seasonal weather, vertical farms use energy-efficient LED lights tailored to specific plant wavelengths. Nutrients are delivered directly to plant roots through hydroponic or aeroponic systems, eliminating the need for soil. Remarkably, this approach uses up to 95% less water than traditional farming because water is continuously filtered and recycled within a closed loop.",
+      "Another significant advantage is location. Vertical farms can be built inside abandoned warehouses, shipping containers, or skyscrapers right in the heart of major cities. Growing food closer to consumers drastically reduces transportation distances, cutting carbon emissions and ensuring that produce reaches supermarket shelves within hours of harvesting rather than days.",
+      "Despite its promise, vertical farming still struggles with high initial setup costs and substantial electricity consumption for lighting and climate control. Currently, most indoor farms focus on leafy greens, herbs, and strawberries, as staple crops like wheat and corn require too much space and energy to be economically viable. Nevertheless, as renewable energy becomes cheaper and automation improves, vertical agriculture is expected to play a vital role in feeding future generations."
+    ],
+    questions: [
+      {
+        id: 6,
+        q: "According to the first paragraph, what is the main reason for the growth of vertical farming?",
+        options: {
+          A: "A decline in the global urban population",
+          B: "Growing threats to traditional food production",
+          C: "The low cost of building indoor farms",
+          D: "Government bans on conventional agriculture"
+        },
+        correct: "B",
+        topic: "Reading: Детальне розуміння тексту (Multiple Choice)",
+        explanation: "У першому абзаці зазначено, що екстремальна погода, деградація ґрунтів і скорочення сільгоспугідь загрожують продовольчій безпеці ('threaten food security'), що й стимулює розвиток вертикального фермерства."
+      },
+      {
+        id: 7,
+        q: "How do vertical farms manage to save a huge amount of water?",
+        options: {
+          A: "By collecting rainwater on warehouse roofs",
+          B: "By growing plants that require no moisture",
+          C: "By cleaning and reusing water in a closed system",
+          D: "By watering crops only once a month"
+        },
+        correct: "C",
+        topic: "Reading: Детальне розуміння тексту (Multiple Choice)",
+        explanation: "У другому абзаці сказано: 'water is continuously filtered and recycled within a closed loop' (вода постійно фільтрується та повторно використовується у замкненому циклі)."
+      },
+      {
+        id: 8,
+        q: "What benefit comes from placing vertical farms inside cities?",
+        options: {
+          A: "Crops grow twice as large as in rural areas",
+          B: "Supermarkets no longer need refrigeration",
+          C: "Food stays fresher due to shorter delivery routes",
+          D: "Farmers do not need to pay for electricity"
+        },
+        correct: "C",
+        topic: "Reading: Детальне розуміння тексту (Multiple Choice)",
+        explanation: "У третьому абзаці зазначено, що близькість до споживачів скорочує відстань перевезення, тому продукти потрапляють на полиці за лічені години після збору ('within hours of harvesting')."
+      },
+      {
+        id: 9,
+        q: "Why are wheat and corn rarely grown in vertical farms today?",
+        options: {
+          A: "They cannot grow under LED lighting",
+          B: "They are not profitable due to high energy and space demands",
+          C: "Consumers prefer leafy greens over staple crops",
+          D: "Hydroponic systems damage their roots"
+        },
+        correct: "B",
+        topic: "Reading: Детальне розуміння тексту (Multiple Choice)",
+        explanation: "У четвертому абзаці вказано: 'staple crops like wheat and corn require too much space and energy to be economically viable' (вимагають забагато місця та енергії, щоб бути економічно вигідними)."
+      },
+      {
+        id: 10,
+        q: "What is the author's overall attitude toward the future of vertical farming?",
+        options: {
+          A: "Cautiously optimistic",
+          B: "Completely dismissive",
+          C: "Deeply doubtful",
+          D: "Indifferent"
+        },
+        correct: "A",
+        topic: "Reading: Визначення позиції автора (Tone & Attitude)",
+        explanation: "Автор визнає поточні труднощі (витрати на електроенергію), але підсумовує, що з розвитком відновлюваної енергії вертикальне фермерство відіграватиме важливу роль ('expected to play a vital role')."
+      }
+    ]
+  },
+
+  part3: {
+    instruction: "Read the texts below. Match choices (A–H) to (11–16). There are two choices you do not need to use.",
+    choices: {
+      A: "offers flexible working hours for students",
+      B: "requires advanced knowledge of graphic design software",
+      C: "provides free accommodation and meals",
+      D: "involves working outdoors in all weather conditions",
+      E: "includes paid training before starting the job",
+      F: "is open only to applicants with a driving licence",
+      G: "allows employees to work remotely from home",
+      H: "organizes annual team-building trips abroad"
+    },
+    items: [
+      {
+        id: 11,
+        text: "<strong>Junior Customer Support Agent:</strong> Answer client queries via live chat and email from the comfort of your own living room. All you need is a reliable internet connection and a quiet workspace.",
+        correct: "G",
+        topic: "Reading: Пошук конкретної інформації (Matching)",
+        explanation: "Фраза 'from the comfort of your own living room' означає дистанційну роботу з дому (G)."
+      },
+      {
+        id: 12,
+        text: "<strong>Summer Camp Activity Leader:</strong> Join our youth camp in the Carpathian Mountains for July and August. Your room in the staff lodge and three daily buffet meals are completely covered by the camp.",
+        correct: "C",
+        topic: "Reading: Пошук конкретної інформації (Matching)",
+        explanation: "'Your room... and three daily buffet meals are completely covered' відповідає варіанту C (безкоштовне житло та харчування)."
+      },
+      {
+        id: 13,
+        text: "<strong>Weekend Barista:</strong> Looking for a part-time role that fits around your university lectures? Choose morning or evening shifts on Fridays, Saturdays, and Sundays to suit your timetable.",
+        correct: "A",
+        topic: "Reading: Пошук конкретної інформації (Matching)",
+        explanation: "'fits around your university lectures... Choose morning or evening shifts' вказує на гнучкий графік для студентів (A)."
+      },
+      {
+        id: 14,
+        text: "<strong>Bank Operations Trainee:</strong> No previous banking experience is necessary. Successful candidates will attend a two-week induction course at full salary before taking on client responsibilities.",
+        correct: "E",
+        topic: "Reading: Пошук конкретної інформації (Matching)",
+        explanation: "'two-week induction course at full salary' означає оплачуване навчання перед початком роботи (E)."
+      },
+      {
+        id: 15,
+        text: "<strong>Botanical Garden Assistant:</strong> Duties include pruning trees, planting seasonal flowers, and maintaining pathways across our 40-hectare park, rain or shine.",
+        correct: "D",
+        topic: "Reading: Пошук конкретної інформації (Matching)",
+        explanation: "'maintaining pathways across our 40-hectare park, rain or shine' означає роботу на свіжому повітрі за будь-якої погоди (D)."
+      },
+      {
+        id: 16,
+        text: "<strong>Social Media Content Creator:</strong> We are seeking a creative specialist who is fluent in Adobe Photoshop and Illustrator to produce visual campaigns for international brands.",
+        correct: "B",
+        topic: "Reading: Пошук конкретної інформації (Matching)",
+        explanation: "'fluent in Adobe Photoshop and Illustrator' відповідає вимозі знання графічних редакторів (B)."
+      }
+    ]
+  },
+
+  part4: {
+    text1: {
+      title: "Task 17–24: Vocabulary in Context (The History of Chocolate)",
+      passage: "Chocolate has a rich history that stretches back more than three thousand years to the ancient civilizations of Mesoamerica. The Maya and Aztecs <span class='gap-marker'>(17)</span> cacao beans so highly that they used them not only to prepare a bitter ceremonial drink, but also as a form of <span class='gap-marker'>(18)</span> to buy food and goods. When Spanish explorers brought cacao back to Europe in the 16th century, people began adding sugar and honey to <span class='gap-marker'>(19)</span> the taste, which quickly made the drink fashionable among European nobility. For centuries, chocolate remained an expensive <span class='gap-marker'>(20)</span> reserved exclusively for the wealthy. Everything changed during the Industrial Revolution, when new machines made it possible to <span class='gap-marker'>(21)</span> cocoa butter from roasted beans and produce solid chocolate bars on a mass <span class='gap-marker'>(22)</span>. Today, dark chocolate in particular is praised by nutritionists because it <span class='gap-marker'>(23)</span> antioxidants that can support heart health when eaten in <span class='gap-marker'>(24)</span>.",
+      questions: [
+        { id: 17, options: { A: "valued", B: "cost", C: "charged", D: "priced" }, correct: "A", topic: "Use of English (Лексика): Дієслова значення та оцінки", explanation: "'valued... so highly' — цінували настільки високо. 'Cost' і 'charge' мають інше лексичне керування." },
+        { id: 18, options: { A: "salary", B: "currency", C: "income", D: "savings" }, correct: "B", topic: "Use of English (Лексика): Економічна лексика", explanation: "'a form of currency' — форма валюти/грошей для купівлі товарів." },
+        { id: 19, options: { A: "improve", B: "increase", C: "raise", D: "grow" }, correct: "A", topic: "Use of English (Лексика): Стійкі словосполучення", explanation: "'improve the taste' — покращити смак. Інші дієслова означають кількісне збільшення." },
+        { id: 20, options: { A: "necessity", B: "luxury", C: "bargain", D: "fortune" }, correct: "B", topic: "Use of English (Лексика): Контекстуальні іменники", explanation: "'an expensive luxury' — дорога розкіш, доступна лише заможним людям." },
+        { id: 21, options: { A: "divide", B: "split", C: "separate", D: "part" }, correct: "C", topic: "Use of English (Лексика): Дієслова з прийменником 'from'", explanation: "'separate X from Y' — відокремлювати какао-масло від обсмажених бобів." },
+        { id: 22, options: { A: "level", B: "size", C: "amount", D: "scale" }, correct: "D", topic: "Use of English (Лексика): Ідіоматичні вирази", explanation: "'on a mass scale' — у масовому масштабі (стійкий вираз)." },
+        { id: 23, options: { A: "consists", B: "contains", C: "includes", D: "involves" }, correct: "B", topic: "Use of English (Лексика): Синоніми складу", explanation: "'contains antioxidants' — містить у своєму складі антиоксиданти ('consists' вимагає прийменника 'of')." },
+        { id: 24, options: { A: "limit", B: "balance", C: "moderation", D: "average" }, correct: "C", topic: "Use of English (Лексика): Стійкі прийменникові фрази", explanation: "'in moderation' — у помірній кількості (стійкий вираз)." }
+      ]
+    },
+    text2: {
+      title: "Task 25–32: Grammar in Context (Why We Dream)",
+      passage: "Every night, while our bodies rest, our brains remain remarkably active, creating vivid stories and images known as dreams. Although scientists <span class='gap-marker'>(25)</span> dreaming for decades, its exact purpose is still not completely understood. One leading theory suggests that dreaming helps the brain process emotions and store important memories <span class='gap-marker'>(26)</span> during the day. During REM sleep, <span class='gap-marker'>(27)</span> most vivid dreams occur, brain activity looks almost identical to that of a person who is awake. Interestingly, people <span class='gap-marker'>(28)</span> are woken up right after REM sleep can usually recall their dreams in great detail. If you want to remember your dreams better, psychologists recommend <span class='gap-marker'>(29)</span> a notebook beside your bed so you can write them down immediately. Without recording them, nearly 90% of dream content <span class='gap-marker'>(30)</span> within ten minutes of waking up. Even people who claim they never dream actually have several dreams every night; they <span class='gap-marker'>(31)</span> simply forget them before morning. Had researchers not invented modern brain-scanning technology, we <span class='gap-marker'>(32)</span> far less about the sleeping mind today.",
+      questions: [
+        { id: 25, options: { A: "studied", B: "have been studying", C: "are studying", D: "had studied" }, correct: "B", topic: "Use of English (Граматика): Present Perfect Continuous", explanation: "Маркер тривалості 'for decades' та зв'язок із теперішнім ('is still not understood') вимагають Present Perfect Continuous — 'have been studying'." },
+        { id: 26, options: { A: "collect", B: "collecting", C: "collected", D: "to collect" }, correct: "C", topic: "Use of English (Граматика): Participle II (Дієприкметник пасивного стану)", explanation: "Спогади, зібрані протягом дня ('memories [which were] collected during the day') — пасивний дієприкметник 'collected'." },
+        { id: 27, options: { A: "where", B: "which", C: "when", D: "whose" }, correct: "C", topic: "Use of English (Граматика): Відносні займенники (Relative Clauses)", explanation: "Посилання на час/фазу сну ('During REM sleep, when...') вимагає відносного прислівника часу 'when'." },
+        { id: 28, options: { A: "who", B: "which", C: "whom", D: "what" }, correct: "A", topic: "Use of English (Граматика): Відносні займенники для людей", explanation: "Для підмета, що позначає людей ('people who are woken up'), вживається 'who'." },
+        { id: 29, options: { A: "keep", B: "to keep", C: "keeping", D: "kept" }, correct: "C", topic: "Use of English (Граматика): Герундій (Gerund after 'recommend')", explanation: "Після дієслова 'recommend' без прямого додатка вживається герундій (-ing): 'recommend keeping'." },
+        { id: 30, options: { A: "forgets", B: "is forgotten", C: "forgot", D: "has forgotten" }, correct: "B", topic: "Use of English (Граматика): Пасивний стан (Present Simple Passive)", explanation: "Зміст снів не сам забуває, а 'забувається' (регулярний факт) — Present Simple Passive 'is forgotten'." },
+        { id: 31, options: { A: "must", B: "should", C: "just", D: "ought" }, correct: "C", topic: "Use of English (Граматика): Прислівники", explanation: "За змістом потрібен прислівник 'просто' ('they just simply forget' / 'just' підсилює дію), модальні дієслова тут граматично не підходять." },
+        { id: 32, options: { A: "would know", B: "will know", C: "knew", D: "had known" }, correct: "A", topic: "Use of English (Граматика): Змішаний тип умовних речень (Mixed Conditional)", explanation: "Умова в минулому ('Had researchers not invented...' = If researchers hadn't invented) + наслідок у теперішньому ('today') вимагають 'would + V1' ('would know')." }
+      ]
+    }
+  }
+};
+
+let userAnswers = {};
+let currentPart = 1;
+let totalSeconds = 60 * 60;
+let timerInterval = null;
+let startTime = null;
+
+function startExam() {
+  const name = document.getElementById("student-name").value.trim();
+  if (!name) {
+    alert("Будь ласка, введіть ваше прізвище та ім'я перед початком тесту.");
+    return;
+  }
+
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("exam-screen").style.display = "flex";
+  document.getElementById("timer-display").style.display = "block";
+  document.getElementById("finish-btn").style.display = "inline-block";
+
+  buildNavPills();
+  switchPart(1);
+  startTime = Date.now();
+  startTimer();
+}
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    totalSeconds--;
+    const mins = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
+    const display = document.getElementById("timer-display");
+    display.textContent = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+
+    if (totalSeconds <= 300) display.classList.add("warning");
+    if (totalSeconds <= 0) {
+      clearInterval(timerInterval);
+      alert("Час вичерпано! Тест завершується автоматично.");
+      finishExam();
+    }
+  }, 1000);
+}
+
+function buildNavPills() {
+  const container = document.getElementById("q-pills");
+  container.innerHTML = "";
+  for (let i = 1; i <= 32; i++) {
+    const pill = document.createElement("div");
+    pill.className = "q-pill";
+    pill.id = `pill-${i}`;
+    pill.textContent = i;
+    pill.onclick = () => jumpToQuestion(i);
+    container.appendChild(pill);
+  }
+}
+
+function updateNavPills() {
+  for (let i = 1; i <= 32; i++) {
+    const pill = document.getElementById(`pill-${i}`);
+    if (userAnswers[i]) pill.classList.add("answered");
+    else pill.classList.remove("answered");
+  }
+}
+
+function jumpToQuestion(qNum) {
+  let targetPart = 1;
+  if (qNum >= 6 && qNum <= 10) targetPart = 2;
+  else if (qNum >= 11 && qNum <= 16) targetPart = 3;
+  else if (qNum >= 17) targetPart = 4;
+
+  if (currentPart !== targetPart) switchPart(targetPart);
+  setTimeout(() => {
+    const el = document.getElementById(`q-card-${qNum}`);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 60);
+}
+
+function setAnswer(qNum, val) {
+  userAnswers[qNum] = val;
+  updateNavPills();
+}
+
+function switchPart(part) {
+  currentPart = part;
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById(`tab-${i}`).classList.toggle("active", i === part);
+  }
+
+  const ws = document.getElementById("workspace");
+  ws.innerHTML = "";
+
+  if (part === 1) renderMatchingPart(ws, EXAM_DATA.part1);
+  else if (part === 2) renderReadingSplit(ws, EXAM_DATA.part2);
+  else if (part === 3) renderMatchingPart(ws, EXAM_DATA.part3);
+  else if (part === 4) renderUseOfEnglishSplit(ws, EXAM_DATA.part4);
+}
+
+function renderMatchingPart(ws, data) {
+  const pane = document.createElement("div");
+  pane.className = "pane pane-full";
+
+  let choicesHtml = "";
+  for (const [key, val] of Object.entries(data.choices)) {
+    choicesHtml += `<div class="heading-item"><strong>${key}.</strong> ${val}</div>`;
+  }
+
+  let itemsHtml = "";
+  data.items.forEach(item => {
+    let opts = `<option value="">— Оберіть варіант —</option>`;
+    for (const key of Object.keys(data.choices)) {
+      const sel = userAnswers[item.id] === key ? "selected" : "";
+      opts += `<option value="${key}" ${sel}>${key} — ${data.choices[key]}</option>`;
+    }
+    itemsHtml += `
+      <div class="question-card" id="q-card-${item.id}">
+        <div class="question-title">Завдання ${item.id}</div>
+        <p>${item.text}</p>
+        <select class="match-select" onchange="setAnswer(${item.id}, this.value)">${opts}</select>
+      </div>
+    `;
+  });
+
+  pane.innerHTML = `
+    <div class="task-instruction">${data.instruction}</div>
+    <div class="matching-layout">
+      <div>${itemsHtml}</div>
+      <div>
+        <div class="headings-sticky">
+          <h4>Варіанти відповідей (A–H):</h4>
+          ${choicesHtml}
+        </div>
+      </div>
+    </div>
+  `;
+  ws.appendChild(pane);
+}
+
+function renderReadingSplit(ws, data) {
+  const left = document.createElement("div");
+  left.className = "pane pane-left passage-text";
+  left.innerHTML = `
+    <div class="task-instruction">Read the text carefully and answer questions 6–10 on the right.</div>
+    <div class="passage-title">${data.title}</div>
+    ${data.passage.map(p => `<p>${p}</p>`).join("")}
+  `;
+
+  const right = document.createElement("div");
+  right.className = "pane pane-right";
+  right.innerHTML = data.questions.map(q => renderMCQCard(q.id, q.q, q.options)).join("");
+
+  ws.appendChild(left);
+  ws.appendChild(right);
+}
+
+function renderUseOfEnglishSplit(ws, data) {
+  const left = document.createElement("div");
+  left.className = "pane pane-left passage-text";
+  left.innerHTML = `
+    <div class="task-instruction">Read the texts below. For gaps (17–32) choose the correct answer (A, B, C or D).</div>
+    <div class="passage-title">${data.text1.title}</div>
+    <p>${data.text1.passage}</p>
+    <hr style="margin:24px 0; border:0; border-top:1px solid var(--border);">
+    <div class="passage-title">${data.text2.title}</div>
+    <p>${data.text2.passage}</p>
+  `;
+
+  const right = document.createElement("div");
+  right.className = "pane pane-right";
+  const allQs = [...data.text1.questions, ...data.text2.questions];
+  right.innerHTML = allQs.map(q => renderMCQCard(q.id, `Пропуск (${q.id})`, q.options)).join("");
+
+  ws.appendChild(left);
+  ws.appendChild(right);
+}
+
+function renderMCQCard(id, title, options) {
+  let optsHtml = "";
+  for (const [key, text] of Object.entries(options)) {
+    const checked = userAnswers[id] === key ? "checked" : "";
+    optsHtml += `
+      <label class="option-label">
+        <input type="radio" name="q_${id}" value="${key}" ${checked} onchange="setAnswer(${id}, '${key}')">
+        <span><strong>${key}.</strong> ${text}</span>
+      </label>
+    `;
+  }
+  return `
+    <div class="question-card" id="q-card-${id}">
+      <div class="question-title">${id}. ${title}</div>
+      <div class="options-grid">${optsHtml}</div>
+    </div>
+  `;
+}
+
+function toggleFontSize() {
+  document.body.classList.toggle("large-text");
+}
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
+}
+
+function confirmFinish() {
+  const answeredCount = Object.keys(userAnswers).length;
+  const msg = answeredCount < 32
+    ? `Ви відповіли на ${answeredCount} із 32 питань. Ви впевнені, що хочете завершити тест?`
+    : "Завершити тестування та переглянути результати?";
+  if (confirm(msg)) finishExam();
+}
+
+function finishExam() {
+  clearInterval(timerInterval);
+  const elapsedSec = Math.round((Date.now() - startTime) / 1000);
+  const mins = Math.floor(elapsedSec / 60);
+  const secs = elapsedSec % 60;
+  const timeSpentStr = `${mins} хв ${secs} сек`;
+
+  const allQuestions = [
+    ...EXAM_DATA.part1.items,
+    ...EXAM_DATA.part2.questions,
+    ...EXAM_DATA.part3.items,
+    ...EXAM_DATA.part4.text1.questions,
+    ...EXAM_DATA.part4.text2.questions
+  ];
+
+  let rawScore = 0;
+  let partScores = { p1: 0, p2: 0, p3: 0, p4: 0 };
+  const mistakes = [];
+
+  allQuestions.forEach(item => {
+    const uAns = userAnswers[item.id] || "Немає відповіді";
+    if (uAns === item.correct) {
+      rawScore++;
+      if (item.id <= 5) partScores.p1++;
+      else if (item.id <= 10) partScores.p2++;
+      else if (item.id <= 16) partScores.p3++;
+      else partScores.p4++;
+    } else {
+      mistakes.push({
+        id: item.id,
+        userAnswer: uAns,
+        correctAnswer: item.correct,
+        topic: item.topic,
+        explanation: item.explanation
+      });
+    }
+  });
+
+  const nmtScore = NMT_SCALE[rawScore] || 0;
+  const nmtDisplay = nmtScore === 0 ? "Не склав (<100)" : nmtScore;
+  const studentName = document.getElementById("student-name").value.trim();
+  const studentClass = document.getElementById("student-class").value.trim();
+
+  document.getElementById("res-student-title").textContent = `Результати тестування НМТ: ${studentName}`;
+  document.getElementById("res-nmt-score").textContent = nmtDisplay;
+  document.getElementById("res-raw-score").textContent = `${rawScore} / 32`;
+  document.getElementById("res-time").textContent = timeSpentStr;
+
+  const body = document.getElementById("result-body");
+  let html = `
+    <p style="margin-bottom:16px; font-size:15px;">
+      <strong>Розподіл за частинами:</strong>
+      Reading (1–5): <b>${partScores.p1}/5</b> |
+      Reading (6–10): <b>${partScores.p2}/5</b> |
+      Reading (11–16): <b>${partScores.p3}/6</b> |
+      Use of English (17–32): <b>${partScores.p4}/16</b>
+    </p>
+  `;
+
+  if (mistakes.length === 0) {
+    html += `<div style="padding:20px; background:#dcfce7; color:#166534; border-radius:10px; font-weight:700;">🎉 Бездоганний результат! Жодної помилки!</div>`;
+  } else {
+    html += `<h3 style="margin-bottom:12px;">Розбір помилок (${mistakes.length}):</h3>`;
+    mistakes.forEach(m => {
+      html += `
+        <div class="mistake-card">
+          <div class="mistake-head">
+            <span>Питання №${m.id}: ваша відповідь «${m.userAnswer}» → правильно «${m.correctAnswer}»</span>
+            <span class="topic-tag">${m.topic}</span>
+          </div>
+          <div class="mistake-exp">${m.explanation}</div>
+        </div>
+      `;
+    });
+  }
+  body.innerHTML = html;
+  document.getElementById("result-modal").style.display = "flex";
+
+  // Відправка результатів у Google Таблицю (через ваш Apps Script)
+  const breakdownStr = `R1:${partScores.p1}/5, R2:${partScores.p2}/5, R3:${partScores.p3}/6, UoE:${partScores.p4}/16`;
+  const mistakesStr = mistakes.length === 0
+    ? "Без помилок"
+    : mistakes.map(m => `№${m.id} (${m.topic})`).join("; ");
+
+  const payload = {
+    testType: "NMT",
+    testName: "Exam Preparation (NMT)",
+    studentName: studentName,
+    studentClass: studentClass,
+    score: nmtDisplay,
+    rawScore: `${rawScore}/32`,
+    timeSpent: timeSpentStr,
+    details: breakdownStr,
+    mistakes: mistakesStr
+  };
+
+  if (SCRIPT_URL && SCRIPT_URL.startsWith("http")) {
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      document.getElementById("save-status").textContent = "✅ Результат відправлено в журнал учнів";
+    })
+    .catch(() => {
+      document.getElementById("save-status").textContent = "⚠️ Не вдалося відправити результат у таблицю";
+    });
+  } else {
+    document.getElementById("save-status").textContent = "ℹ️ Додайте SCRIPT_URL у файл nmt.html для автозапису в таблицю";
+  }
+}
+</script>
+</body>
+</html>
