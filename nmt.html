@@ -906,29 +906,11 @@ function finishExam() {
     : mistakes.map(m => `№${m.id} (${m.topic})`).join("; ");
 
   const payload = {
-    sheet: "NMT",
-    tab: "NMT",
-    sheetName: "NMT",
-    testType: "NMT",
-    test: "NMT",
-    testName: "NMT",
-    title: "NMT",
-    topic: "NMT",
-    name: studentName,
     studentName: studentName,
-    student: studentName,
-    class: studentClass,
-    studentClass: studentClass,
-    grade: studentClass,
-    group: studentClass,
-    score: nmtDisplay,
-    result: nmtDisplay,
-    points: rawScore,
-    total: 32,
-    rawScore: `${rawScore}/32`,
-    timeSpent: timeSpentStr,
-    details: breakdownStr,
-    mistakes: mistakesStr
+    studentClass: "NMT",
+    action: "NMT",
+    score: `${nmtDisplay} (${rawScore}/32)`,
+    details: `Клас: ${studentClass || "не вказано"} | Час: ${timeSpentStr} | ${breakdownStr} | Помилки: ${mistakesStr}`
   };
 
   fetch(SCRIPT_URL, {
