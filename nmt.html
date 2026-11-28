@@ -920,7 +920,7 @@ function finishExam() {
     body: JSON.stringify(payload)
   })
   .then(() => {
-    document.getElementById("save-status").textContent = "✅ Результат відправлено в журнал учнів (NMT)";
+    document.getElementById("save-status").textContent = "✅ Результат відправлено в журнал учнів (вкладка NMT)";
   })
   .catch(() => {
     document.getElementById("save-status").textContent = "⚠️ Не вдалося відправити результат у таблицю";
